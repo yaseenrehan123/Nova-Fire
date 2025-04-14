@@ -15,13 +15,21 @@ export class Player{
         this.gameSettings = gameSettings;
         this.playerSprite = document.querySelector('.player-img');
         this.playerWeapon = new PlayerWeapon(gameSettings,this);
+        this.dead = false;
+        this.bodyWidth = 90;
+        this.bodyHeight = 50;
+        this.bodyOffsetX = 0;
+        this.bodyOffsetY = -10;
         gameSettings.registerObject(this);
+        this.createMatterBody();
+        this.body.gameObject = this;
     };
     update(deltaTime){
         this.movePlayer(deltaTime);
         this.calculateDirectionAngle();
         this.debugFacingDirection(this.gameSettings.ctx);
         this.changeRotationWithView(this.gameSettings);
+        this.draw(this.gameSettings.ctx);
     }
     movePlayer(deltaTime){
         //console.log("Player is moving");
@@ -88,4 +96,36 @@ export class Player{
     changeRotationWithView(gameSettings){
         this.playerSprite.style.transform = `rotateZ(${this.gameSettings.sceneRotation}deg)`;
     };
+    createMatterBody(){
+        this.body = Matter.Bodies.rectangle(
+            this.position.x + this.bodyOffsetX, this.position.y + this.bodyOffsetY,
+            this.bodyWidth, this.bodyHeight,
+            {
+                label: 'player',
+                frictionAir: 0,
+                isSensor: false,     
+                collisionFilter: { group: 0 },
+                inertia: Infinity,   
+                collisionFilter: {
+                    group: 0, 
+                    category: this.gameSettings.CATEGORY_PLAYER,
+                    mask: this.gameSettings.CATEGORY_ITEM
+                },
+            }
+        );
+
+        this.body.plugin = { noGravity: true };
+
+        Matter.World.add(this.gameSettings.engine.world, this.body);
+    };
+    draw(ctx) { 
+        if(this.gameSettings.draw && !this.dead){
+            ctx.save();
+            ctx.translate(this.position.x, this.position.y);
+            ctx.rotate(this.rotation * Math.PI / 180);
+            ctx.fillStyle = 'white';
+            ctx.fillRect(-this.bodyWidth / 2 + this.bodyOffsetX, -this.bodyHeight / 2 + this.bodyOffsetY, this.bodyWidth, this.bodyHeight);
+            ctx.restore();
+        }
+    }
 };

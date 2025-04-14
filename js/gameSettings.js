@@ -32,6 +32,7 @@ export class GameSettings{
     CATEGORY_PLAYER = 0x0001;
     CATEGORY_BULLET = 0x0002;
     CATEGORY_ENEMY = 0x0004;
+    CATEGORY_ITEM = 0x0008;
     //#endregion
 
     //#region drawing
@@ -138,6 +139,9 @@ export class GameSettings{
                 // subtract player hp and give invincibility frames
                 // destroy enemy
                 console.log("Player collided with enemy");
+            }
+            else if(this.matchCollision(a,b,'player','item')){
+                console.log("Player collided with an item!");
             }
         };
         

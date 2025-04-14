@@ -3,7 +3,7 @@ import { Player } from "./player.js";
 import { ChangeView } from "./changeview.js"
 import { EnemySpawner } from "./enemySpawner.js";
 import { Enemy1 } from "./enemyTypes.js";
-
+import { ChangeBulletOrb } from "./changeBullet.js";
 start();
 
 function start(){
@@ -20,7 +20,7 @@ const enemySpawner = new EnemySpawner(gameSettings);
 setTimeout(()=>{
     const enemy1 = new Enemy1(gameSettings,player.position);
 },3000);
-new ChangeBulletOrb(gameSettings,player.position,15,'images/bulletChangeOrb/blueBulletOrb.png')
+new ChangeBulletOrb(gameSettings,{x:player.position.x,y:0},'images/bulletChangeOrb/blueBulletOrb.png')
 player.playerInputListeners();
 }
 

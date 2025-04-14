@@ -1,14 +1,14 @@
 export class ChangeBulletOrb{
-    constructor(gameSettings,pos,bodyRadius,imageSrc){
+    constructor(gameSettings,pos={x,y},imageSrc){
         this.gameSettings = gameSettings;
-        this.bodyRadius = bodyRadius;
+        this.bodyRadius = 25;
         this.dead = false;
         this.body = null;
         this.element = null;
         this.imageSrc = imageSrc;
         this.pos = pos;
         this.speed = 5;
-        this.rotation = gameSettings.sceneRotation;
+        this.rotation = gameSettings.sceneRotation - 180;
         this.width = 50;
         this.height = 50;
         this.start();
@@ -17,6 +17,7 @@ export class ChangeBulletOrb{
         this.gameSettings.registerObject(this);
         this.createElement();
         this.createMatterBody();
+        this.body.gameObject = this;
     };
     update(delta){
         this.move();
@@ -30,8 +31,8 @@ export class ChangeBulletOrb{
             y: Math.sin(angleRad) * this.speed
         });
          // Move bullet in direction
-         this.pos.x = this.body.pos.x;
-         this.pos.y = this.body.pos.y;
+         this.pos.x = this.body.position.x;
+         this.pos.y = this.body.position.y;
  
          this.element.style.left = `${this.pos.x}px`;
          this.element.style.top = `${this.pos.y}px`;
@@ -70,15 +71,15 @@ export class ChangeBulletOrb{
            this.pos.x, this.pos.y,
            15,
            {
-               label: 'changeBulletOrb',
+               label: 'item',
                frictionAir: 0,
                isSensor: false,      // Still collides
                collisionFilter: { group: 0 },
                inertia: Infinity,    // Prevent rotation
                collisionFilter: {
-                   group: -1, // prevents bullets colliding with each other
-                   category: this.gameSettings.CATEGORY_BULLET,
-                   mask: this.gameSettings.CATEGORY_ENEMY // bullets only collide with enemies
+                   group: -1, 
+                   category: this.gameSettings.CATEGORY_ITEM,
+                   mask: this.gameSettings.CATEGORY_PLAYER
                },
 
            }
@@ -90,14 +91,18 @@ export class ChangeBulletOrb{
             ctx.save();
             ctx.translate(this.pos.x, this.pos.y);
             ctx.rotate(this.rotation * Math.PI / 180);
-
             ctx.beginPath();
-            ctx.arc(0, 0, 15, 0, Math.PI * 2); // x=0, y=0 after translate
+            ctx.arc(0, 0, this.bodyRadius, 0, Math.PI * 2); // x=0, y=0 after translate
             ctx.fillStyle = 'white';
             ctx.fill();
             ctx.closePath();
 
             ctx.restore();
         };
+    };
+    die(){
+        this.dead = true;
+        this.element.remove();
+        Matter.World.remove(this.gameSettings.engine.world, this.body);
     };
 };
