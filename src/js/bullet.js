@@ -1,3 +1,4 @@
+import Matter from "matter-js";
 export class Bullet{
     constructor(startingPos,direction,speed,gameSettings,imageSrc,fireDelayInSeconds,damage){
         this.pos = {x:startingPos.x,y:startingPos.y};

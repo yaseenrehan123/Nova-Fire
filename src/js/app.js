@@ -4,6 +4,7 @@ import { ChangeView } from "./changeview.js"
 import { EnemySpawner } from "./enemySpawner.js";
 import { Enemy1 } from "./enemyTypes.js";
 import { ChangeBulletOrb } from "./changeBullet.js";
+import Matter from "matter-js";
 start();
 
 function start(){

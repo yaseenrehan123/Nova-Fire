@@ -1,4 +1,5 @@
 import { Enemy } from "./enemy.js";
+import Matter from "matter-js";
 
 export class Enemy1 extends Enemy{
     constructor(gameSettings,position){

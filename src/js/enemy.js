@@ -1,3 +1,4 @@
+import Matter from "matter-js";
 export class Enemy{
     constructor(gameSettings,position,health,speed,imgSrc){
         this.gameSettings = gameSettings;

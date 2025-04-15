@@ -1,3 +1,4 @@
+import Matter from "matter-js";
 
 export class GameSettings{
     //isMobile;

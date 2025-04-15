@@ -1,4 +1,6 @@
 import { PlayerWeapon } from "./playerWeapon.js";
+import Matter from "matter-js";
+
 export class Player{
     position = {x:0,y:0};
     element;

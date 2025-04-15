@@ -1,4 +1,5 @@
 import { Bullet } from "./bullet.js";
+import Matter from "matter-js";
 
 export class GreenBullet extends Bullet{
     constructor(startingPos,direction,gameSettings){
