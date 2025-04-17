@@ -73,7 +73,9 @@ export class GameSettings{
     const deltaTime = (timeStamp - this.lastTime)/1000;
     this.lastTime = timeStamp;
     this.deltaTime = deltaTime;
-    //console.log(this.deltaTime);
+    this.ctx.clearRect(0, 0, this.windowWidth, this.windowHeight);
+    this.drawMatterBodies();
+
     this.objects.forEach(obj => obj.update(this.deltaTime));
     requestAnimationFrame(this.gameLoop.bind(this));
    };
@@ -164,6 +166,88 @@ export class GameSettings{
         this.entitySim = new Simulator(this.entityEngine);
         this.entitySim.setFps(60);
         this.entitySim.start();
+        this.initializeSystems();
+        console.log(this.entityEngine);
+    };
+    initializeSystems(){
+        this.moveSystem();
+    };
+    moveSystem(){
+        this.entityEngine.system('move',['pos','speed','rotation','aliveStatus','element','matterBody'],(entity,{pos,speed,rotation,aliveStatus,element,matterBody})=>{
+            const angleRad = (rotation - 90) * (Math.PI / 180);
+            Matter.Body.setVelocity(matterBody, {
+                x: Math.cos(angleRad) * speed,
+                y: Math.sin(angleRad) * speed
+            });
+             // Move bullet in direction
+             pos.x = matterBody.position.x;
+             pos.y = matterBody.position.y;
+     
+             element.style.left = `${pos.x}px`;
+             element.style.top = `${pos.y}px`;
+     
+             // Optional: destroy enemy if out of screen
+             const buffer = 100;
+             if (
+                pos.x < -buffer || pos.x > window.innerWidth + buffer ||
+                pos.y < -buffer || pos.y > window.innerHeight + buffer
+            ) {
+               aliveStatus = false;
+            };
+        });
+    };
+    drawMatterBodies(){
+        const entities = this.entityEngine.entities;
+
+        for (const key in entities) {
+            const entity = entities[key];
+            if (!entity || typeof entity.hasComponent !== 'function') continue;
+    
+            if (entity.hasComponent('circleMatterBodyRadius')) {
+                this.drawCircleMatterBody(entity);
+            } else if (entity.hasComponent('rectMatterBodyBounds')) {
+                this.drawRectMatterBody(entity);
+            }
+        }
+    };
+    drawCircleMatterBody(entity){
+        const ctx = this.ctx;
+        const pos = entity.getComponent('pos');
+        const rotation = entity.getComponent('rotation');
+        const aliveStatus = entity.getComponent('aliveStatus');
+        const radius = entity.getComponent('circleMatterBodyRadius');
+        const offset = entity.getComponent('matterBodyOffset');
+
+        if(!aliveStatus) return;
+        ctx.save();
+        ctx.translate(pos.x + offset.x, pos.y + offset.y);
+        ctx.rotate(rotation * Math.PI / 180);
+        ctx.beginPath();
+        ctx.arc(0, 0, radius, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+        ctx.strokeStyle = 'white';
+        ctx.lineWidth = 2;
+        ctx.fill();
+        ctx.stroke();
+        ctx.closePath();
+        ctx.restore();
+        
+    };
+    drawRectMatterBody(entity){
+        const ctx = this.ctx;
+        const pos = entity.getComponent('pos');
+        const rotation = entity.getComponent('rotation');
+        const aliveStatus = entity.getComponent('aliveStatus');
+        const bounds = entity.getComponent('rectMatterBodyBounds');
+        const offset = entity.getComponent('matterBodyOffset');
+
+        if(!aliveStatus) return;
+        ctx.save();
+        ctx.translate(pos.x + offset.x, pos.y + offset.y);
+        ctx.rotate(rotation * Math.PI / 180);
+        ctx.fillStyle = 'white';
+        ctx.fillRect(-bounds.width / 2, -bounds.height / 2, bounds.width, bounds.height);
+        ctx.restore();
     };
 
 };

@@ -1,4 +1,64 @@
 import Matter from "matter-js";
+export function createChangeBulletOrb(gameSettings,pos,imgSrc,flippedRotation=true){
+    const engine = gameSettings.entityEngine;
+
+    const id = engine.entity('changeBulletOrb');
+    const speed = 1;
+    const matterBodyRadius = 150;
+    const matterBodyOffset = {x:0,y:0};
+    let rotation = null;
+    
+    if(flippedRotation){
+        rotation = gameSettings.sceneRotation - 180;
+    }
+    else{
+        rotation = gameSettings.sceneRotation;
+    }
+
+    id.setComponent('pos',pos);
+    id.setComponent('speed',speed);
+    id.setComponent('rotation',rotation);
+    id.setComponent('imgSrc',imgSrc);
+    id.setComponent('aliveStatus',true);
+    id.setComponent('circleMatterBodyRadius',matterBodyRadius);
+    id.setComponent('matterBodyOffset',matterBodyOffset)
+
+    const el = document.createElement('div');
+    el.style.width = '50px';
+    el.style.height = '50px';
+    el.style.transform = `translate(-50%, -50%)`;
+    el.style.position = 'absolute';
+    el.style.left = `${pos.x}px`;
+    el.style.top = `${pos.y}px`;
+
+    const img = document.createElement('img');
+    img.src = imgSrc;
+    img.style.width = '100%';
+    img.style.height = '100%';
+    img.style.transform = `rotateZ(${rotation}deg)`;
+    el.appendChild(img);
+
+    document.body.appendChild(el);
+
+    id.setComponent('element',el);
+
+    const body = Matter.Bodies.circle(pos.x + matterBodyOffset.x, pos.y + matterBodyOffset.y, matterBodyRadius, {
+        label: 'item',
+        frictionAir: 0,
+        isSensor: false,
+        inertia: Infinity,
+        collisionFilter: {
+            group: -1,
+            category: gameSettings.CATEGORY_ITEM,
+            mask: gameSettings.CATEGORY_PLAYER
+        }
+    });
+
+    body.gameObject = id;
+    Matter.World.add(gameSettings.engine.world, body);
+    
+    id.setComponent('matterBody',body);
+};
 export class ChangeBulletOrb{
     constructor(gameSettings,pos={x,y},imageSrc){
         this.gameSettings = gameSettings;

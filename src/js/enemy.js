@@ -25,7 +25,7 @@ export class Enemy{
         this.changeRotationWithView();
         this.move(deltaTime);
         if(this.gameSettings.draw && !this.dead){
-            this.draw(this.gameSettings.ctx);
+            //this.draw(this.gameSettings.ctx);
         };
         
     };

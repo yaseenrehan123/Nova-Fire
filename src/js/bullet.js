@@ -48,7 +48,7 @@ export class Bullet{
             this.die();
         } else {
             if (this.gameSettings.draw && !this.dead) {
-                this.draw(this.gameSettings.ctx);
+                //this.draw(this.gameSettings.ctx);
             }
         }
         

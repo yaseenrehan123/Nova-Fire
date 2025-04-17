@@ -31,7 +31,7 @@ export class Player{
         this.calculateDirectionAngle();
         this.debugFacingDirection(this.gameSettings.ctx);
         this.changeRotationWithView(this.gameSettings);
-        this.draw(this.gameSettings.ctx);
+        //this.draw(this.gameSettings.ctx);
     }
     movePlayer(deltaTime){
         //console.log("Player is moving");
