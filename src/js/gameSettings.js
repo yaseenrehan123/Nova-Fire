@@ -1,4 +1,5 @@
 import Matter from "matter-js";
+import { Engine, Simulator } from 'jecs';
 
 export class GameSettings{
     //isMobile;
@@ -40,6 +41,11 @@ export class GameSettings{
     draw = true;
     //#endregion
 
+    //#region ecs
+    entityEngine = null;
+    entitySim = null;
+    //#endregion
+
     constructor(){
         this.start();
         this.gameLoop(0);
@@ -60,6 +66,7 @@ export class GameSettings{
         //this.checkIfMobileListener();
         this.initializeCanvas();
         this.initializeMatterLib();
+        this.initializeJECS();
         this.onWindowResize();
    }
    gameLoop(timeStamp){
@@ -151,6 +158,12 @@ export class GameSettings{
    };
    matchCollision(a, b, label1, label2) {
     return (a === label1 && b === label2) || (a === label2 && b === label1);
+    };
+    initializeJECS(){
+        this.entityEngine = new Engine();
+        this.entitySim = new Simulator(this.entityEngine);
+        this.entitySim.setFps(60);
+        this.entitySim.start();
     };
 
 };

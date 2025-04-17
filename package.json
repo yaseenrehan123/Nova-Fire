@@ -12,6 +12,7 @@
     "vite": "^6.2.0"
   },
   "dependencies": {
+    "events": "^3.3.0",
     "jecs": "^2.0.0",
     "matter-js": "^0.20.0"
   }
