@@ -24,9 +24,9 @@ function start(images){
             ['sceneOrientedRotation',true],// a flag to change rotation with scene
             ['matterBody',null],// assigned on creation
             ['matterBodyType','rectangle'],
-            ['matterBodyOffset',{x:0,y:0}],
+            ['matterBodyOffset',{x:0,y:-6}],
             ['matterBodyWidth',100],
-            ['matterBodyHeight',100],
+            ['matterBodyHeight',70],
             ['matterBodyOptions',{
                 label: 'player',
                 isSensor: true,
@@ -36,7 +36,8 @@ function start(images){
                     category: game.collisionCategories.playerCategory,
                     mask: game.collisionCategories.itemCategory | game.collisionCategories.enemyCategory,
                 }
-            }]
+            }],
+            ['matterBodyColor','white']
         ]
     })
     console.log('start called');

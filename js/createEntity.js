@@ -1,4 +1,4 @@
-import { Bodies,World} from "matter-js";
+import { Bodies,World,Body} from "matter-js";
 export class CreateEntity{
     constructor(options){
         const{
@@ -33,8 +33,9 @@ export class CreateEntity{
         const matterBodyType = entity.getComponent('matterBodyType');
         const matterBodyOffset = entity.getComponent('matterBodyOffset') || { x: 0, y: 0 };
         const pos = entity.getComponent('pos') || { x: 0, y: 0 };
+        const rotation = entity.getComponent('rotation') || 0;
         const matterBodyOptions = entity.getComponent('matterBodyOptions') || {}; // custom user options
-    
+        
         let body = null;
     
         switch (matterBodyType) {
@@ -46,7 +47,8 @@ export class CreateEntity{
                     offset: matterBodyOffset,
                     width,
                     height,
-                    advancedOptions: matterBodyOptions
+                    advancedOptions: matterBodyOptions,
+                    rotation: rotation * (Math.PI / 180) // 🔥 convert degrees to radians
                 });
                 break;
             
@@ -66,7 +68,8 @@ export class CreateEntity{
             offset = { x: 0, y: 0 },
             width = 100,
             height = 100,
-            advancedOptions = {}
+            advancedOptions = {},
+            rotation = 0,
         } = options;
     
         const body = Bodies.rectangle(
@@ -87,7 +90,8 @@ export class CreateEntity{
                 ...advancedOptions // allow extra options to override too
             }
         );
-    
+        Body.setAngle(body, rotation);
+
         return body;
     }
     

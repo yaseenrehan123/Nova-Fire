@@ -1,6 +1,9 @@
 import {Mouse} from './mouse.js';
 import {Engine as EntityEngine,Simulator as EntitySimulator} from 'jecs';
 import {Engine as MatterEngine,Runner as MatterRunner,Events} from 'matter-js'
+//import { Builder, shapes } from "shape-builder";
+//const { Point, Rectangle } = shapes;
+
 export class Game{
     constructor(options){
         const {
@@ -21,13 +24,19 @@ export class Game{
         this.matter = {
             matterEngine:null,
             matterRunner:null,
+            debugBodies:true
+        };
+        /*
+        this.shapeBuilder ={
+            builder:null
         }
+        */
         this.collisionCategories={
             playerCategory:0x0001,
             itemCategory:0x0002,
             playerBulletCategory:0x0004,
-            enemyBulletCategory:0x0008
-        }
+            enemyCategory:0x0008
+        };
         this.width = this.canvas.width;
         this.height = this.canvas.height;
 
@@ -39,9 +48,13 @@ export class Game{
     start(){
         this.initializeJECS();
         this.initializeMatter();
+        //this.initializeShapeBuilder();
+
         this.onResize();
         
         this.systemsJECS();
+
+        //this.debugMatterBodies();
     };
     update(timeStamp){
         const deltaTime = (timeStamp - this.lastTime)/1000;
@@ -49,8 +62,11 @@ export class Game{
         this.deltaTime = deltaTime;
 
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.shapeBuilder.builder.removeShapes();
 
         this.drawSprites()
+        this.debugMatterBodies();
+        this.shapeBuilder.builder.draw(this.ctx);
 
         this.registeredObj.forEach((obj)=>{
             obj.update();
@@ -170,10 +186,63 @@ export class Game{
             
             
         });
-       };
-       matchCollision(a, b, label1, label2) {
+    };
+    matchCollision(a, b, label1, label2) {
         return (a === label1 && b === label2) || (a === label2 && b === label1);
-        };
+    };
+    /*
+    initializeShapeBuilder(){
+        const builder = new Builder();
+        this.shapeBuilder.builder = builder;
+    }
+    */
+    debugMatterBodies(){
+        if (this.matter.debugBodies) {
+            const builder = this.shapeBuilder.builder;
+            //builder.clear();
+    
+            const req = ['pos', 'matterBody', 'matterBodyType'];
+            const entities = Object.values(this.ecs.entityEngine.entities);
+    
+            for (let e of entities) {
+                if (!req.every(c => e.hasComponent(c))) continue;
+    
+                const pos = e.getComponent('pos');
+                const body = e.getComponent('matterBody');
+                const bodyType = e.getComponent('matterBodyType');
+                const offset = e.getComponent('matterBodyOffset') || { x: 0, y: 0 };
+                const color = e.getComponent('matterBodyColor') || 'white';
+                //console.log(body.position);
+                //console.log(body.position.x + offset.x)
+                switch (bodyType) {
+                    case 'rectangle':
+                        const bodyWidth = e.getComponent('matterBodyWidth');
+                        const bodyHeight = e.getComponent('matterBodyHeight');
+                        
+                        // --- Save the current context ---
+                        this.ctx.save();
+    
+                        // --- Translate to center of the rectangle ---
+                        this.ctx.translate(body.position.x + offset.x, body.position.y + offset.y);
+                        
+                        // --- Rotate the context ---
+                        this.ctx.rotate(body.angle);
+    
+                        // --- Draw the rectangle manually ---
+                        this.ctx.fillStyle = color;
+                        this.ctx.fillRect(-bodyWidth/2, -bodyHeight/2, bodyWidth, bodyHeight);
+    
+                        // --- Restore context to original (important) ---
+                        this.ctx.restore();
+                        break;
+                    default:
+                        console.error("An unidentified shape type entered debugMatterBodies!");
+                        break;    
+                }
+            }
+        }
+        
+    }
     
     
     
