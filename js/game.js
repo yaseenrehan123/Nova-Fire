@@ -1,6 +1,6 @@
 import {Mouse} from './mouse.js';
 import {Engine as EntityEngine,Simulator as EntitySimulator} from 'jecs';
-import {Engine as MatterEngine,Runner as MatterRunner,Events} from 'matter-js'
+import {Engine as MatterEngine,Runner as MatterRunner,Events, Body} from 'matter-js'
 //import { Builder, shapes } from "shape-builder";
 //const { Point, Rectangle } = shapes;
 
@@ -39,7 +39,7 @@ export class Game{
         };
         this.width = this.canvas.width;
         this.height = this.canvas.height;
-
+        this.sceneRotation = 0;
         this.mouse = new Mouse(this);
        
         this.start();
@@ -62,16 +62,16 @@ export class Game{
         this.deltaTime = deltaTime;
 
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.shapeBuilder.builder.removeShapes();
+        //this.shapeBuilder.builder.removeShapes();
 
         this.drawSprites()
         this.debugMatterBodies();
-        this.shapeBuilder.builder.draw(this.ctx);
+        //this.shapeBuilder.builder.draw(this.ctx);
 
         this.registeredObj.forEach((obj)=>{
             obj.update();
         });
-
+        console.log(`Scene Rotation: ${this.sceneRotation}`);
         requestAnimationFrame(this.update.bind(this));
     };
     addObj(obj){
@@ -98,6 +98,7 @@ export class Game{
         // 3) draw relative to (0,0) — offset so your image is centered if desired
         ctx.drawImage(img, offsetX, offsetY, width, height);
         ctx.restore();
+        console.log(`rotation passed in drawImage ${rotation}`)
       }
       
     initializeJECS(){
@@ -113,7 +114,8 @@ export class Game{
         });
     }
     systemsJECS(){
-        
+        this.changeBodyRotationSystem();
+        this.movePlayerSystem();
     };
     drawSprites() {
         const req = ['imgKey','pos','width','height','rotation','centerImage'];
@@ -130,7 +132,7 @@ export class Game{
           const height      = e.getComponent('height');
           const rotation    = e.getComponent('rotation');
           const centerImage = e.getComponent('centerImage');
-            
+          console.log(`rotation passed in drawSprites: ${rotation}`);
           // lookup your preloaded Image object
           const img = this.images[imgKey];
           if (!img) {
@@ -198,7 +200,7 @@ export class Game{
     */
     debugMatterBodies(){
         if (this.matter.debugBodies) {
-            const builder = this.shapeBuilder.builder;
+            //const builder = this.shapeBuilder.builder;
             //builder.clear();
     
             const req = ['pos', 'matterBody', 'matterBodyType'];
@@ -243,6 +245,77 @@ export class Game{
         }
         
     }
+    changeBodyRotationSystem(){
+        const engine = this.ecs.entityEngine;
+        engine.system('rotationMatterBodies',['rotation','matterBody','matterBodyType'],(entity,{
+            rotation,matterBody,matterBodyType
+        })=>{
+            const typesToRotate = ['rectangle'];
+            if(!typesToRotate.includes(matterBodyType))return;
+            const rotationInRadians = rotation * (Math.PI / 180);
+            Body.setAngle(matterBody,rotationInRadians);
+            console.log(`entity rotation ${rotation}`);
+        });
+    }
+    addSceneRotation(){
+        const req = ['rotation', 'sceneOrientedRotation','baseRotation'];
+        const entities = Object.values(this.ecs.entityEngine.entities);
+    
+         for (let e of entities) {
+            if (!req.every(c => e.hasComponent(c))) continue;
+            let baseRotation = e.getComponent('baseRotation');
+            const rotation = this.sceneRotation + baseRotation;
+            e.setComponent('rotation',rotation);
+        }
+    }
+    setBaseRotation(){
+        const req = ['rotation', 'sceneOrientedRotation','baseRotation'];
+        const entities = Object.values(this.ecs.entityEngine.entities);
+        for (let e of entities) {
+            if (!req.every(c => e.hasComponent(c))) continue;
+            const rotation = e.getComponent('rotation');
+            const baseRotation = rotation - this.sceneRotation;
+            e.setComponent('baseRotation',baseRotation)// set base rotation to rotation
+        }
+    }
+    movePlayerSystem(){
+        const engine = this.ecs.entityEngine;
+        engine.system('movePlayer',['player','speed','moveVector','pos','matterBody'],
+            (entity,{player,speed,moveVector,pos,matterBody})=>{
+                const mouseX = this.mouse.pos.x;
+                const mouseY = this.mouse.pos.y;
+                const playerX = pos.x;
+                const playerY = pos.y;
+    
+                let moveVectorX = mouseX - playerX;
+                let moveVectorY = mouseY - playerY;
+                const distance = Math.hypot(moveVectorX, moveVectorY);
+    
+                // Avoid division by zero
+                if (distance > 50) {
+                    const maxSpeed = speed;
+                    const speedFactor = Math.min(distance / 20, 1); // Smoothly slow near target
+                    const targetSpeed = maxSpeed * speedFactor;
+    
+                    moveVectorX /= distance;
+                    moveVectorY /= distance;
+    
+                    Body.setVelocity(matterBody, {
+                        x: moveVectorX * targetSpeed,
+                        y: moveVectorY * targetSpeed,
+                    });
+                } else {
+                    Body.setVelocity(matterBody, { x: 0, y: 0 });
+                }
+    
+                pos.x = matterBody.position.x;
+                pos.y = matterBody.position.y;
+                entity.setComponent('moveVector',{x:moveVectorX,y:moveVectorY});
+                entity.setComponent('pos',pos);
+            }
+        );
+    }
+    
     
     
     

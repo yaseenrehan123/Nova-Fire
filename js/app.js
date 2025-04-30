@@ -1,6 +1,7 @@
 import { LoadAssets } from "./loadAssets.js";
 import { Game } from "./game.js";
 import { CreateEntity } from "./createEntity.js";
+import { ChangeView } from "./changeview.js";
 const loader = new LoadAssets();
 loader.preloadImages((images) => {
     start(images);
@@ -37,8 +38,18 @@ function start(images){
                     mask: game.collisionCategories.itemCategory | game.collisionCategories.enemyCategory,
                 }
             }],
-            ['matterBodyColor','white']
+            ['matterBodyColor','white'],
+            ['baseRotation',0],
+            ['moveVector',{x:0,y:0}],
+            ['speed',30],
+            ['player',true]
         ]
     })
+    /*
+    new ChangeView({
+        newRotation:190,
+        game:game
+    });
+    */
     console.log('start called');
 };
