@@ -1,7 +1,15 @@
 export class LoadAssets {
     constructor() {
         this.assets = {
-            player: "images/player.png"
+            player: "images/player.png",
+            blueBattery: "images/batteries/blue_battery.png",
+            greenBattery: "images/batteries/green_battery.png",
+            purpleBattery: "images/batteries/purple_battery.png",
+            yellowBattery: "images/batteries/yellow_battery.png",
+            enemy1: "images/enemies/enemy1.png",
+            enemy2: "images/enemies/enemy2.png",
+            enemy3: "images/enemies/enemy3.png",
+
         };
         this.loadedImages = {};
         this.loadedCount = 0;

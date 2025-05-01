@@ -11,7 +11,9 @@ export class CreateEntity{
         this.components = components;
         this.ecsEngine = this.game.ecs.entityEngine;
         this.matterEngine = this.game.matter.matterEngine;
-        this.CreateEntity();
+        this.entity = null;
+
+        this.entity = this.CreateEntity();
     };
     CreateEntity(){
         

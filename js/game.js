@@ -1,4 +1,5 @@
 import {Mouse} from './mouse.js';
+import { CreateEntity } from "./createEntity.js";
 import {Engine as EntityEngine,Simulator as EntitySimulator} from 'jecs';
 import {Engine as MatterEngine,Runner as MatterRunner,Events, Body} from 'matter-js'
 //import { Builder, shapes } from "shape-builder";
@@ -24,7 +25,7 @@ export class Game{
         this.matter = {
             matterEngine:null,
             matterRunner:null,
-            debugBodies:true
+            debugBodies:false
         };
         /*
         this.shapeBuilder ={
@@ -39,6 +40,7 @@ export class Game{
         };
         this.width = this.canvas.width;
         this.height = this.canvas.height;
+        this.screenCenterPos = {x:this.width/2,y:this.height/2};
         this.sceneRotation = 0;
         this.mouse = new Mouse(this);
        
@@ -71,7 +73,7 @@ export class Game{
         this.registeredObj.forEach((obj)=>{
             obj.update();
         });
-        console.log(`Scene Rotation: ${this.sceneRotation}`);
+        //console.log(`Scene Rotation: ${this.sceneRotation}`);
         requestAnimationFrame(this.update.bind(this));
     };
     addObj(obj){
@@ -83,7 +85,7 @@ export class Game{
         width,
         height,
         centerImage = true,
-        rotation = 0
+        rotation = 0,
       }) {
         const ctx = this.ctx;
         // local offsets
@@ -94,11 +96,12 @@ export class Game{
         // 1) move origin to sprite pos
         ctx.translate(pos.x, pos.y);
         // 2) rotate around that origin
+        //console.log(rotation)
         ctx.rotate((rotation) * Math.PI / 180);
         // 3) draw relative to (0,0) — offset so your image is centered if desired
         ctx.drawImage(img, offsetX, offsetY, width, height);
         ctx.restore();
-        console.log(`rotation passed in drawImage ${rotation}`)
+        //console.log(`rotation passed in drawImage ${rotation}`)
       }
       
     initializeJECS(){
@@ -111,11 +114,13 @@ export class Game{
         this.canvas.addEventListener('resize',()=>{
             this.width = this.canvas.width;
             this.height = this.canvas.height;
+            this.screenCenterPos = {x:this.width/2,y:this.height/2};
         });
     }
     systemsJECS(){
         this.changeBodyRotationSystem();
         this.movePlayerSystem();
+        this.moveOppositeEntitiesSystem();
     };
     drawSprites() {
         const req = ['imgKey','pos','width','height','rotation','centerImage'];
@@ -132,7 +137,7 @@ export class Game{
           const height      = e.getComponent('height');
           const rotation    = e.getComponent('rotation');
           const centerImage = e.getComponent('centerImage');
-          console.log(`rotation passed in drawSprites: ${rotation}`);
+          //console.log(`rotation passed in drawSprites: ${rotation}`);
           // lookup your preloaded Image object
           const img = this.images[imgKey];
           if (!img) {
@@ -254,7 +259,7 @@ export class Game{
             if(!typesToRotate.includes(matterBodyType))return;
             const rotationInRadians = rotation * (Math.PI / 180);
             Body.setAngle(matterBody,rotationInRadians);
-            console.log(`entity rotation ${rotation}`);
+            //console.log(`entity rotation ${rotation}`);
         });
     }
     addSceneRotation(){
@@ -263,8 +268,11 @@ export class Game{
     
          for (let e of entities) {
             if (!req.every(c => e.hasComponent(c))) continue;
+
             let baseRotation = e.getComponent('baseRotation');
-            const rotation = this.sceneRotation + baseRotation;
+            let rotation = 0;
+            rotation = baseRotation + this.sceneRotation;
+            
             e.setComponent('rotation',rotation);
         }
     }
@@ -274,7 +282,9 @@ export class Game{
         for (let e of entities) {
             if (!req.every(c => e.hasComponent(c))) continue;
             const rotation = e.getComponent('rotation');
-            const baseRotation = rotation - this.sceneRotation;
+            let baseRotation = 0;
+            baseRotation = rotation - this.sceneRotation;
+            
             e.setComponent('baseRotation',baseRotation)// set base rotation to rotation
         }
     }
@@ -315,7 +325,150 @@ export class Game{
             }
         );
     }
-    
+    moveOppositeEntitiesSystem(){//used to move all entities that go opposite player direction
+        const engine = this.ecs.entityEngine;
+        engine.system('moveObjects',['pos','rotation','matterBody','moveVector','speed','notPlayer'],
+            (entity,{pos,rotation,matterBody,moveVector,speed,notPlayer})=>{
+                const rad = rotation * (Math.PI / 180)
+                //console.log(`${entity.name} + ${pos.x}`)
+                moveVector = {
+                    x: Math.sin(rad),
+                    y:-Math.cos(rad)
+                };
+
+                const EPSILON = 0.0001;
+                if (Math.abs(moveVector.x) < EPSILON) moveVector.x = 0;
+                if (Math.abs(moveVector.y) < EPSILON) moveVector.y = 0;
+
+                //console.log(moveVector);
+
+                Body.setVelocity(matterBody,{
+                    x: moveVector.x * speed,
+                    y: moveVector.y * speed
+                });
+
+                pos.x = matterBody.position.x;
+                pos.y = matterBody.position.y;
+
+                entity.setComponent('moveVector',moveVector);
+                entity.setComponent('pos',pos);
+            }
+        )
+    }
+    spawnEntity(options){
+        const{
+            key='',
+            pos=this.screenCenterPos,
+        } = options;
+        let id = null;
+
+        switch (key){
+            case 'player':
+                id = new CreateEntity({
+                    game:this,
+                    name:'player',
+                    components:[
+                        ['imgKey','player'],
+                        ['pos',pos],
+                        ['width',100],
+                        ['height',100],
+                        ['rotation',0],
+                        ['centerImage',true],
+                        ['sceneOrientedRotation',true],// a flag to change rotation with scene
+                        ['matterBody',null],// assigned on creation
+                        ['matterBodyType','rectangle'],
+                        ['matterBodyOffset',{x:0,y:-6}],
+                        ['matterBodyWidth',100],
+                        ['matterBodyHeight',70],
+                        ['matterBodyOptions',{
+                            label: 'player',
+                            isSensor: true,
+                            frictionAir: 0.05,
+                            collisionFilter: {
+                                group: 0,
+                                category: this.collisionCategories.playerCategory,
+                                mask: this.collisionCategories.itemCategory | this.collisionCategories.enemyCategory,
+                            }
+                        }],
+                        ['matterBodyColor','white'],
+                        ['baseRotation',0],
+                        ['moveVector',{x:0,y:0}],
+                        ['speed',30],
+                        ['player',true],
+                        
+                    ]
+                }).entity;
+                break;
+            case 'battery':
+                id = new CreateEntity({
+                    game:this,
+                    name:'battery',
+                    components:[
+                        ['imgKey','blueBattery'],
+                        ['pos',pos],
+                        ['width',50],
+                        ['height',50],
+                        ['rotation',180],
+                        ['baseRotation',180],
+                        ['centerImage',true],
+                        ['matterBody',null],
+                        ['matterBodyType','rectangle'],
+                        ['matterBodyOffset',{x:0,y:0}],
+                        ['matterBodyWidth',50],
+                        ['matterBodyHeight',50],
+                        ['matterBodyOptions',{
+                            label:'item',
+                            isSensor:true,
+                            collisionFilter:{
+                                group:0,
+                                category:this.collisionCategories.itemCategory,
+                                mask:this.collisionCategories.playerCategory
+                            }
+                        }],
+                        ['speed',2],
+                        ['moveVector',{x:0,y:0}],
+                        ['notPlayer',true],
+                        ['sceneOrientedRotation',true],
+                        
+                    ]
+                }).entity;
+                break;
+            case 'enemy':
+                id = new CreateEntity({
+                    game:this,
+                    name:'enemy',
+                    components:[
+                        ['imgKey','enemy1'],
+                        ['pos',pos],
+                        ['width',100],
+                        ['height',100],
+                        ['rotation',180],
+                        ['baseRotation',180],
+                        ['centerImage',true],
+                        ['matterBody',null],
+                        ['matterBodyType','rectangle'],
+                        ['matterBodyOffset',{x:0,y:0}],
+                        ['matterBodyWidth',100],
+                        ['matterBodyHeight',100],
+                        ['matterBodyOptions',{
+                            label:'enemy',
+                            isSensor:true,
+                            collisionFilter:{
+                                group:0,
+                                category:this.collisionCategories.enemyCategory,
+                                mask:this.collisionCategories.playerCategory
+                            }
+                        }],
+                        ['speed',2],
+                        ['moveVector',{x:0,y:0}],
+                        ['notPlayer',true],
+                        ['sceneOrientedRotation',true],
+                        
+                    ]
+                }).entity;
+        }
+        return id;
+    };
     
     
     

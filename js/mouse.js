@@ -23,7 +23,7 @@ export class Mouse{
                         this.pos.y = (e.touches[0].clientY - rect.top) * scaleY;
                         break;
                 }
-                console.log(this.pos);
+                //console.log(this.pos);
             },{passive:true});
         });
     }
