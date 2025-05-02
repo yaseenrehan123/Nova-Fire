@@ -120,7 +120,8 @@ export class Game{
     systemsJECS(){
         this.changeBodyRotationSystem();
         this.movePlayerSystem();
-        this.moveOppositeEntitiesSystem();
+        this.moveEntitiesSystem();
+        this.shootBulletsSystem();
     };
     drawSprites() {
         const req = ['imgKey','pos','width','height','rotation','centerImage'];
@@ -325,7 +326,7 @@ export class Game{
             }
         );
     }
-    moveOppositeEntitiesSystem(){//used to move all entities that go opposite player direction
+    moveEntitiesSystem(){//used to move all entities 
         const engine = this.ecs.entityEngine;
         engine.system('moveObjects',['pos','rotation','matterBody','moveVector','speed','notPlayer'],
             (entity,{pos,rotation,matterBody,moveVector,speed,notPlayer})=>{
@@ -354,11 +355,40 @@ export class Game{
                 entity.setComponent('pos',pos);
             }
         )
+    };
+    shootBulletsSystem(){
+        const engine = this.ecs.entityEngine;
+        engine.system('shootBullets',['pos','shootBullet','rotation'],
+            (entity,{pos,shootBullet,rotation})=>{
+                if(shootBullet.counter > 0){
+                    shootBullet.counter -= this.deltaTime;
+                    entity.setComponent('shootBullet',shootBullet);
+                    return;
+                }
+                if(!shootBullet.active)return;
+
+                const spawnPos = {x:0,y:0};
+                spawnPos.x = pos.x + shootBullet.offset.x;;
+                spawnPos.y = pos.y + shootBullet.offset.y;
+                
+                this.spawnEntity({
+                    key:shootBullet.spawnKey,
+                    pos:{x:spawnPos.x,y:spawnPos.y},
+                    rotation:rotation
+                });
+                
+                shootBullet.counter = shootBullet.delayInSeconds;
+                shootBullet.spawnPos = spawnPos;
+
+                entity.setComponent('shootBullet',shootBullet);
+            }
+        )
     }
     spawnEntity(options){
         const{
             key='',
             pos=this.screenCenterPos,
+            rotation=0,
         } = options;
         let id = null;
 
@@ -395,14 +425,23 @@ export class Game{
                         ['moveVector',{x:0,y:0}],
                         ['speed',30],
                         ['player',true],
+                        ['shootBullet',{
+                            spawnPos:{x:0,y:0},
+                            offset:{x:0,y:0},
+                            delayInSeconds:1,
+                            counter:0,
+                            active:true,
+                            spawnKey:'greenBullet'
+
+                        }]
                         
                     ]
                 }).entity;
                 break;
-            case 'battery':
+            case 'blueBattery':
                 id = new CreateEntity({
                     game:this,
-                    name:'battery',
+                    name:'blueBattery',
                     components:[
                         ['imgKey','blueBattery'],
                         ['pos',pos],
@@ -433,6 +472,108 @@ export class Game{
                     ]
                 }).entity;
                 break;
+            case 'purpleBattery':
+                id = new CreateEntity({
+                    game: this,
+                    name: 'purpleBattery',
+                    components: [
+                        ['imgKey', 'purpleBattery'],
+                        ['pos', pos],
+                        ['width', 50],
+                        ['height', 50],
+                        ['rotation', 180],
+                        ['baseRotation', 180],
+                        ['centerImage', true],
+                        ['matterBody', null],
+                        ['matterBodyType', 'rectangle'],
+                        ['matterBodyOffset', { x: 0, y: 0 }],
+                        ['matterBodyWidth', 50],
+                        ['matterBodyHeight', 50],
+                        ['matterBodyOptions', {
+                            label: 'item',
+                            isSensor: true,
+                            collisionFilter: {
+                                group: 0,
+                                category: this.collisionCategories.itemCategory,
+                                mask: this.collisionCategories.playerCategory
+                            }
+                        }],
+                        ['speed', 2],
+                        ['moveVector', { x: 0, y: 0 }],
+                        ['notPlayer', true],
+                        ['sceneOrientedRotation', true],
+
+                    ]
+                }).entity;
+                break;   
+            case 'yellowBattery':
+                id = new CreateEntity({
+                    game: this,
+                    name: 'yellowBattery',
+                    components: [
+                        ['imgKey', 'yellowBattery'],
+                        ['pos', pos],
+                        ['width', 50],
+                        ['height', 50],
+                        ['rotation', 180],
+                        ['baseRotation', 180],
+                        ['centerImage', true],
+                        ['matterBody', null],
+                        ['matterBodyType', 'rectangle'],
+                        ['matterBodyOffset', { x: 0, y: 0 }],
+                        ['matterBodyWidth', 50],
+                        ['matterBodyHeight', 50],
+                        ['matterBodyOptions', {
+                            label: 'item',
+                            isSensor: true,
+                            collisionFilter: {
+                                group: 0,
+                                category: this.collisionCategories.itemCategory,
+                                mask: this.collisionCategories.playerCategory
+                            }
+                        }],
+                        ['speed', 2],
+                        ['moveVector', { x: 0, y: 0 }],
+                        ['notPlayer', true],
+                        ['sceneOrientedRotation', true],
+
+                    ]
+                }).entity;
+                break;
+            case 'greenBattery':
+                id = new CreateEntity({
+                    game: this,
+                    name: 'greenBattery',
+                    components: [
+                        ['imgKey', 'greenBattery'],
+                        ['pos', pos],
+                        ['width', 50],
+                        ['height', 50],
+                        ['rotation', 180],
+                        ['baseRotation', 180],
+                        ['centerImage', true],
+                        ['matterBody', null],
+                        ['matterBodyType', 'rectangle'],
+                        ['matterBodyOffset', { x: 0, y: 0 }],
+                        ['matterBodyWidth', 50],
+                        ['matterBodyHeight', 50],
+                        ['matterBodyOptions', {
+                            label: 'item',
+                            isSensor: true,
+                            collisionFilter: {
+                                group: 0,
+                                category: this.collisionCategories.itemCategory,
+                                mask: this.collisionCategories.playerCategory
+                            }
+                        }],
+                        ['speed', 2],
+                        ['moveVector', { x: 0, y: 0 }],
+                        ['notPlayer', true],
+                        ['sceneOrientedRotation', true],
+
+                    ]
+                }).entity;
+                break;       
             case 'enemy':
                 id = new CreateEntity({
                     game:this,
@@ -466,6 +607,40 @@ export class Game{
                         
                     ]
                 }).entity;
+                break;
+            case 'greenBullet':
+                id = new CreateEntity({
+                    game:this,
+                    name:'greenBullet',
+                    components:[
+                        ['imgKey','greenBullet'],
+                        ['pos',pos],
+                        ['width',100],
+                        ['height',100],
+                        ['rotation',rotation],
+                        ['baseRotation',rotation],
+                        ['centerImage',true],
+                        ['matterBody',null],
+                        ['matterBodyType','rectangle'],
+                        ['matterBodyOffset',{x:0,y:0}],
+                        ['matterBodyWidth',100],
+                        ['matterBodyHeight',100],
+                        ['matterBodyOptions',{
+                            label:'playerBullet',
+                            isSensor:true,
+                            collisionFilter:{
+                                group:0,
+                                category:this.collisionCategories.playerBulletCategory,
+                                mask:this.collisionCategories.enemyCategory
+                            }
+                        }],
+                        ['speed',2],
+                        ['moveVector',{x:0,y:0}],
+                        ['notPlayer',true],
+                        ['sceneOrientedRotation',true],
+                    ]
+                }).entity;
+                break;
         }
         return id;
     };

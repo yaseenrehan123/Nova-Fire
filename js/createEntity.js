@@ -16,7 +16,7 @@ export class CreateEntity{
         this.entity = this.CreateEntity();
     };
     CreateEntity(){
-        
+        this.name = this.assignUniqueName();
         const id = this.ecsEngine.entity(this.name);
 
         for (const [key, value] of this.components) {
@@ -96,5 +96,16 @@ export class CreateEntity{
 
         return body;
     }
-    
+    assignUniqueName(){
+        const baseName = this.name;
+
+        let candidateName = baseName;
+        let entityNumber = 1;
+
+        while (this.ecsEngine.getEntity(candidateName)){
+            candidateName = `${baseName}_instance${entityNumber}`;
+            entityNumber++;
+        }
+        return candidateName;
+    }
 }

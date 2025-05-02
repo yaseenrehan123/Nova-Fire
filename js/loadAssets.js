@@ -9,6 +9,10 @@ export class LoadAssets {
             enemy1: "images/enemies/enemy1.png",
             enemy2: "images/enemies/enemy2.png",
             enemy3: "images/enemies/enemy3.png",
+            greenBullet: "images/bullets/green_bullet.png",
+            blueBullet:"images/bullets/blue_bullet.png",
+            purpleBullet:"images/bullets/purple_bullet.png"
+
 
         };
         this.loadedImages = {};
