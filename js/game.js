@@ -358,28 +358,31 @@ export class Game{
     };
     shootBulletsSystem(){
         const engine = this.ecs.entityEngine;
-        engine.system('shootBullets',['pos','shootBullet','rotation'],
-            (entity,{pos,shootBullet,rotation})=>{
+        engine.system('shootBullets',['pos','shootBullet','rotation','spawnPos','shootTimes'],
+            (entity,{pos,shootBullet,rotation,spawnPos,shootTimes})=>{
                 if(shootBullet.counter > 0){
                     shootBullet.counter -= this.deltaTime;
                     entity.setComponent('shootBullet',shootBullet);
                     return;
                 }
                 if(!shootBullet.active)return;
+                spawnPos.forEach((point)=>{
+                    if(shootTimes <= 0) return;
 
-                const spawnPos = {x:0,y:0};
-                spawnPos.x = pos.x + shootBullet.offset.x;;
-                spawnPos.y = pos.y + shootBullet.offset.y;
-                
-                this.spawnEntity({
-                    key:shootBullet.spawnKey,
-                    pos:{x:spawnPos.x,y:spawnPos.y},
-                    rotation:rotation
+                    point.pos.x = pos.x + point.offset.x;
+                    point.pos.y = pos.y + point.offset.y;
+                    
+                    this.spawnEntity({
+                        key:shootBullet.spawnKey,
+                        pos:{x:point.pos.x,y:point.pos.y},
+                        rotation:rotation
+                    });
+                    shootTimes--;
                 });
+               
                 
                 shootBullet.counter = shootBullet.delayInSeconds;
-                shootBullet.spawnPos = spawnPos;
-
+                
                 entity.setComponent('shootBullet',shootBullet);
             }
         )
@@ -426,15 +429,18 @@ export class Game{
                         ['speed',30],
                         ['player',true],
                         ['shootBullet',{
-                            spawnPos:{x:0,y:0},
-                            offset:{x:0,y:0},
                             delayInSeconds:1,
                             counter:0,
                             active:true,
                             spawnKey:'greenBullet'
 
-                        }]
-                        
+                        }],
+                        ['spawnPos', [
+                            { pos: {x:0,y:0}, offset: {x:0,y:0} },
+                            { pos: {x:0,y:0}, offset: {x:-20,y:-20} },
+                            { pos: {x:0,y:0}, offset: {x:20,y:20} }
+                        ]],
+                        ['shootTimes',1]
                     ]
                 }).entity;
                 break;
