@@ -2,26 +2,36 @@ import {Mouse} from './mouse.js';
 import { CreateEntity } from "./createEntity.js";
 import {Engine as EntityEngine,Simulator as EntitySimulator} from 'jecs';
 import {Engine as MatterEngine,Runner as MatterRunner,Events, Body} from 'matter-js'
+import { Systems } from './systems.js';
 //import { Builder, shapes } from "shape-builder";
 //const { Point, Rectangle } = shapes;
 
 export class Game{
-    constructor(options){
-        const {
-            loadedImages = null,
-        } = options;
-
+    constructor(resources){
+        this.resources = resources;
+        this.images = resources.imagesData;
+        this.entitiesData = resources.entitiesData;
+        
         this.canvas = document.querySelector('.game-container');
         this.ctx = this.canvas.getContext('2d');
         this.ctx.imageSmoothingEnabled = false;
-        this.images = loadedImages;
         this.lastTime = 0;
         this.deltaTime = null;
         this.registeredObj = [];
         this.ecs = {
             entityEngine: null,
             entitySim: null,
+            systems: new Systems(
+                {
+                    game:this
+                }
+            ),
+            customSystems: null,
+            ecsSystems: null
         };
+        this.ecs.customSystems = this.ecs.systems.customSystems;
+        this.ecs.ecsSystems = this.ecs.systems.ecsSystems;
+
         this.matter = {
             matterEngine:null,
             matterRunner:null,
@@ -56,7 +66,6 @@ export class Game{
         
         this.systemsJECS();
 
-        //this.debugMatterBodies();
     };
     update(timeStamp){
         const deltaTime = (timeStamp - this.lastTime)/1000;
@@ -66,8 +75,8 @@ export class Game{
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         //this.shapeBuilder.builder.removeShapes();
 
-        this.drawSprites()
-        this.debugMatterBodies();
+        this.ecs.customSystems.drawSprites()
+        this.ecs.customSystems.debugMatterBodies();
         //this.shapeBuilder.builder.draw(this.ctx);
 
         this.registeredObj.forEach((obj)=>{
@@ -118,45 +127,13 @@ export class Game{
         });
     }
     systemsJECS(){
-        this.changeBodyRotationSystem();
-        this.movePlayerSystem();
-        this.moveEntitiesSystem();
-        this.shootBulletsSystem();
+        const systems = this.ecs.ecsSystems;
+        systems.changeBodyRotationSystem();
+        systems.movePlayerSystem();
+        systems.moveEntitiesSystem();
+        systems.shootBulletsSystem();
     };
-    drawSprites() {
-        const req = ['imgKey','pos','width','height','rotation','centerImage'];
-        const entities = Object.values(this.ecs.entityEngine.entities);
-    
-        for (let e of entities) {
-          // only draw if it has every required component
-          if (!req.every(c => e.hasComponent(c))) continue;
-    
-          // grab them out
-          const imgKey      = e.getComponent('imgKey');
-          const pos         = e.getComponent('pos');
-          const width       = e.getComponent('width');
-          const height      = e.getComponent('height');
-          const rotation    = e.getComponent('rotation');
-          const centerImage = e.getComponent('centerImage');
-          //console.log(`rotation passed in drawSprites: ${rotation}`);
-          // lookup your preloaded Image object
-          const img = this.images[imgKey];
-          if (!img) {
-            console.warn(`No image for key "${imgKey}"`);
-            continue;
-          }
-    
-          // call your helper
-          this.drawImage({
-            img,
-            pos,
-            width,
-            height,
-            rotation,
-            centerImage
-          });
-        }
-      }
+  
     initializeMatter(){
 
         this.matter.matterEngine = MatterEngine.create();
@@ -204,189 +181,8 @@ export class Game{
         this.shapeBuilder.builder = builder;
     }
     */
-    debugMatterBodies(){
-        if (this.matter.debugBodies) {
-            //const builder = this.shapeBuilder.builder;
-            //builder.clear();
+   
     
-            const req = ['pos', 'matterBody', 'matterBodyType'];
-            const entities = Object.values(this.ecs.entityEngine.entities);
-    
-            for (let e of entities) {
-                if (!req.every(c => e.hasComponent(c))) continue;
-    
-                const pos = e.getComponent('pos');
-                const body = e.getComponent('matterBody');
-                const bodyType = e.getComponent('matterBodyType');
-                const offset = e.getComponent('matterBodyOffset') || { x: 0, y: 0 };
-                const color = e.getComponent('matterBodyColor') || 'white';
-                //console.log(body.position);
-                //console.log(body.position.x + offset.x)
-                switch (bodyType) {
-                    case 'rectangle':
-                        const bodyWidth = e.getComponent('matterBodyWidth');
-                        const bodyHeight = e.getComponent('matterBodyHeight');
-                        
-                        // --- Save the current context ---
-                        this.ctx.save();
-    
-                        // --- Translate to center of the rectangle ---
-                        this.ctx.translate(body.position.x + offset.x, body.position.y + offset.y);
-                        
-                        // --- Rotate the context ---
-                        this.ctx.rotate(body.angle);
-    
-                        // --- Draw the rectangle manually ---
-                        this.ctx.fillStyle = color;
-                        this.ctx.fillRect(-bodyWidth/2, -bodyHeight/2, bodyWidth, bodyHeight);
-    
-                        // --- Restore context to original (important) ---
-                        this.ctx.restore();
-                        break;
-                    default:
-                        console.error("An unidentified shape type entered debugMatterBodies!");
-                        break;    
-                }
-            }
-        }
-        
-    }
-    changeBodyRotationSystem(){
-        const engine = this.ecs.entityEngine;
-        engine.system('rotationMatterBodies',['rotation','matterBody','matterBodyType'],(entity,{
-            rotation,matterBody,matterBodyType
-        })=>{
-            const typesToRotate = ['rectangle'];
-            if(!typesToRotate.includes(matterBodyType))return;
-            const rotationInRadians = rotation * (Math.PI / 180);
-            Body.setAngle(matterBody,rotationInRadians);
-            //console.log(`entity rotation ${rotation}`);
-        });
-    }
-    addSceneRotation(){
-        const req = ['rotation', 'sceneOrientedRotation','baseRotation'];
-        const entities = Object.values(this.ecs.entityEngine.entities);
-    
-         for (let e of entities) {
-            if (!req.every(c => e.hasComponent(c))) continue;
-
-            let baseRotation = e.getComponent('baseRotation');
-            let rotation = 0;
-            rotation = baseRotation + this.sceneRotation;
-            
-            e.setComponent('rotation',rotation);
-        }
-    }
-    setBaseRotation(){
-        const req = ['rotation', 'sceneOrientedRotation','baseRotation'];
-        const entities = Object.values(this.ecs.entityEngine.entities);
-        for (let e of entities) {
-            if (!req.every(c => e.hasComponent(c))) continue;
-            const rotation = e.getComponent('rotation');
-            let baseRotation = 0;
-            baseRotation = rotation - this.sceneRotation;
-            
-            e.setComponent('baseRotation',baseRotation)// set base rotation to rotation
-        }
-    }
-    movePlayerSystem(){
-        const engine = this.ecs.entityEngine;
-        engine.system('movePlayer',['player','speed','moveVector','pos','matterBody'],
-            (entity,{player,speed,moveVector,pos,matterBody})=>{
-                const mouseX = this.mouse.pos.x;
-                const mouseY = this.mouse.pos.y;
-                const playerX = pos.x;
-                const playerY = pos.y;
-    
-                let moveVectorX = mouseX - playerX;
-                let moveVectorY = mouseY - playerY;
-                const distance = Math.hypot(moveVectorX, moveVectorY);
-    
-                // Avoid division by zero
-                if (distance > 50) {
-                    const maxSpeed = speed;
-                    const speedFactor = Math.min(distance / 20, 1); // Smoothly slow near target
-                    const targetSpeed = maxSpeed * speedFactor;
-    
-                    moveVectorX /= distance;
-                    moveVectorY /= distance;
-    
-                    Body.setVelocity(matterBody, {
-                        x: moveVectorX * targetSpeed,
-                        y: moveVectorY * targetSpeed,
-                    });
-                } else {
-                    Body.setVelocity(matterBody, { x: 0, y: 0 });
-                }
-    
-                pos.x = matterBody.position.x;
-                pos.y = matterBody.position.y;
-                entity.setComponent('moveVector',{x:moveVectorX,y:moveVectorY});
-                entity.setComponent('pos',pos);
-            }
-        );
-    }
-    moveEntitiesSystem(){//used to move all entities 
-        const engine = this.ecs.entityEngine;
-        engine.system('moveObjects',['pos','rotation','matterBody','moveVector','speed','notPlayer'],
-            (entity,{pos,rotation,matterBody,moveVector,speed,notPlayer})=>{
-                const rad = rotation * (Math.PI / 180)
-                //console.log(`${entity.name} + ${pos.x}`)
-                moveVector = {
-                    x: Math.sin(rad),
-                    y:-Math.cos(rad)
-                };
-
-                const EPSILON = 0.0001;
-                if (Math.abs(moveVector.x) < EPSILON) moveVector.x = 0;
-                if (Math.abs(moveVector.y) < EPSILON) moveVector.y = 0;
-
-                //console.log(moveVector);
-
-                Body.setVelocity(matterBody,{
-                    x: moveVector.x * speed,
-                    y: moveVector.y * speed
-                });
-
-                pos.x = matterBody.position.x;
-                pos.y = matterBody.position.y;
-
-                entity.setComponent('moveVector',moveVector);
-                entity.setComponent('pos',pos);
-            }
-        )
-    };
-    shootBulletsSystem(){
-        const engine = this.ecs.entityEngine;
-        engine.system('shootBullets',['pos','shootBullet','rotation','spawnPos','shootTimes'],
-            (entity,{pos,shootBullet,rotation,spawnPos,shootTimes})=>{
-                if(shootBullet.counter > 0){
-                    shootBullet.counter -= this.deltaTime;
-                    entity.setComponent('shootBullet',shootBullet);
-                    return;
-                }
-                if(!shootBullet.active)return;
-                spawnPos.forEach((point)=>{
-                    if(shootTimes <= 0) return;
-
-                    point.pos.x = pos.x + point.offset.x;
-                    point.pos.y = pos.y + point.offset.y;
-                    
-                    this.spawnEntity({
-                        key:shootBullet.spawnKey,
-                        pos:{x:point.pos.x,y:point.pos.y},
-                        rotation:rotation
-                    });
-                    shootTimes--;
-                });
-               
-                
-                shootBullet.counter = shootBullet.delayInSeconds;
-                
-                entity.setComponent('shootBullet',shootBullet);
-            }
-        )
-    }
     spawnEntity(options){
         const{
             key='',

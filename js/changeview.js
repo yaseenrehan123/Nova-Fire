@@ -30,12 +30,12 @@ export class ChangeView{ // changes player and enemy directions for different vi
         if (remaining <= Math.abs(rotationStep)) {
             this.rotation = this.targetRotation;
             this.rotating = false; // Done rotating
-            this.gameSettings.setBaseRotation();
+            this.gameSettings.ecs.customSystems.setBaseRotation();
         } else {
             this.rotation += rotationStep;
         }
         this.gameSettings.sceneRotation = this.rotation;
 
-        this.gameSettings.addSceneRotation();
+        this.gameSettings.ecs.customSystems.addSceneRotation();
     };
 };

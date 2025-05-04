@@ -1,43 +1,65 @@
 export class LoadAssets {
-    constructor() {
-        this.assets = {
-            player: "images/player.png",
-            blueBattery: "images/batteries/blue_battery.png",
-            greenBattery: "images/batteries/green_battery.png",
-            purpleBattery: "images/batteries/purple_battery.png",
-            yellowBattery: "images/batteries/yellow_battery.png",
-            enemy1: "images/enemies/enemy1.png",
-            enemy2: "images/enemies/enemy2.png",
-            enemy3: "images/enemies/enemy3.png",
-            greenBullet: "images/bullets/green_bullet.png",
-            blueBullet:"images/bullets/blue_bullet.png",
-            purpleBullet:"images/bullets/purple_bullet.png"
+    constructor(callback) {
+       this.callback = callback;
 
-
-        };
-        this.loadedImages = {};
-        this.loadedCount = 0;
+       this.loadAll();
     }
 
-    preloadImages(callback) {
-        const total = Object.keys(this.assets).length;
+    fetchData(url){
+        return fetch(url)
+        .then((response)=>{
+            return response.json();
+        })
+        .catch((error)=>{
+            throw new Error(error);
+        })
+    }
+    loadImages(){
+        return new Promise((resolve,reject)=>{
+            this.fetchData('js/data/imagesData.json')
+            .then((data)=>{
+                const keys = Object.keys(data);
+                const length = keys.length;
+                let loadCount = 0;
+                let images = {};
 
-        for (let key in this.assets) {
-            const img = new Image();
-            img.src = this.assets[key];
+                keys.forEach((key)=>{
+                    const img = new Image();
+                    img.src = data[key];
+                    images[key] = img;
 
-            img.onload = () => {
-                this.loadedImages[key] = img;
-                this.loadedCount++;
+                    img.onload = () =>{
+                        loadCount++;
+                        if(loadCount === length){
+                            resolve(images);
+                        }
+                    };
 
-                if (this.loadedCount === total) {
-                    callback(this.loadedImages);
-                }
-            };
+                    img.onerror = () =>{
+                        reject(new Error(`Image failed to load ${data[key]}`));
+                    }
+                        
+                });
+            })
+            .catch((error)=>{
+                throw new Error(error);
+            })
+        });
+    }
+    loadAll(){
+        const imagesPromise = this.loadImages();
+        const entitiesPromise = this.fetchData('js/data/entitiesData.json');
 
-            img.onerror = (e) => {
-                console.error(`Failed to load image: ${img.src}`);
-            };
-        }
+        Promise.all([imagesPromise,entitiesPromise])
+        .then(([imagesData,entitiesData])=>{
+            const resources = {
+                imagesData: imagesData,
+                entitiesData:entitiesData
+            }
+            this.callback(resources);
+        })
+        .catch((error)=>{
+            throw new Error(error);
+        })
     }
 }
