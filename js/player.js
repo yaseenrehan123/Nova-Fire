@@ -11,7 +11,13 @@ export class Player{
     }
     init(){
         this.playerEntity = this.game.spawnEntity({
-            key:'player'
+            passedKey:'player',
+            componentsToModify:{
+                pos:{
+                    x:this.game.screenCenterPos.x,
+                    y:this.game.screenCenterPos.y
+                }
+            }
         });
         const activeEvents = ['touchstart','touchmove','mousedown']
         const deActiveEvents = ['touchend','mouseup'];

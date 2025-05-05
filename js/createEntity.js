@@ -4,7 +4,7 @@ export class CreateEntity{
         const{
             game = null,
             name = '',
-            components = [],
+            components = {},
         } = options;
         this.game = game;
         this.name = name;
@@ -18,11 +18,11 @@ export class CreateEntity{
     CreateEntity(){
         this.name = this.assignUniqueName();
         const id = this.ecsEngine.entity(this.name);
-
-        for (const [key, value] of this.components) {
+        
+        for (const [key, value] of Object.entries(this.components)) {
             id.setComponent(key, value);
         };
-
+        
         this.createMatterBody(id);
 
         console.log(id);

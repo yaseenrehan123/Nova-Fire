@@ -17,6 +17,7 @@ export class ChangeView{ // changes player and enemy directions for different vi
         // Start after delay
         setTimeout(() => {
             this.rotating = true;
+            this.gameSettings.nextSceneRotation = this.targetRotation;
         }, this.delay);
     };
     update(){//called by gameSettings

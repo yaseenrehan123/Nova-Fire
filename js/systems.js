@@ -69,7 +69,7 @@ class CustomSystems{
                 //builder.clear();
         
                 const req = ['pos', 'matterBody', 'matterBodyType'];
-                const entities = Object.values(this.ecs.entityEngine.entities);
+                const entities = Object.values(this.game.ecs.entityEngine.entities);
         
                 for (let e of entities) {
                     if (!req.every(c => e.hasComponent(c))) continue;
@@ -86,21 +86,22 @@ class CustomSystems{
                             const bodyWidth = e.getComponent('matterBodyWidth');
                             const bodyHeight = e.getComponent('matterBodyHeight');
                             
+                            const ctx = this.game.ctx;
                             // --- Save the current context ---
-                            this.ctx.save();
+                            ctx.save();
         
                             // --- Translate to center of the rectangle ---
-                            this.ctx.translate(body.position.x + offset.x, body.position.y + offset.y);
+                            ctx.translate(body.position.x + offset.x, body.position.y + offset.y);
                             
                             // --- Rotate the context ---
-                            this.ctx.rotate(body.angle);
+                            ctx.rotate(body.angle);
         
                             // --- Draw the rectangle manually ---
-                            this.ctx.fillStyle = color;
-                            this.ctx.fillRect(-bodyWidth/2, -bodyHeight/2, bodyWidth, bodyHeight);
+                            ctx.fillStyle = color;
+                            ctx.fillRect(-bodyWidth/2, -bodyHeight/2, bodyWidth, bodyHeight);
         
                             // --- Restore context to original (important) ---
-                            this.ctx.restore();
+                            ctx.restore();
                             break;
                         default:
                             console.error("An unidentified shape type entered debugMatterBodies!");
@@ -244,6 +245,7 @@ class ECSSystems{
                     entity.setComponent('shootBullet',shootBullet);
                     return;
                 }
+                
                 if(!shootBullet.active)return;
                 spawnPos.forEach((point)=>{
                     if(shootTimes <= 0) return;
@@ -252,9 +254,16 @@ class ECSSystems{
                     point.pos.y = pos.y + point.offset.y;
                     
                     this.game.spawnEntity({
-                        key:shootBullet.spawnKey,
-                        pos:{x:point.pos.x,y:point.pos.y},
-                        rotation:rotation
+                        passedKey:shootBullet.spawnKey,
+                        componentsToModify:{
+                            pos:{
+                                x:point.pos.x,
+                                y:point.pos.y
+                            },
+                            rotation:rotation,
+                            baseRotation:rotation
+                        }
+                        
                     });
                     shootTimes--;
                 });

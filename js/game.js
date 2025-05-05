@@ -52,6 +52,7 @@ export class Game{
         this.height = this.canvas.height;
         this.screenCenterPos = {x:this.width/2,y:this.height/2};
         this.sceneRotation = 0;
+        this.nextSceneRotation = 0;
         this.mouse = new Mouse(this);
        
         this.start();
@@ -185,12 +186,40 @@ export class Game{
     
     spawnEntity(options){
         const{
-            key='',
-            pos=this.screenCenterPos,
-            rotation=0,
+            passedKey= '',
+            componentsToModify = {}
         } = options;
         let id = null;
 
+        const entityDataKeys = Object.keys(this.entitiesData);
+        let reqData = null;
+
+        entityDataKeys.forEach((key)=>{
+            if(key === passedKey){
+                reqData = this.entitiesData[key];
+            }
+        })
+
+        if(!reqData){
+            throw new Error(`Requested data not found in entitiesData: ${passedKey}`);
+        }
+
+        const components = reqData.components;
+        for(const key in componentsToModify){
+            if(components.hasOwnProperty(key)){
+                components[key] = componentsToModify[key];
+            }
+        }
+        console.log("Modified Components:",components);
+
+        id = new CreateEntity({
+            game:this,
+            name:passedKey,
+            components:components
+        }).entity;
+        
+        return id;
+/*
         switch (key){
             case 'player':
                 id = new CreateEntity({
@@ -379,7 +408,7 @@ export class Game{
             case 'enemy':
                 id = new CreateEntity({
                     game:this,
-                    name:'enemy',
+                    name:'enemy1',
                     components:[
                         ['imgKey','enemy1'],
                         ['pos',pos],
@@ -444,7 +473,8 @@ export class Game{
                 }).entity;
                 break;
         }
-        return id;
+                */
+        
     };
     
     
