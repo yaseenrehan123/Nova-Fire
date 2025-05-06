@@ -1,8 +1,8 @@
 import {Mouse} from './mouse.js';
 import { CreateEntity } from "./createEntity.js";
 import {Engine as EntityEngine,Simulator as EntitySimulator} from 'jecs';
-import {Engine as MatterEngine,Runner as MatterRunner,Events, Body} from 'matter-js'
 import { Systems } from './systems.js';
+import { Physics } from './physics.js';
 //import { Builder, shapes } from "shape-builder";
 //const { Point, Rectangle } = shapes;
 
@@ -53,15 +53,15 @@ export class Game{
         this.screenCenterPos = {x:this.width/2,y:this.height/2};
         this.sceneRotation = 0;
         this.nextSceneRotation = 0;
+        this.totalSceneRotation = 0;
+
         this.mouse = new Mouse(this);
-       
+        this.physics = new Physics(this)
         this.start();
         this.update();
     };
     start(){
         this.initializeJECS();
-        this.initializeMatter();
-        //this.initializeShapeBuilder();
 
         this.onResize();
         
@@ -135,55 +135,7 @@ export class Game{
         systems.shootBulletsSystem();
     };
   
-    initializeMatter(){
 
-        this.matter.matterEngine = MatterEngine.create();
-        this.matter.matterRunner = MatterRunner.create();
-    
-        
-        this.matter.matterEngine.world.gravity.scale = 0;
-        
-        MatterRunner.run(this.matter.matterRunner,this.matter.matterEngine);
-        this.collisionDetection();
-       
-    }
-    collisionDetection(){
-       Events.on(this.matter.matterEngine,'collisionStart',(event)=>{
-            for (let pair of event.pairs){
-                const {bodyA,bodyB} = pair;
-                const a = bodyA.label;
-                const b = bodyB.label;
-                if(this.matchCollision(a,b,'playerBullet','enemy')){
-                    // subtract enemy hp
-                    const bullet = bodyA.label === 'playerBullet' ? bodyA.gameObject : bodyB.gameObject;
-                    const enemy = bodyB.label === 'enemy' ? bodyB.gameObject : bodyA.gameObject;
-                    enemy.takeDamage(bullet.damage);
-                    bullet.die();
-                }
-                else if(this.matchCollision(a,b,'player','enemy')){
-                    // subtract player hp and give invincibility frames
-                    // destroy enemy
-                    console.log("Player collided with enemy");
-                }
-                else if(this.matchCollision(a,b,'player','item')){
-                    console.log("Player collided with an item!");
-                }
-            };
-            
-            
-        });
-    };
-    matchCollision(a, b, label1, label2) {
-        return (a === label1 && b === label2) || (a === label2 && b === label1);
-    };
-    /*
-    initializeShapeBuilder(){
-        const builder = new Builder();
-        this.shapeBuilder.builder = builder;
-    }
-    */
-   
-    
     spawnEntity(options){
         const{
             passedKey= '',
@@ -219,264 +171,7 @@ export class Game{
         }).entity;
         
         return id;
-/*
-        switch (key){
-            case 'player':
-                id = new CreateEntity({
-                    game:this,
-                    name:'player',
-                    components:[
-                        ['imgKey','player'],
-                        ['pos',pos],
-                        ['width',100],
-                        ['height',100],
-                        ['rotation',0],
-                        ['centerImage',true],
-                        ['sceneOrientedRotation',true],// a flag to change rotation with scene
-                        ['matterBody',null],// assigned on creation
-                        ['matterBodyType','rectangle'],
-                        ['matterBodyOffset',{x:0,y:-6}],
-                        ['matterBodyWidth',100],
-                        ['matterBodyHeight',70],
-                        ['matterBodyOptions',{
-                            label: 'player',
-                            isSensor: true,
-                            frictionAir: 0.05,
-                            collisionFilter: {
-                                group: 0,
-                                category: this.collisionCategories.playerCategory,
-                                mask: this.collisionCategories.itemCategory | this.collisionCategories.enemyCategory,
-                            }
-                        }],
-                        ['matterBodyColor','white'],
-                        ['baseRotation',0],
-                        ['moveVector',{x:0,y:0}],
-                        ['speed',30],
-                        ['player',true],
-                        ['shootBullet',{
-                            delayInSeconds:1,
-                            counter:0,
-                            active:true,
-                            spawnKey:'greenBullet'
 
-                        }],
-                        ['spawnPos', [
-                            { pos: {x:0,y:0}, offset: {x:0,y:0} },
-                            { pos: {x:0,y:0}, offset: {x:-20,y:-20} },
-                            { pos: {x:0,y:0}, offset: {x:20,y:20} }
-                        ]],
-                        ['shootTimes',1]
-                    ]
-                }).entity;
-                break;
-            case 'blueBattery':
-                id = new CreateEntity({
-                    game:this,
-                    name:'blueBattery',
-                    components:[
-                        ['imgKey','blueBattery'],
-                        ['pos',pos],
-                        ['width',50],
-                        ['height',50],
-                        ['rotation',180],
-                        ['baseRotation',180],
-                        ['centerImage',true],
-                        ['matterBody',null],
-                        ['matterBodyType','rectangle'],
-                        ['matterBodyOffset',{x:0,y:0}],
-                        ['matterBodyWidth',50],
-                        ['matterBodyHeight',50],
-                        ['matterBodyOptions',{
-                            label:'item',
-                            isSensor:true,
-                            collisionFilter:{
-                                group:0,
-                                category:this.collisionCategories.itemCategory,
-                                mask:this.collisionCategories.playerCategory
-                            }
-                        }],
-                        ['speed',2],
-                        ['moveVector',{x:0,y:0}],
-                        ['notPlayer',true],
-                        ['sceneOrientedRotation',true],
-                        
-                    ]
-                }).entity;
-                break;
-            case 'purpleBattery':
-                id = new CreateEntity({
-                    game: this,
-                    name: 'purpleBattery',
-                    components: [
-                        ['imgKey', 'purpleBattery'],
-                        ['pos', pos],
-                        ['width', 50],
-                        ['height', 50],
-                        ['rotation', 180],
-                        ['baseRotation', 180],
-                        ['centerImage', true],
-                        ['matterBody', null],
-                        ['matterBodyType', 'rectangle'],
-                        ['matterBodyOffset', { x: 0, y: 0 }],
-                        ['matterBodyWidth', 50],
-                        ['matterBodyHeight', 50],
-                        ['matterBodyOptions', {
-                            label: 'item',
-                            isSensor: true,
-                            collisionFilter: {
-                                group: 0,
-                                category: this.collisionCategories.itemCategory,
-                                mask: this.collisionCategories.playerCategory
-                            }
-                        }],
-                        ['speed', 2],
-                        ['moveVector', { x: 0, y: 0 }],
-                        ['notPlayer', true],
-                        ['sceneOrientedRotation', true],
-
-                    ]
-                }).entity;
-                break;   
-            case 'yellowBattery':
-                id = new CreateEntity({
-                    game: this,
-                    name: 'yellowBattery',
-                    components: [
-                        ['imgKey', 'yellowBattery'],
-                        ['pos', pos],
-                        ['width', 50],
-                        ['height', 50],
-                        ['rotation', 180],
-                        ['baseRotation', 180],
-                        ['centerImage', true],
-                        ['matterBody', null],
-                        ['matterBodyType', 'rectangle'],
-                        ['matterBodyOffset', { x: 0, y: 0 }],
-                        ['matterBodyWidth', 50],
-                        ['matterBodyHeight', 50],
-                        ['matterBodyOptions', {
-                            label: 'item',
-                            isSensor: true,
-                            collisionFilter: {
-                                group: 0,
-                                category: this.collisionCategories.itemCategory,
-                                mask: this.collisionCategories.playerCategory
-                            }
-                        }],
-                        ['speed', 2],
-                        ['moveVector', { x: 0, y: 0 }],
-                        ['notPlayer', true],
-                        ['sceneOrientedRotation', true],
-
-                    ]
-                }).entity;
-                break;
-            case 'greenBattery':
-                id = new CreateEntity({
-                    game: this,
-                    name: 'greenBattery',
-                    components: [
-                        ['imgKey', 'greenBattery'],
-                        ['pos', pos],
-                        ['width', 50],
-                        ['height', 50],
-                        ['rotation', 180],
-                        ['baseRotation', 180],
-                        ['centerImage', true],
-                        ['matterBody', null],
-                        ['matterBodyType', 'rectangle'],
-                        ['matterBodyOffset', { x: 0, y: 0 }],
-                        ['matterBodyWidth', 50],
-                        ['matterBodyHeight', 50],
-                        ['matterBodyOptions', {
-                            label: 'item',
-                            isSensor: true,
-                            collisionFilter: {
-                                group: 0,
-                                category: this.collisionCategories.itemCategory,
-                                mask: this.collisionCategories.playerCategory
-                            }
-                        }],
-                        ['speed', 2],
-                        ['moveVector', { x: 0, y: 0 }],
-                        ['notPlayer', true],
-                        ['sceneOrientedRotation', true],
-
-                    ]
-                }).entity;
-                break;       
-            case 'enemy':
-                id = new CreateEntity({
-                    game:this,
-                    name:'enemy1',
-                    components:[
-                        ['imgKey','enemy1'],
-                        ['pos',pos],
-                        ['width',100],
-                        ['height',100],
-                        ['rotation',180],
-                        ['baseRotation',180],
-                        ['centerImage',true],
-                        ['matterBody',null],
-                        ['matterBodyType','rectangle'],
-                        ['matterBodyOffset',{x:0,y:0}],
-                        ['matterBodyWidth',100],
-                        ['matterBodyHeight',100],
-                        ['matterBodyOptions',{
-                            label:'enemy',
-                            isSensor:true,
-                            collisionFilter:{
-                                group:0,
-                                category:this.collisionCategories.enemyCategory,
-                                mask:this.collisionCategories.playerCategory
-                            }
-                        }],
-                        ['speed',2],
-                        ['moveVector',{x:0,y:0}],
-                        ['notPlayer',true],
-                        ['sceneOrientedRotation',true],
-                        
-                    ]
-                }).entity;
-                break;
-            case 'greenBullet':
-                id = new CreateEntity({
-                    game:this,
-                    name:'greenBullet',
-                    components:[
-                        ['imgKey','greenBullet'],
-                        ['pos',pos],
-                        ['width',100],
-                        ['height',100],
-                        ['rotation',rotation],
-                        ['baseRotation',rotation],
-                        ['centerImage',true],
-                        ['matterBody',null],
-                        ['matterBodyType','rectangle'],
-                        ['matterBodyOffset',{x:0,y:0}],
-                        ['matterBodyWidth',100],
-                        ['matterBodyHeight',100],
-                        ['matterBodyOptions',{
-                            label:'playerBullet',
-                            isSensor:true,
-                            collisionFilter:{
-                                group:0,
-                                category:this.collisionCategories.playerBulletCategory,
-                                mask:this.collisionCategories.enemyCategory
-                            }
-                        }],
-                        ['speed',2],
-                        ['moveVector',{x:0,y:0}],
-                        ['notPlayer',true],
-                        ['sceneOrientedRotation',true],
-                    ]
-                }).entity;
-                break;
-        }
-                */
-        
     };
-    
-    
-    
+     
 }

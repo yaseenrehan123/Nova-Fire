@@ -250,8 +250,13 @@ class ECSSystems{
                 spawnPos.forEach((point)=>{
                     if(shootTimes <= 0) return;
 
-                    point.pos.x = pos.x + point.offset.x;
-                    point.pos.y = pos.y + point.offset.y;
+                    const angle = rotation * Math.PI / 180;
+
+                    const rotatedOffsetX = point.offset.x * Math.cos(angle) - point.offset.y * Math.sin(angle);
+                    const rotatedOffsetY = point.offset.x * Math.sin(angle) + point.offset.y * Math.cos(angle);
+
+                    point.pos.x = pos.x + rotatedOffsetX;
+                    point.pos.y = pos.y + rotatedOffsetY;
                     
                     this.game.spawnEntity({
                         passedKey:shootBullet.spawnKey,

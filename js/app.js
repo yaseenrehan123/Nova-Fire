@@ -14,14 +14,18 @@ function start(resources){
         game:game
     }
     );
-    setTimeout(() => {
+    /*
+    setInterval(() => {
         const yellowBattery = game.spawnEntity({
             passedKey:'yellowBattery',
             componentsToModify:{
                 pos:{x:300,y:400},
+                rotation: 180 + game.totalSceneRotation,
+                baseRotation:180
             }
            })
-    }, 5000);
+    }, 2000);
+    */
     
     new ChangeView({
         newRotation:90,
