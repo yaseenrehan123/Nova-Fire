@@ -65,6 +65,7 @@ export class CreateEntity{
         }
         console.log("Body is", body);
         if (body) {
+            body.gameObject = entity;
             entity.setComponent('matterBody', body); // 👈 update the matterBody component
             World.add(this.matterEngine.world, body); // 👈 don't forget to add it to Matter.js world
             

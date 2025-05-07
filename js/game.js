@@ -37,7 +37,7 @@ export class Game{
             matterRunner:null,
             debugBodies:true
         };
-        /*
+        /*  
         this.shapeBuilder ={
             builder:null
         }
@@ -78,6 +78,8 @@ export class Game{
 
         this.ecs.customSystems.drawSprites()
         this.ecs.customSystems.debugMatterBodies();
+        this.ecs.customSystems.traceMatterBodies();
+        
         //this.shapeBuilder.builder.draw(this.ctx);
 
         this.registeredObj.forEach((obj)=>{
@@ -180,4 +182,20 @@ export class Game{
             y: offset.x * Math.sin(rad) + offset.y * Math.cos(rad)
         };
     }
+    deepMerge(target, source) {
+        for (const key in source) {
+            if (
+                typeof source[key] === 'object' &&
+                source[key] !== null &&
+                !Array.isArray(source[key])
+            ) {
+                if (!target[key]) target[key] = {};
+                deepMerge(target[key], source[key]);
+            } else {
+                target[key] = source[key];
+            }
+        }
+        return target;
+    }
+    
 }

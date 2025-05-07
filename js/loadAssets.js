@@ -59,7 +59,8 @@ export class LoadAssets {
             this.callback(resources);
         })
         .catch((error)=>{
-            throw new Error(error);
+            console.error("Asset loading error:", error);
+            throw error; // preserves original stack trace
         })
     }
 }

@@ -14,21 +14,81 @@ function start(resources){
         game:game
     }
     );
-    /*
-    setInterval(() => {
-        const yellowBattery = game.spawnEntity({
-            passedKey:'yellowBattery',
-            componentsToModify:{
-                pos:{x:300,y:400},
-                rotation: 180 + game.totalSceneRotation,
-                baseRotation:180
+    const yellowBattery = game.spawnEntity({
+        passedKey:'yellowBattery',
+        componentsToModify:{
+            pos:{x:300,y:400},
+            rotation: 180 + game.totalSceneRotation,
+            baseRotation:180,
+            matterBodyOptions:{
+                label: "item",
+                isSensor: false,
+                collisionFilter:{
+                    group:0,
+                    category:game.collisionCategories.itemCategory,
+                    mask: game.collisionCategories.playerCategory
+                }
+                    
             }
-           })
-    }, 2000);
-    */
-    
+        }
+       })
+    const purpleBattery = game.spawnEntity({
+        passedKey: 'purpleBattery',
+        componentsToModify:{
+            pos:{x:400,y:400},
+            rotation: 180 + game.totalSceneRotation,
+            baseRotation:180,
+            matterBodyOptions:{
+                label: "item",
+                isSensor: false,
+                collisionFilter:{
+                    group:0,
+                    category:game.collisionCategories.itemCategory,
+                    mask: game.collisionCategories.playerCategory
+                }
+                    
+            }
+        }
+        
+    })
+    const greenBattery = game.spawnEntity({
+        passedKey: 'greenBattery',
+        componentsToModify:{
+            pos:{x:500,y:400},
+            rotation: 180 + game.totalSceneRotation,
+            baseRotation:180,
+            matterBodyOptions:{
+                label: "item",
+                isSensor: false,
+                collisionFilter:{
+                    group:0,
+                    category:game.collisionCategories.itemCategory,
+                    mask: game.collisionCategories.playerCategory
+                }
+                    
+            }
+        }
+    })
+    const blueBattery = game.spawnEntity({
+        passedKey: 'blueBattery',
+        componentsToModify:{
+            pos:{x:600,y:400},
+            rotation: 180 + game.totalSceneRotation,
+            baseRotation:180,
+            matterBodyOptions:{
+                label: "item",
+                isSensor: false,
+                collisionFilter:{
+                    group:0,
+                    category:game.collisionCategories.itemCategory,
+                    mask: game.collisionCategories.playerCategory
+                }
+                    
+            }
+        }
+    })
     new ChangeView({
-        newRotation:90,
+        newRotation:0,
         game:game
     });
     

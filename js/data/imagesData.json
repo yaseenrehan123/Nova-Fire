@@ -9,5 +9,6 @@
     "enemy3": "images/enemies/enemy3.png",
     "greenBullet": "images/bullets/green_bullet.png",
     "blueBullet":"images/bullets/blue_bullet.png",
-    "purpleBullet":"images/bullets/purple_bullet.png"
+    "purpleBullet":"images/bullets/purple_bullet.png",
+    "yellowBullet":"images/bullets/yellow_bullet.png"
 }

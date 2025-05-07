@@ -16,9 +16,19 @@ export class Player{
                 pos:{
                     x:this.game.screenCenterPos.x,
                     y:this.game.screenCenterPos.y
+                },
+                matterBodyOptions:{
+                    label: "player",
+                    isSensor: false,
+                    collisionFilter:{
+                        group:0,
+                        category:this.game.collisionCategories.playerCategory,
+                        mask: [this.game.collisionCategories.itemCategory,this.game.collisionCategories.enemyCategory]
+                    }
                 }
             }
         });
+        console.log("Player",this.playerEntity);
         const activeEvents = ['touchstart','touchmove','mousedown']
         const deActiveEvents = ['touchend','mouseup'];
         

@@ -166,6 +166,27 @@ class CustomSystems{
 
                
     }
+    traceMatterBodies(){// draws a line from center of screen to all body positions
+        if(!this.game.matter.debugBodies) return
+        const req = ['matterBody'];
+        const entities = Object.values(this.game.ecs.entityEngine.entities);
+
+        const ctx = this.game.ctx;
+        const color = 'red';
+
+        for (let e of entities) {
+            // only draw if it has every required component
+            if (!req.every(c => e.hasComponent(c))) continue;
+
+            const matterBody = e.getComponent('matterBody');
+
+            ctx.strokeStyle = color;
+            ctx.beginPath();
+            ctx.moveTo(this.game.screenCenterPos.x,this.game.screenCenterPos.y);
+            ctx.lineTo(matterBody.position.x,matterBody.position.y);
+            ctx.stroke();
+        }
+    }
 }
 class ECSSystems{
     constructor(options){
@@ -271,9 +292,11 @@ class ECSSystems{
 
 
                     const rotated = this.game.rotateOffset(point.offset, rotation);
-
+                    //console.log("Point offset",point.offset)
                     point.pos.x = pos.x + rotated.x;
                     point.pos.y = pos.y + rotated.y;
+                    
+                    //console.log(point.pos)
 
                     this.game.spawnEntity({
                         passedKey:shootBullet.spawnKey,

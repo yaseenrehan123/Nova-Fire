@@ -23,10 +23,12 @@ export class Physics{
     }
     collisionDetection(){
        Events.on(this.game.matter.matterEngine,'collisionStart',(event)=>{
+        console.log("COLLISION START", event.pairs.length);
             for (let pair of event.pairs){
                 const {bodyA,bodyB} = pair;
                 const a = bodyA.label;
                 const b = bodyB.label;
+                console.log(a,b);
                 if(this.matchCollision(a,b,'playerBullet','enemy')){
                     // subtract enemy hp
                     const bullet = bodyA.label === 'playerBullet' ? bodyA.gameObject : bodyB.gameObject;
