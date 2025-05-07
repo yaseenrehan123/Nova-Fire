@@ -35,7 +35,7 @@ export class Game{
         this.matter = {
             matterEngine:null,
             matterRunner:null,
-            debugBodies:false
+            debugBodies:true
         };
         /*
         this.shapeBuilder ={
@@ -173,5 +173,11 @@ export class Game{
         return id;
 
     };
-     
+    rotateOffset(offset, angleDegrees) {
+        const rad = angleDegrees * Math.PI / 180;
+        return {
+            x: offset.x * Math.cos(rad) - offset.y * Math.sin(rad),
+            y: offset.x * Math.sin(rad) + offset.y * Math.cos(rad)
+        };
+    }
 }

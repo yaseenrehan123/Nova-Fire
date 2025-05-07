@@ -68,30 +68,34 @@ class CustomSystems{
                 //const builder = this.shapeBuilder.builder;
                 //builder.clear();
         
-                const req = ['pos', 'matterBody', 'matterBodyType'];
+                const req = ['pos', 'matterBody', 'matterBodyType','rotation'];
                 const entities = Object.values(this.game.ecs.entityEngine.entities);
         
                 for (let e of entities) {
                     if (!req.every(c => e.hasComponent(c))) continue;
         
-                    const pos = e.getComponent('pos');
+                    //const pos = e.getComponent('pos');
                     const body = e.getComponent('matterBody');
                     const bodyType = e.getComponent('matterBodyType');
                     const offset = e.getComponent('matterBodyOffset') || { x: 0, y: 0 };
                     const color = e.getComponent('matterBodyColor') || 'white';
+                    const rotation = e.getComponent('rotation');
                     //console.log(body.position);
                     //console.log(body.position.x + offset.x)
+
+                    const ctx = this.game.ctx;
+
                     switch (bodyType) {
                         case 'rectangle':
                             const bodyWidth = e.getComponent('matterBodyWidth');
                             const bodyHeight = e.getComponent('matterBodyHeight');
                             
-                            const ctx = this.game.ctx;
                             // --- Save the current context ---
                             ctx.save();
         
                             // --- Translate to center of the rectangle ---
-                            ctx.translate(body.position.x + offset.x, body.position.y + offset.y);
+                            const rotatedOffset = this.game.rotateOffset(offset,rotation)
+                            ctx.translate(body.position.x + rotatedOffset.x, body.position.y + rotatedOffset.y);
                             
                             // --- Rotate the context ---
                             ctx.rotate(body.angle);
@@ -103,6 +107,21 @@ class CustomSystems{
                             // --- Restore context to original (important) ---
                             ctx.restore();
                             break;
+                        
+                        case 'circle':
+                            const radius = e.getComponent('matterBodyRadius');    
+
+                            ctx.save();
+                            ctx.translate(body.position.x + offset.x, body.position.y + offset.y);
+                            ctx.beginPath();
+                            ctx.arc(0, 0, radius, 0, Math.PI * 2);
+                            ctx.fillStyle = color;
+                            ctx.fill();
+                        
+                            ctx.restore();
+
+                            break;
+
                         default:
                             console.error("An unidentified shape type entered debugMatterBodies!");
                             break;    
@@ -250,14 +269,12 @@ class ECSSystems{
                 spawnPos.forEach((point)=>{
                     if(shootTimes <= 0) return;
 
-                    const angle = rotation * Math.PI / 180;
 
-                    const rotatedOffsetX = point.offset.x * Math.cos(angle) - point.offset.y * Math.sin(angle);
-                    const rotatedOffsetY = point.offset.x * Math.sin(angle) + point.offset.y * Math.cos(angle);
+                    const rotated = this.game.rotateOffset(point.offset, rotation);
 
-                    point.pos.x = pos.x + rotatedOffsetX;
-                    point.pos.y = pos.y + rotatedOffsetY;
-                    
+                    point.pos.x = pos.x + rotated.x;
+                    point.pos.y = pos.y + rotated.y;
+
                     this.game.spawnEntity({
                         passedKey:shootBullet.spawnKey,
                         componentsToModify:{

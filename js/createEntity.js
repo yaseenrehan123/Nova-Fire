@@ -54,7 +54,14 @@ export class CreateEntity{
                 });
                 break;
             
-            // In future: add more like circle, polygon etc
+            case 'circle':
+                const radius = entity.getComponent('matterBodyRadius');
+                body = this.returnCircleBody({
+                    pos:pos,
+                    offset:matterBodyOffset,
+                    radius:radius,
+                    advancedOptions:matterBodyOptions
+                })
         }
         console.log("Body is", body);
         if (body) {
@@ -94,6 +101,34 @@ export class CreateEntity{
         );
         Body.setAngle(body, rotation);
 
+        return body;
+    };
+    returnCircleBody(options){
+        const {
+            pos = {x:0,y:0},
+            offset = {x:0,y:0},
+            radius = 16,
+            advancedOptions = {}
+        } = options
+
+        const body = Bodies.circle(
+            pos.x + offset.x,
+            pos.y + offset.y,
+            radius,
+            {
+                label: advancedOptions.label || '',
+                frictionAir: advancedOptions.frictionAir || 0,
+                isSensor: advancedOptions.isSensor ?? true,
+                inertia: advancedOptions.inertia ?? Infinity,
+                collisionFilter: {
+                    group: advancedOptions.collisionFilter?.group ?? 0,
+                    category: advancedOptions.collisionFilter?.category ?? 0x0001,
+                    mask: advancedOptions.collisionFilter?.mask ?? 0xFFFF
+                },
+                ...advancedOptions
+            }
+           
+        )
         return body;
     }
     assignUniqueName(){
