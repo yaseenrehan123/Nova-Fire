@@ -1,6 +1,7 @@
 import {Mouse} from './mouse.js';
 import { CreateEntity } from "./createEntity.js";
 import {Engine as EntityEngine,Simulator as EntitySimulator} from 'jecs';
+import { World } from 'matter-js';
 import { Systems } from './systems.js';
 import { Physics } from './physics.js';
 //import { Builder, shapes } from "shape-builder";
@@ -46,7 +47,8 @@ export class Game{
             playerCategory:0x0001,
             itemCategory:0x0002,
             playerBulletCategory:0x0004,
-            enemyCategory:0x0008
+            enemyCategory:0x0008,
+            enemyBulletCategory:0x0016
         };
         this.width = this.canvas.width;
         this.height = this.canvas.height;
@@ -79,7 +81,9 @@ export class Game{
         this.ecs.customSystems.drawSprites()
         this.ecs.customSystems.debugMatterBodies();
         this.ecs.customSystems.traceMatterBodies();
-        
+        this.ecs.customSystems.DebugShootingDirection();
+        //this.ecs.customSystems.trackPlayerRotation();
+
         //this.shapeBuilder.builder.draw(this.ctx);
 
         this.registeredObj.forEach((obj)=>{
@@ -164,7 +168,7 @@ export class Game{
                 components[key] = componentsToModify[key];
             }
         }
-        console.log("Modified Components:",components);
+        //console.log("Modified Components:",components);
 
         id = new CreateEntity({
             game:this,
@@ -182,20 +186,56 @@ export class Game{
             y: offset.x * Math.sin(rad) + offset.y * Math.cos(rad)
         };
     }
-    deepMerge(target, source) {
-        for (const key in source) {
-            if (
-                typeof source[key] === 'object' &&
-                source[key] !== null &&
-                !Array.isArray(source[key])
-            ) {
-                if (!target[key]) target[key] = {};
-                deepMerge(target[key], source[key]);
-            } else {
-                target[key] = source[key];
-            }
-        }
-        return target;
+    changeShootBullet(options){
+        const {
+            entity = null,
+            changeSpawnKeyComponent = null,
+
+        } = options;
+        
+        const shootComponent = entity.getComponent('shootBullet');
+        shootComponent.spawnKey = changeSpawnKeyComponent;
+        entity.setComponent('shootBullet',shootComponent);
     }
-    
+    changeShootDelay(options){
+        const {
+            entity = null,
+            changeDelayComponent = null,
+        } = options
+        
+        const shootComponent = entity.getComponent('shootBullet');
+        shootComponent.delayInSeconds = changeDelayComponent;
+        entity.setComponent('shootBullet',shootComponent);
+    }
+    changeShootTimes(options){
+        const {
+            entity = null,
+            changeShootTimesComponent = null,
+        } = options
+        //console.log("Change ShootTimes Function Called");
+
+        const shootTimesComponent = entity.getComponent('shootTimes');
+        const value = changeShootTimesComponent.value;
+        //console.log("Value",value);
+        const effect = changeShootTimesComponent.changeEffect;
+        //console.log("ShootTimesComponentBeforeChange:",shootTimesComponent)
+        let newShootTimes = shootTimesComponent;
+
+        if(effect === 'increase'){
+            newShootTimes += value;
+        }
+        else if(effect === 'decrease'){
+            newShootTimes -= value;
+        }
+        //console.log(newShootTimes);
+        entity.setComponent('shootTimes',newShootTimes);
+    }
+    removeEntity(entity){
+        const matterBody = entity.getComponent('matterBody');
+        if(matterBody){
+            World.remove(this.matter.matterEngine.world,matterBody);
+        }
+        const name = entity.name;
+        this.ecs.entityEngine.removeEntity(name);
+    }
 }

@@ -19,11 +19,11 @@ export class Player{
                 },
                 matterBodyOptions:{
                     label: "player",
-                    isSensor: false,
+                    isSensor: true,
                     collisionFilter:{
                         group:0,
                         category:this.game.collisionCategories.playerCategory,
-                        mask: [this.game.collisionCategories.itemCategory,this.game.collisionCategories.enemyCategory]
+                        mask:this.game.collisionCategories.itemCategory | this.game.collisionCategories.enemyCategory
                     }
                 }
             }

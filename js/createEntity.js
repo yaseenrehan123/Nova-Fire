@@ -25,7 +25,7 @@ export class CreateEntity{
         
         this.createMatterBody(id);
 
-        console.log(id);
+        //console.log(id);
 
         return id;
 

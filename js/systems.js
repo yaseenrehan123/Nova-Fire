@@ -40,14 +40,13 @@ class CustomSystems{
     addSceneRotation(){
         const req = ['rotation', 'sceneOrientedRotation','baseRotation'];
         const entities = Object.values(this.game.ecs.entityEngine.entities);
-    
+        
          for (let e of entities) {
             if (!req.every(c => e.hasComponent(c))) continue;
 
             let baseRotation = e.getComponent('baseRotation');
             let rotation = 0;
             rotation = baseRotation + this.game.sceneRotation;
-            
             e.setComponent('rotation',rotation);
         }
     }
@@ -133,7 +132,7 @@ class CustomSystems{
     drawSprites() {
         const req = ['imgKey','pos','width','height','rotation','centerImage'];
         const entities = Object.values(this.game.ecs.entityEngine.entities);
-    
+        
         for (let e of entities) {
           // only draw if it has every required component
           if (!req.every(c => e.hasComponent(c))) continue;
@@ -185,6 +184,50 @@ class CustomSystems{
             ctx.moveTo(this.game.screenCenterPos.x,this.game.screenCenterPos.y);
             ctx.lineTo(matterBody.position.x,matterBody.position.y);
             ctx.stroke();
+        }
+    };
+    DebugShootingDirection(){
+        const req = ['rotation','pos','spawnPos','shootBullet'];
+        const entities = Object.values(this.game.ecs.entityEngine.entities);
+    
+        for (let e of entities) {
+
+            if (!req.every(c => e.hasComponent(c))) continue;
+
+            const rotation = e.getComponent('rotation');
+            const pos = e.getComponent('pos');
+            const spawnPos = e.getComponent('spawnPos');
+
+            //console.log("Spawn pos form debugShootingDirection",spawnPos);
+
+            const length = 300;
+            const ctx = this.game.ctx;
+            ctx.strokeStyle = 'red';
+            
+            spawnPos.forEach((point)=>{
+                const angleInRads = (rotation -90) * (Math.PI/180);
+                const endX = point.pos.x + Math.cos(angleInRads) * length;
+                const endY = point.pos.y + Math.sin(angleInRads) * length;
+
+                ctx.beginPath();
+                ctx.moveTo(point.pos.x,point.pos.y);
+                ctx.lineTo(endX,endY);
+                ctx.stroke();
+
+            });
+
+        }
+    }
+    trackPlayerRotation(){
+        const req = ['player','rotation'];
+        const entities = Object.values(this.game.ecs.entityEngine.entities);
+    
+        for (let e of entities) {
+
+            if (!req.every(c => e.hasComponent(c))) continue;
+
+            const rotation = e.getComponent('rotation');
+            console.log("Player Rotation:",rotation)
         }
     }
 }
@@ -276,48 +319,86 @@ class ECSSystems{
             }
         )
     };
-    shootBulletsSystem(){
+    shootBulletsSystem() {
         const engine = this.game.ecs.entityEngine;
-        engine.system('shootBullets',['pos','shootBullet','rotation','spawnPos','shootTimes'],
-            (entity,{pos,shootBullet,rotation,spawnPos,shootTimes})=>{
-                if(shootBullet.counter > 0){
-                    shootBullet.counter -= this.game.deltaTime;
-                    entity.setComponent('shootBullet',shootBullet);
-                    return;
-                }
+        engine.system('shootBullets', ['pos', 'shootBullet', 'rotation', 'spawnPos', 'shootTimes',],
+            (entity, { pos, shootBullet, rotation, spawnPos, shootTimes }) => {
                 
-                if(!shootBullet.active)return;
-                spawnPos.forEach((point)=>{
-                    if(shootTimes <= 0) return;
+                //console.log("Rotation from shootBullets System:",rotation);
 
-
+                // ✅ Always update spawn positions
+                spawnPos.forEach((point) => {
                     const rotated = this.game.rotateOffset(point.offset, rotation);
-                    //console.log("Point offset",point.offset)
                     point.pos.x = pos.x + rotated.x;
                     point.pos.y = pos.y + rotated.y;
-                    
-                    //console.log(point.pos)
-
-                    this.game.spawnEntity({
-                        passedKey:shootBullet.spawnKey,
-                        componentsToModify:{
-                            pos:{
-                                x:point.pos.x,
-                                y:point.pos.y
-                            },
-                            rotation:rotation,
-                            baseRotation:rotation
-                        }
-                        
-                    });
-                    shootTimes--;
                 });
-               
-                
+    
+                // ❌ Don't spawn bullets if not active
+                if (!shootBullet.active) return;
+    
+                // ✅ Countdown timer
+                if (shootBullet.counter > 0) {
+                    shootBullet.counter -= this.game.deltaTime;
+                    entity.setComponent('shootBullet', shootBullet);
+                    return;
+                }
+
+                const playerComp = entity.hasComponent('player');
+                let shotByPlayer = false;
+                let matterBodyOptions = {};
+
+                if(playerComp){// exists
+                    shotByPlayer = true
+                }
+
+                if(shotByPlayer){
+                    matterBodyOptions = {
+                        label: "playerBullet",
+                        isSensor: true,
+                        collisionFilter:{
+                            group:-1,
+                            category:this.game.collisionCategories.playerBulletCategory,
+                            mask:this.game.collisionCategories.enemyCategory
+                        }
+                    };
+                }
+                else{
+                     matterBodyOptions = {
+                        label: "enemyBullet",
+                        isSensor: true,
+                        collisionFilter:{
+                            group:-1,
+                            category:this.game.collisionCategories.enemyBulletCategory,
+                            mask:this.game.collisionCategories.playerCategory
+                        }
+                    };
+                }
+
+                // ✅ Actually spawn bullets now
+                let remainingShots = shootTimes; // clone so `forEach` isn't blocked by early return
+                spawnPos.forEach((point) => {
+                    if (remainingShots <= 0) return;
+    
+                    this.game.spawnEntity({
+                        passedKey: shootBullet.spawnKey,
+                        componentsToModify: {
+                            pos: {
+                                x: point.pos.x,
+                                y: point.pos.y
+                            },
+                            rotation: rotation,
+                            baseRotation: rotation,
+                            matterBodyOptions:matterBodyOptions
+                        }
+                    });
+    
+                    remainingShots--;
+                });
+    
                 shootBullet.counter = shootBullet.delayInSeconds;
-                
-                entity.setComponent('shootBullet',shootBullet);
+                entity.setComponent('shootBullet', shootBullet);
             }
-        )
+        );
     }
+    
 }

@@ -23,18 +23,19 @@ export class Physics{
     }
     collisionDetection(){
        Events.on(this.game.matter.matterEngine,'collisionStart',(event)=>{
-        console.log("COLLISION START", event.pairs.length);
+        //console.log("COLLISION START", event.pairs.length);
             for (let pair of event.pairs){
                 const {bodyA,bodyB} = pair;
                 const a = bodyA.label;
                 const b = bodyB.label;
-                console.log(a,b);
+                console.log("a:",a);
+                console.log("b:",b);
                 if(this.matchCollision(a,b,'playerBullet','enemy')){
                     // subtract enemy hp
-                    const bullet = bodyA.label === 'playerBullet' ? bodyA.gameObject : bodyB.gameObject;
-                    const enemy = bodyB.label === 'enemy' ? bodyB.gameObject : bodyA.gameObject;
-                    enemy.takeDamage(bullet.damage);
-                    bullet.die();
+                    //const bullet = bodyA.label === 'playerBullet' ? bodyA.gameObject : bodyB.gameObject;
+                    //const enemy = bodyB.label === 'enemy' ? bodyB.gameObject : bodyA.gameObject;
+                   
+                     console.log("PlayerBullet collided with enemy");
                 }
                 else if(this.matchCollision(a,b,'player','enemy')){
                     // subtract player hp and give invincibility frames
@@ -42,7 +43,36 @@ export class Physics{
                     console.log("Player collided with enemy");
                 }
                 else if(this.matchCollision(a,b,'player','item')){
+                    const playerEntity = bodyA.gameObject;
+                    const itemEntity = bodyB.gameObject;
+
+                    const changeSpawnKeyComponent = itemEntity.getComponent('changeSpawnKey');
+                    const changeDelayComponent = itemEntity.getComponent('changeDelayComponent');
+                    const changeShootTimesComponent = itemEntity.getComponent('changeShootTimes');
+
+                    if(changeSpawnKeyComponent){
+                        this.game.changeShootBullet({
+                            entity:playerEntity,
+                            changeSpawnKeyComponent:changeSpawnKeyComponent
+                        });
+                    }
+                    
+                    if(changeDelayComponent){
+                        this.game.changeShootDelay({
+                            entity:playerEntity,
+                            changeDelayComponent:changeDelayComponent
+                        })
+                    }
+                   
+                    if(changeShootTimesComponent){
+                        this.game.changeShootTimes({
+                            entity:playerEntity,
+                            changeShootTimesComponent:changeShootTimesComponent
+                        })
+                    }
+                    console.log("Body B gameObject: ",itemEntity);
                     console.log("Player collided with an item!");
+                    this.game.removeEntity(itemEntity);
                 }
             };
             

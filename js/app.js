@@ -17,16 +17,16 @@ function start(resources){
     const yellowBattery = game.spawnEntity({
         passedKey:'yellowBattery',
         componentsToModify:{
-            pos:{x:300,y:400},
+            pos:{x:200,y:400},
             rotation: 180 + game.totalSceneRotation,
             baseRotation:180,
             matterBodyOptions:{
                 label: "item",
-                isSensor: false,
+                isSensor: true,
                 collisionFilter:{
-                    group:0,
+                    group:-1,
                     category:game.collisionCategories.itemCategory,
-                    mask: game.collisionCategories.playerCategory
+                    mask:game.collisionCategories.playerCategory
                 }
                     
             }
@@ -40,11 +40,11 @@ function start(resources){
             baseRotation:180,
             matterBodyOptions:{
                 label: "item",
-                isSensor: false,
+                isSensor: true,
                 collisionFilter:{
-                    group:0,
+                    group:-1,
                     category:game.collisionCategories.itemCategory,
-                    mask: game.collisionCategories.playerCategory
+                    mask:game.collisionCategories.playerCategory
                 }
                     
             }
@@ -54,16 +54,16 @@ function start(resources){
     const greenBattery = game.spawnEntity({
         passedKey: 'greenBattery',
         componentsToModify:{
-            pos:{x:500,y:400},
+            pos:{x:600,y:400},
             rotation: 180 + game.totalSceneRotation,
             baseRotation:180,
             matterBodyOptions:{
                 label: "item",
-                isSensor: false,
+                isSensor: true,
                 collisionFilter:{
-                    group:0,
+                    group:-1,
                     category:game.collisionCategories.itemCategory,
-                    mask: game.collisionCategories.playerCategory
+                    mask:game.collisionCategories.playerCategory
                 }
                     
             }
@@ -72,23 +72,59 @@ function start(resources){
     const blueBattery = game.spawnEntity({
         passedKey: 'blueBattery',
         componentsToModify:{
-            pos:{x:600,y:400},
+            pos:{x:800,y:400},
             rotation: 180 + game.totalSceneRotation,
             baseRotation:180,
             matterBodyOptions:{
                 label: "item",
-                isSensor: false,
+                isSensor: true,
                 collisionFilter:{
-                    group:0,
+                    group:-1,
                     category:game.collisionCategories.itemCategory,
-                    mask: game.collisionCategories.playerCategory
+                    mask:game.collisionCategories.playerCategory
+                }
+                    
+            }
+        }
+    })
+    const powerup = game.spawnEntity({
+        passedKey: 'powerup',
+        componentsToModify:{
+            pos:{x:1000,y:400},
+            rotation: 180 + game.totalSceneRotation,
+            baseRotation:180,
+            matterBodyOptions:{
+                label: "item",
+                isSensor: true,
+                collisionFilter:{
+                    group:-1,
+                    category:game.collisionCategories.itemCategory,
+                    mask:game.collisionCategories.playerCategory
+                }
+                    
+            }
+        }
+    })
+    const enemy = game.spawnEntity({
+        passedKey:'enemy1',
+        componentsToModify:{
+            pos:{x:1200,y:300},
+            rotation: 180 + game.totalSceneRotation,
+            baseRotation:180,
+             matterBodyOptions:{
+                label: "enemy",
+                isSensor: true,
+                collisionFilter:{
+                    group:-1,
+                    category:game.collisionCategories.enemyCategory,
+                    mask:game.collisionCategories.playerCategory | game.collisionCategories.playerBulletCategory
                 }
                     
             }
         }
     })
     new ChangeView({
-        newRotation:0,
+        newRotation:1000,
         game:game
     });
     
