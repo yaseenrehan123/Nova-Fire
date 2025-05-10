@@ -354,9 +354,9 @@ class ECSSystems{
                 if(shotByPlayer){
                     matterBodyOptions = {
                         label: "playerBullet",
-                        isSensor: true,
+                        isSensor: false,
                         collisionFilter:{
-                            group:-1,
+                            group:0,
                             category:this.game.collisionCategories.playerBulletCategory,
                             mask:this.game.collisionCategories.enemyCategory
                         }

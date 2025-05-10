@@ -28,24 +28,35 @@ export class Physics{
                 const {bodyA,bodyB} = pair;
                 const a = bodyA.label;
                 const b = bodyB.label;
-                console.log("a:",a);
-                console.log("b:",b);
+                //console.log("a:",a);
+                //console.log("b:",b);
                 if(this.matchCollision(a,b,'playerBullet','enemy')){
                     // subtract enemy hp
-                    //const bullet = bodyA.label === 'playerBullet' ? bodyA.gameObject : bodyB.gameObject;
-                    //const enemy = bodyB.label === 'enemy' ? bodyB.gameObject : bodyA.gameObject;
-                   
-                     console.log("PlayerBullet collided with enemy");
+                    const bulletEntity = a === 'playerBullet' ? bodyA.gameObject : bodyB.gameObject;
+                    const enemyEntity = a === 'enemy' ? bodyA.gameObject : bodyB.gameObject;
+                    
+                    const damageComponent = bulletEntity.getComponent('damage');
+
+                    if(damageComponent){
+                        this.game.damageEntity({
+                            entity:enemyEntity,
+                            damageComponent:damageComponent
+                        });
+                    };
+
+                    this.game.removeEntity(bulletEntity);
+
+                    //console.log("PlayerBullet collided with enemy");
                 }
                 else if(this.matchCollision(a,b,'player','enemy')){
                     // subtract player hp and give invincibility frames
                     // destroy enemy
-                    console.log("Player collided with enemy");
+                    //console.log("Player collided with enemy");
                 }
                 else if(this.matchCollision(a,b,'player','item')){
-                    const playerEntity = bodyA.gameObject;
-                    const itemEntity = bodyB.gameObject;
-
+                    const playerEntity = a === 'player' ? bodyA.gameObject : bodyB.gameObject;
+                    const itemEntity = a === 'item' ? bodyA.gameObject : bodyB.gameObject;
+                    //console.log("Player entity in matchCollision",playerEntity)
                     const changeSpawnKeyComponent = itemEntity.getComponent('changeSpawnKey');
                     const changeDelayComponent = itemEntity.getComponent('changeDelayComponent');
                     const changeShootTimesComponent = itemEntity.getComponent('changeShootTimes');
@@ -70,8 +81,8 @@ export class Physics{
                             changeShootTimesComponent:changeShootTimesComponent
                         })
                     }
-                    console.log("Body B gameObject: ",itemEntity);
-                    console.log("Player collided with an item!");
+                    //console.log("Body B gameObject: ",itemEntity);
+                    //console.log("Player collided with an item!");
                     this.game.removeEntity(itemEntity);
                 }
             };

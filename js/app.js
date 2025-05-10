@@ -24,7 +24,7 @@ function start(resources){
                 label: "item",
                 isSensor: true,
                 collisionFilter:{
-                    group:-1,
+                    group:0,
                     category:game.collisionCategories.itemCategory,
                     mask:game.collisionCategories.playerCategory
                 }
@@ -42,7 +42,7 @@ function start(resources){
                 label: "item",
                 isSensor: true,
                 collisionFilter:{
-                    group:-1,
+                    group:0,
                     category:game.collisionCategories.itemCategory,
                     mask:game.collisionCategories.playerCategory
                 }
@@ -61,7 +61,7 @@ function start(resources){
                 label: "item",
                 isSensor: true,
                 collisionFilter:{
-                    group:-1,
+                    group:0,
                     category:game.collisionCategories.itemCategory,
                     mask:game.collisionCategories.playerCategory
                 }
@@ -79,7 +79,7 @@ function start(resources){
                 label: "item",
                 isSensor: true,
                 collisionFilter:{
-                    group:-1,
+                    group:0,
                     category:game.collisionCategories.itemCategory,
                     mask:game.collisionCategories.playerCategory
                 }
@@ -97,7 +97,7 @@ function start(resources){
                 label: "item",
                 isSensor: true,
                 collisionFilter:{
-                    group:-1,
+                    group:0,
                     category:game.collisionCategories.itemCategory,
                     mask:game.collisionCategories.playerCategory
                 }
@@ -105,7 +105,7 @@ function start(resources){
             }
         }
     })
-    const enemy = game.spawnEntity({
+    const enemy1 = game.spawnEntity({
         passedKey:'enemy1',
         componentsToModify:{
             pos:{x:1200,y:300},
@@ -113,18 +113,54 @@ function start(resources){
             baseRotation:180,
              matterBodyOptions:{
                 label: "enemy",
-                isSensor: true,
+                //isSensor: true,
                 collisionFilter:{
-                    group:-1,
+                    group:0,
                     category:game.collisionCategories.enemyCategory,
                     mask:game.collisionCategories.playerCategory | game.collisionCategories.playerBulletCategory
                 }
                     
             }
         }
-    })
+    });
+    const enemy2 = game.spawnEntity({
+        passedKey:'enemy2',
+        componentsToModify:{
+            pos:{x:1400,y:300},
+            rotation: 180 + game.totalSceneRotation,
+            baseRotation:180,
+             matterBodyOptions:{
+                label: "enemy",
+                //isSensor: true,
+                collisionFilter:{
+                    group:0,
+                    category:game.collisionCategories.enemyCategory,
+                    mask:game.collisionCategories.playerCategory | game.collisionCategories.playerBulletCategory
+                }
+                    
+            }
+        }
+    });
+    const enemy3 = game.spawnEntity({
+        passedKey:'enemy3',
+        componentsToModify:{
+            pos:{x:1600,y:300},
+            rotation: 180 + game.totalSceneRotation,
+            baseRotation:180,
+             matterBodyOptions:{
+                label: "enemy",
+                //isSensor: true,
+                collisionFilter:{
+                    group:0,
+                    category:game.collisionCategories.enemyCategory,
+                    mask:game.collisionCategories.playerCategory | game.collisionCategories.playerBulletCategory
+                }
+                    
+            }
+        }
+    });
     new ChangeView({
-        newRotation:1000,
+        newRotation:0,
         game:game
     });
     

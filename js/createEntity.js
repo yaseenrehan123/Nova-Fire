@@ -63,7 +63,7 @@ export class CreateEntity{
                     advancedOptions:matterBodyOptions
                 })
         }
-        console.log("Body is", body);
+        //console.log("Body is", body);
         if (body) {
             body.gameObject = entity;
             entity.setComponent('matterBody', body); // 👈 update the matterBody component

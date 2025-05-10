@@ -28,7 +28,7 @@ export class Player{
                 }
             }
         });
-        console.log("Player",this.playerEntity);
+        //console.log("Player",this.playerEntity);
         const activeEvents = ['touchstart','touchmove','mousedown']
         const deActiveEvents = ['touchend','mouseup'];
         

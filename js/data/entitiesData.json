@@ -192,7 +192,68 @@
         "speed": 2,
         "moveVector": { "x": 0, "y": 0 },
         "notPlayer": true,
-        "sceneOrientedRotation": true
+        "sceneOrientedRotation": true,
+        "health":10
+      }
+    },
+    "enemy2":{
+      "components":{
+        "imgKey": "enemy2",
+        "pos": {"x":0,"y":0},
+        "width": 100,
+        "height": 100,
+        "rotation": 180,
+        "baseRotation": 180,
+        "centerImage": true,
+        "matterBody": null,
+        "matterBodyType": "rectangle",
+        "matterBodyOffset": { "x": 0, "y": 0 },
+        "matterBodyWidth": 100,
+        "matterBodyHeight": 100,
+        "matterBodyOptions": {
+          "label": "enemy",
+          "isSensor": true,
+          "collisionFilter": {
+            "group": 0,
+            "category": "{{enemyCategory}}",
+            "mask": "{{playerCategory}}"
+          }
+        },
+        "speed": 1,
+        "moveVector": { "x": 0, "y": 0 },
+        "notPlayer": true,
+        "sceneOrientedRotation": true,
+        "health":20
+      }
+    },
+    "enemy3":{
+      "components":{
+        "imgKey": "enemy3",
+        "pos": {"x":0,"y":0},
+        "width": 100,
+        "height": 100,
+        "rotation": 180,
+        "baseRotation": 180,
+        "centerImage": true,
+        "matterBody": null,
+        "matterBodyType": "rectangle",
+        "matterBodyOffset": { "x": 0, "y": 0 },
+        "matterBodyWidth": 100,
+        "matterBodyHeight": 100,
+        "matterBodyOptions": {
+          "label": "enemy",
+          "isSensor": true,
+          "collisionFilter": {
+            "group": 0,
+            "category": "{{enemyCategory}}",
+            "mask": "{{playerCategory}}"
+          }
+        },
+        "speed": 5,
+        "moveVector": { "x": 0, "y": 0 },
+        "notPlayer": true,
+        "sceneOrientedRotation": true,
+        "health":3
       }
     },
     "greenBullet":{
@@ -220,7 +281,8 @@
         },
         "speed": 2,
         "moveVector": { "x": 0, "y": 0 },
-        "notPlayer": true
+        "notPlayer": true,
+        "damage":10
         }
     },
     "blueBullet":{
@@ -247,7 +309,8 @@
         },
         "speed": 15,
         "moveVector": { "x": 0, "y": 0 },
-        "notPlayer": true
+        "notPlayer": true,
+        "damage":5
       }
     },
     "purpleBullet":{
@@ -275,7 +338,8 @@
         },
         "speed": 2,
         "moveVector": { "x": 0, "y": 0 },
-        "notPlayer": true
+        "notPlayer": true,
+        "damage":20
       }
     },
     "yellowBullet":{
@@ -303,7 +367,8 @@
         },
         "speed": 30,
         "moveVector": { "x": 0, "y": 0 },
-        "notPlayer": true
+        "notPlayer": true,
+        "damage":3
       }
     },
     "powerup":{

@@ -36,7 +36,7 @@ export class Game{
         this.matter = {
             matterEngine:null,
             matterRunner:null,
-            debugBodies:true
+            debugBodies:false
         };
         /*  
         this.shapeBuilder ={
@@ -229,6 +229,37 @@ export class Game{
         }
         //console.log(newShootTimes);
         entity.setComponent('shootTimes',newShootTimes);
+    }
+    damageEntity(options){
+        const {
+            entity = null,
+            damageComponent = null
+        } = options;
+
+        const healthComponent = entity.getComponent('health');
+
+        let newHealth = healthComponent;
+
+        newHealth -= damageComponent;
+        
+        entity.setComponent('health',newHealth);
+
+        this.onHealthEmpty({
+            entity:entity,
+            health:newHealth
+        })
+
+        console.log('healthComponent new health:',newHealth);
+    }
+    onHealthEmpty(options){
+        const {
+            entity = null,
+            health = 0,
+        } = options
+
+        if(health <= 0){
+            this.removeEntity(entity)
+        }
     }
     removeEntity(entity){
         const matterBody = entity.getComponent('matterBody');
