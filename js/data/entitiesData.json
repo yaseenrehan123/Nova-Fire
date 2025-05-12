@@ -31,7 +31,7 @@
         "shootBullet": {
           "delayInSeconds": 0.5,
           "counter": 0,
-          "active": true,
+          "active": false,
           "spawnKey": "greenBullet"
         },
         "spawnPos": [
@@ -39,7 +39,8 @@
           { "pos": { "x": 0, "y": 0 }, "offset": { "x": -20, "y": 0 } },
           { "pos": { "x": 0, "y": 0 }, "offset": { "x": 20, "y": 0 } }
         ],
-        "shootTimes": 1
+        "shootTimes": 1,
+        "health":50
       }
     },
     "blueBattery":{
@@ -193,7 +194,8 @@
         "moveVector": { "x": 0, "y": 0 },
         "notPlayer": true,
         "sceneOrientedRotation": true,
-        "health":10
+        "health":10,
+        "damage":10
       }
     },
     "enemy2":{
@@ -223,7 +225,8 @@
         "moveVector": { "x": 0, "y": 0 },
         "notPlayer": true,
         "sceneOrientedRotation": true,
-        "health":20
+        "health":20,
+        "damage":10
       }
     },
     "enemy3":{
@@ -253,7 +256,8 @@
         "moveVector": { "x": 0, "y": 0 },
         "notPlayer": true,
         "sceneOrientedRotation": true,
-        "health":3
+        "health":3,
+        "damage":10
       }
     },
     "greenBullet":{

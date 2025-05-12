@@ -2,18 +2,16 @@ import { LoadAssets } from "./loadAssets.js";
 import { Game } from "./game.js";
 import { ChangeView } from "./changeview.js";
 import { Player } from "./player.js";
+import { Ui } from "./ui.js";
 const loader = new LoadAssets(start);
 
 function start(resources){
     console.log(resources);
     const game = new Game(resources);
     
+    game.player = new Player(game)
+    game.ui = new Ui(game);
     
-   new Player(
-    {
-        game:game
-    }
-    );
     const yellowBattery = game.spawnEntity({
         passedKey:'yellowBattery',
         componentsToModify:{

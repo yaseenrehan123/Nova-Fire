@@ -1,15 +1,15 @@
 export class Player{
-    constructor(options){
-        const{
-            game=null,
-        } = options;
+    constructor(game){
         this.game = game;
         this.canvas = game.canvas;
         this.playerEntity = null;
-
+        this.maxHealth = 0;
+        this.currentHealth = 0;
         this.init();
     }
     init(){
+        console.log("Game instance from player!" ,this.game)
+        console.log("Game Center pos " ,this.game.screenCenterPos)
         this.playerEntity = this.game.spawnEntity({
             passedKey:'player',
             componentsToModify:{
@@ -28,6 +28,9 @@ export class Player{
                 }
             }
         });
+
+        this.maxHealth = this.playerEntity.getComponent('health');// set maxhealth
+
         //console.log("Player",this.playerEntity);
         const activeEvents = ['touchstart','touchmove','mousedown']
         const deActiveEvents = ['touchend','mouseup'];
@@ -42,5 +45,5 @@ export class Player{
                 this.playerEntity.getComponent('shootBullet').active = false;
             },{passive:true})
         })
-    }
+    };
 }

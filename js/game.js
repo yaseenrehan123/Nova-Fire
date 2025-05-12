@@ -4,6 +4,7 @@ import {Engine as EntityEngine,Simulator as EntitySimulator} from 'jecs';
 import { World } from 'matter-js';
 import { Systems } from './systems.js';
 import { Physics } from './physics.js';
+import { Ui } from './ui.js';
 //import { Builder, shapes } from "shape-builder";
 //const { Point, Rectangle } = shapes;
 
@@ -52,13 +53,17 @@ export class Game{
         };
         this.width = this.canvas.width;
         this.height = this.canvas.height;
+        console.log("Width and height from Game: ",this.width,this.height)
         this.screenCenterPos = {x:this.width/2,y:this.height/2};
         this.sceneRotation = 0;
         this.nextSceneRotation = 0;
         this.totalSceneRotation = 0;
 
-        this.mouse = new Mouse(this);
-        this.physics = new Physics(this)
+        this.mouse = null;
+        this.physics = null;
+        this.player = null;
+        this.ui = null;
+        
         this.start();
         this.update();
     };
@@ -68,6 +73,9 @@ export class Game{
         this.onResize();
         
         this.systemsJECS();
+
+        this.mouse = new Mouse(this);
+        this.physics = new Physics(this)
 
     };
     update(timeStamp){
@@ -268,5 +276,12 @@ export class Game{
         }
         const name = entity.name;
         this.ecs.entityEngine.removeEntity(name);
+    };
+    lerp(a,b,t){
+        return a + (b - a) * t;
+    };
+    repeatLerp(a,b,t){
+        return
+        requestAnimationFrame(this.repeatLerp)
     }
 }

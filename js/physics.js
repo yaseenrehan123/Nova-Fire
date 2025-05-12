@@ -50,7 +50,18 @@ export class Physics{
                 }
                 else if(this.matchCollision(a,b,'player','enemy')){
                     // subtract player hp and give invincibility frames
+                    const playerEntity = a === 'player' ? bodyA.gameObject : bodyB.gameObject;
+                    const enemyEntity = a === 'enemy' ? bodyA.gameObject : bodyB.gameObject;
+                    const damageComponent = enemyEntity.getComponent('damage');
+                    this.game.damageEntity({
+                        entity:playerEntity,
+                        damageComponent:damageComponent
+                    });
+                    //set healthbar
+                    this.game.ui.playerUi.updateBar();
+                    console.log("Player health: " , playerEntity.getComponent('health'));
                     // destroy enemy
+                    this.game.removeEntity(enemyEntity);
                     //console.log("Player collided with enemy");
                 }
                 else if(this.matchCollision(a,b,'player','item')){
