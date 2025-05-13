@@ -58,7 +58,7 @@ export class Physics{
                         damageComponent:damageComponent
                     });
                     //set healthbar
-                    this.game.ui.playerUi.updateBar();
+                    this.game.ui.playerUi.updateHealthBar();
                     console.log("Player health: " , playerEntity.getComponent('health'));
                     // destroy enemy
                     this.game.removeEntity(enemyEntity);

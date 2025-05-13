@@ -278,10 +278,14 @@ export class Game{
         this.ecs.entityEngine.removeEntity(name);
     };
     lerp(a,b,t){
-        return a + (b - a) * t;
-    };
-    repeatLerp(a,b,t){
-        return
-        requestAnimationFrame(this.repeatLerp)
+        if (
+        typeof a !== 'number' || isNaN(a) ||
+        typeof b !== 'number' || isNaN(b) ||
+        typeof t !== 'number' || isNaN(t)
+    ) {
+        console.warn("NaN in lerp input:", { a, b, t });
+        return 0;
     }
+    return a + (b - a) * t;
+    };
 }
