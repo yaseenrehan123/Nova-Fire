@@ -40,7 +40,16 @@
           { "pos": { "x": 0, "y": 0 }, "offset": { "x": 20, "y": 0 } }
         ],
         "shootTimes": 1,
-        "health":50
+        "health":50,
+        "shootEnergy":{
+          "max":100,
+          "current":100,
+          "depletionPerShot":2.5,
+          "regenRate":20,
+          "regenDelay":2,
+          "regenCooldown":0,
+          "isDepleted":false
+        }
       }
     },
     "blueBattery":{

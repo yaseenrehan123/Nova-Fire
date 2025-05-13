@@ -229,7 +229,36 @@ class CustomSystems{
             const rotation = e.getComponent('rotation');
             console.log("Player Rotation:",rotation)
         }
+    };
+    depleteShootEnergy(e){
+        const req = ['shootEnergy','shootBullet'];
+      
+         if (!req.every(c => e.hasComponent(c)))return;
+
+        const shootEnergy = e.getComponent('shootEnergy');
+        const shootBullet = e.getComponent('shootBullet');
+
+        const current = shootEnergy.current;
+        const depletionPerShot = shootEnergy.depletionPerShot;
+
+        let newValue = current - depletionPerShot;
+        if (newValue < 0) {
+            newValue = 0;
+            shootEnergy.isDepleted = true;
+            shootBullet.active = false;
+        };
+
+        shootEnergy.current = newValue;// assign it back
+        shootEnergy.regenCooldown = shootEnergy.regenDelay;
+
+        console.log("ShootEnergyNewValue",newValue);
+        console.log("ShootEnergyComponent",shootEnergy);
+
+        e.setComponent('shootEnergy', shootEnergy);
+        e.setComponent('shootBullet',shootBullet);
+         
     }
+       
 }
 class ECSSystems{
     constructor(options){
@@ -343,6 +372,8 @@ class ECSSystems{
                     return;
                 }
 
+                this.game.ecs.customSystems.depleteShootEnergy(entity);
+
                 const playerComp = entity.hasComponent('player');
                 let shotByPlayer = false;
                 let matterBodyOptions = {};
@@ -399,6 +430,47 @@ class ECSSystems{
                 entity.setComponent('shootBullet', shootBullet);
             }
         );
-    }
+    };
+    manageShootEnergySystem() {
+    const engine = this.game.ecs.entityEngine;
+
+    engine.system('manageShootEnergySystem', ['shootEnergy', 'shootBullet'], (entity, { shootEnergy, shootBullet }) => {
+        const delta = this.game.deltaTime;
+
+        const fireActive = shootBullet.active;
+        let energy = shootEnergy.current;
+        const max = shootEnergy.max;
+        const regenRate = shootEnergy.regenRate;
+        const regenDelay = shootEnergy.regenDelay;
+
+        // Handle regeneration delay cooldown
+        if (shootEnergy.isDepleted) {
+            if (shootEnergy.regenCooldown > 0) {
+                shootEnergy.regenCooldown -= delta;
+                entity.setComponent('shootEnergy', shootEnergy);
+                return; // Still waiting before regen starts
+            }
+        }
+
+        // Can only regen if not firing and not over max
+        if (!fireActive && energy < max) {
+            energy += regenRate * delta;
+
+            if (energy > max) {
+                energy = max;
+            }
+
+            shootEnergy.current = energy;
+
+            // Fully recharged → no longer depleted
+            if (shootEnergy.isDepleted && energy >= max) {
+                shootEnergy.isDepleted = false;
+            }
+
+            entity.setComponent('shootEnergy', shootEnergy);
+        }
+    });
+}
+
     
 }

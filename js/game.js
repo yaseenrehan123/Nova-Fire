@@ -147,6 +147,7 @@ export class Game{
         systems.movePlayerSystem();
         systems.moveEntitiesSystem();
         systems.shootBulletsSystem();
+        systems.manageShootEnergySystem();
     };
   
 

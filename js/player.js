@@ -37,6 +37,8 @@ export class Player{
         
         activeEvents.forEach((eventName)=>{
             this.canvas.addEventListener(eventName,()=>{
+                const shootEnergyComponent = this.playerEntity.getComponent('shootEnergy');
+                if(shootEnergyComponent.isDepleted) return;
                 this.playerEntity.getComponent('shootBullet').active = true;
             },{passive:true});
         });
