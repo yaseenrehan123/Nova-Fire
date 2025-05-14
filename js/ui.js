@@ -12,6 +12,11 @@ class PlayerUi{
         //this.healthBackgroundBar = null;
         this.healthBar = null;
         this.healthEffectBar = null;
+        this.energyBar = null;
+        this.energyEffectBar = null;
+
+        this.barPercentage = null;
+        this.energyBarPercentage = null;
 
         this.start();
     };
@@ -19,7 +24,7 @@ class PlayerUi{
        this.game.addObj(this);
        
        this.initHealthBar();
-       
+       this.initEnergyBar();
       
     };
     update(){
@@ -28,7 +33,13 @@ class PlayerUi{
         this.healthEffectBar.draw();
         this.healthBar.draw();
         
+        this.energyEffectBar.draw();
+        this.energyBar.draw();
+        
+        this.game.ui.playerUi.updateEnergyBar();
+
         this.healthEffectBar.lerpValue(this.barPercentage);
+        this.energyEffectBar.lerpValue(this.energyBarPercentage);
         
     };
     updateHealthBar(){
@@ -77,6 +88,49 @@ class PlayerUi{
         });
         this.healthEffectBar.setValue(1);
         this.updateHealthBar();
+    };
+    initEnergyBar(){
+
+        const outlineColor = 'rgb(32, 30, 39)';
+        const backGroundFillColor = 'rgb(3, 0, 14)';
+
+        this.energyBar = new Bar({
+            game:this.game,
+            pos:{x:0,y:54},
+            width:150,
+            height:30,
+            fillColor:'purple',
+        });
+
+        this.energyEffectBar = new Bar({
+            game:this.game,
+            pos:{x:0,y:54},
+            width:150,
+            height:30,
+            fillColor:'white',
+            outline:{
+                enabled:true,
+                color:outlineColor,
+                width:4
+            },
+            background:{
+                enabled:true,
+                color:backGroundFillColor
+            },
+            lerp:{
+                enabled:true,
+                step:0.1
+            }
+        })
+
+        this.energyBar.setValue(1);
+        this.updateEnergyBar();
+    };
+    updateEnergyBar(){
+        const shootEnergyComponent = this.game.player.playerEntity.getComponent('shootEnergy');
+        const energyBarPercentage = shootEnergyComponent.current / shootEnergyComponent.max;
+        this.energyBar.setValue(energyBarPercentage);
+        this.energyBarPercentage = energyBarPercentage;
     };
 };
 class Bar{
@@ -172,4 +226,16 @@ class Bar{
             this.setValue(lerpedValue);
         }
     };
+    setFillColor(newColor){
+        if(this.fillColor === newColor) return;
+        this.fillColor = newColor;
+    };
+    setOutlineColor(newColor){
+        if(this.outlineColor === newColor) return;
+        this.outlineColor  =  newColor;
+    }
+    setBackGroundColor(newColor){
+        if(this.backgroundColor === newColor) return;
+        this.backgroundColor = newColor
+    }
 };

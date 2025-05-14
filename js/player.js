@@ -5,6 +5,7 @@ export class Player{
         this.playerEntity = null;
         this.maxHealth = 0;
         this.currentHealth = 0;
+        this.isFireHeld = false;
         this.init();
     }
     init(){
@@ -37,6 +38,7 @@ export class Player{
         
         activeEvents.forEach((eventName)=>{
             this.canvas.addEventListener(eventName,()=>{
+                this.isFireHeld = true;
                 const shootEnergyComponent = this.playerEntity.getComponent('shootEnergy');
                 if(shootEnergyComponent.isDepleted) return;
                 this.playerEntity.getComponent('shootBullet').active = true;
@@ -44,6 +46,7 @@ export class Player{
         });
         deActiveEvents.forEach((eventName)=>{
             this.canvas.addEventListener(eventName,()=>{
+                this.isFireHeld = false;
                 this.playerEntity.getComponent('shootBullet').active = false;
             },{passive:true})
         })

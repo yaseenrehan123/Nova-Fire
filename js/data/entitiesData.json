@@ -45,8 +45,8 @@
           "max":100,
           "current":100,
           "depletionPerShot":2.5,
-          "regenRate":20,
-          "regenDelay":2,
+          "regenRate":40,
+          "regenDelay":1,
           "regenCooldown":0,
           "isDepleted":false
         }
