@@ -486,7 +486,7 @@ class ECSSystems {
         const engine = this.game.ecs.entityEngine;
         engine.system('playerEnergyBarColorSystem', ['player', 'shootEnergy'],
             (entity, { player, shootEnergy }) => {
-                console.log("ShootEnergy In PlayerEnergyBar:", shootEnergy);
+                //console.log("ShootEnergy In PlayerEnergyBar:", shootEnergy);
                 if (shootEnergy.isDepleted) {
                     this.game.ui.playerUi.energyBar.setFillColor('rgb(44, 6, 50)');
                 }

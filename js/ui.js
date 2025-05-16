@@ -1,7 +1,11 @@
+import { Bar } from "./classes/bar.js";
+import { Button } from "./classes/button.js";
 export class Ui{
     constructor(game){
         this.game = game;
         this.playerUi = new PlayerUi(game);
+        this.settingsUi = new SettingsUi(game);
+
     };
 };
 class PlayerUi{
@@ -63,7 +67,6 @@ class PlayerUi{
             pos:{x:0,y:0},
             width:300,
             height:50,
-            fillColor:healthFillColor,
         });
 
         this.healthEffectBar = new Bar({
@@ -71,22 +74,25 @@ class PlayerUi{
             pos:{x:0,y:0},
             width:300,
             height:50,
-            fillColor:effectFillColor,
             outline:{
                 enabled:true,
-                color:outlineColor,
                 width:8
             },
             background:{
                 enabled:true,
-                color:backGroundFillColor
             },
             lerp:{
                 enabled:true,
                 step:0.2
             }
         });
+        this.healthBar.setFillColor(healthFillColor);
+
+        this.healthEffectBar.setBackGroundColor(backGroundFillColor);
+        this.healthEffectBar.setOutlineColor(outlineColor);
+        this.healthEffectBar.setFillColor(effectFillColor)
         this.healthEffectBar.setValue(1);
+
         this.updateHealthBar();
     };
     initEnergyBar(){
@@ -99,7 +105,6 @@ class PlayerUi{
             pos:{x:0,y:54},
             width:150,
             height:30,
-            fillColor:'purple',
         });
 
         this.energyEffectBar = new Bar({
@@ -107,15 +112,12 @@ class PlayerUi{
             pos:{x:0,y:54},
             width:150,
             height:30,
-            fillColor:'white',
             outline:{
                 enabled:true,
-                color:outlineColor,
                 width:4
             },
             background:{
                 enabled:true,
-                color:backGroundFillColor
             },
             lerp:{
                 enabled:true,
@@ -124,6 +126,11 @@ class PlayerUi{
         })
 
         this.energyBar.setValue(1);
+
+        this.energyEffectBar.setFillColor('white');
+        this.energyEffectBar.setOutlineColor(outlineColor);
+        this.energyEffectBar.setBackGroundColor(backGroundFillColor);
+       
         this.updateEnergyBar();
     };
     updateEnergyBar(){
@@ -133,109 +140,42 @@ class PlayerUi{
         this.energyBarPercentage = energyBarPercentage;
     };
 };
-class Bar{
-    constructor(options){
-        const {
-            game = null,
-            pos = {x:0,y:0},
-            width = 300,
-            height = 50,
-            maxValue = 1,// have a max value of 1
-            value = 0,
-            fillColor = 'black',
-            outline = {
-                enabled: false,
-                color: 'grey',
-                width: 8,
-            },
-            background = {
-                enabled:false,
-                color:'black',
-            },
-            lerp = {
-                enabled:false,
-                step:0.2// usually the 't' or the speed of lerp, closer to 1 is faster
-            }
-           
-        } = options;
-
+class SettingsUi{
+    constructor(game){
         this.game = game;
+        this.ctx = game.ctx;
 
-        this.maxValue = maxValue;
-        this.value = value;// starting value
+        this.settingsBtn = null;
 
-        this.pos = pos;
-        this.width = width;// max width or boundary
-        this.height = height;
-        this.fillColor = fillColor;
-
-        this.outlineColor = outline.color;
-        this.outlineWidth = outline.width;
-        this.hasOutline = outline.enabled;
-
-        this.hasBackground = background.enabled;
-        this.backgroundColor = background.color;
-
-        this.hasLerp = lerp.enabled;
-        this.lerpStep = lerp.step;
+        this.start();
     };
-    draw(){// call in update 
-        const ctx = this.game.ctx;
-        const x = this.pos.x;
-        const y = this.pos.y;
-        const w = this.width;
-        const h = this.height;
-        const fillAmount = this.value / this.maxValue * w;
-        ctx.save();
-        //background
-        if(this.hasBackground){
-            ctx.fillStyle = this.backgroundColor;
-            ctx.fillRect(x,y,w,h);
-        }
-        
-        //bar
+    start(){
+        this.game.addObj(this);
+        this.initSettingsBtn();
+    };
+    update(){
+        this.settingsBtn.draw();
+    };
+    initSettingsBtn(){
+        this.settingsBtn = new Button(this.game);
 
-        ctx.fillStyle = this.fillColor;
-        ctx.fillRect(x,y,fillAmount,h);
+        const bgColor = 'rgb(34, 40, 49)';
+        const fontSize = 30;
 
-        //outline
-
-        if(this.hasOutline){
-            ctx.strokeStyle = this.outlineColor;
-            ctx.lineWidth = this.outlineWidth;
-            ctx.strokeRect(x,y,w,h);
-        };
-       
-        ctx.restore();
-    };
-    setValue(newValue){
-        this.value = newValue;
-    };
-    setMaxValue(newValue){
-        this.maxValue = newValue;
-    };
-    lerpValue(newValue){
-        if(!this.hasLerp) return;
-        if(this.value != newValue){
-            const prevValue = this.value;
-            const lerpedValue = this.game.lerp(prevValue,newValue,this.lerpStep);
-            //console.log("Effect bar lerp value:",lerpedValue);
-            //console.log("PrevValue from lerp:",prevValue)
-            //console.log("newValue from lerp:",newValue)
-
-            this.setValue(lerpedValue);
-        }
-    };
-    setFillColor(newColor){
-        if(this.fillColor === newColor) return;
-        this.fillColor = newColor;
-    };
-    setOutlineColor(newColor){
-        if(this.outlineColor === newColor) return;
-        this.outlineColor  =  newColor;
+        this.settingsBtn.setBackgroundColor(bgColor);
+        this.settingsBtn.setFontSize(fontSize);
+        this.settingsBtn.setPos({
+            x:1720,
+            y:0
+        });
+        this.settingsBtn.setWidth(200);
+        this.settingsBtn.setHeight(100);
+        this.settingsBtn.setFontText('Settings');
+        this.settingsBtn.setOnPress(()=>{
+            console.log("Settings Btn Pressed!");
+        });
+        this.settingsBtn.setOnRelease(()=>{
+            console.log("Settings Btn Released");
+        })
     }
-    setBackGroundColor(newColor){
-        if(this.backgroundColor === newColor) return;
-        this.backgroundColor = newColor
-    }
-};
+}
