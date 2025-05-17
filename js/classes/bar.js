@@ -48,7 +48,7 @@ export class Bar{
     };
     draw(){// call in update
         if(!this.isVisible) return;
-        
+
         const ctx = this.game.ctx;
         const x = this.pos.x;
         const y = this.pos.y;
@@ -63,7 +63,7 @@ export class Bar{
         }
         
         //bar
-
+        
         ctx.fillStyle = this.fillColor;
         ctx.fillRect(x,y,fillAmount,h);
 

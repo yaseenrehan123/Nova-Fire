@@ -20,8 +20,8 @@ body{
 .game-container{
     image-rendering: pixelated;
     background-color: #1e272e;
-    aspect-ratio: 4/3;
-    width: 100vw;
+    aspect-ratio: 16/9;
+    max-width: 100vw;
     max-height: 100vh;
     display: block;
     border: 5px solid black;
