@@ -1,5 +1,6 @@
 import { Bar } from "./classes/bar.js";
 import { Button } from "./classes/button.js";
+import { Panel } from "./classes/panel.js";
 export class Ui{
     constructor(game){
         this.game = game;
@@ -146,15 +147,18 @@ class SettingsUi{
         this.ctx = game.ctx;
 
         this.settingsBtn = null;
+        this.settingsPanel = null;
 
         this.start();
     };
     start(){
         this.game.addObj(this);
         this.initSettingsBtn();
+        this.initSettingsPanel();
     };
     update(){
         this.settingsBtn.draw();
+        this.settingsPanel.draw();
     };
     initSettingsBtn(){
         this.settingsBtn = new Button(this.game);
@@ -172,10 +176,24 @@ class SettingsUi{
         this.settingsBtn.setHeight(100);
         this.settingsBtn.setFontText('Settings');
         this.settingsBtn.setOnPress(()=>{
-            console.log("Settings Btn Pressed!");
+            this.settingsPanel.setIsVisible(true);
+            this.game.pauseGame();;
         });
         this.settingsBtn.setOnRelease(()=>{
             console.log("Settings Btn Released");
         })
-    }
+    };
+    initSettingsPanel(){
+        this.settingsPanel = new Panel(this.game);
+
+        const bgColor = 'rgb(33, 76, 141)';
+        const centerX = this.game.screenCenterPos.x;
+        const centerY = this.game.screenCenterPos.y;
+        this.settingsPanel.setBackgroundColor(bgColor);
+        this.settingsPanel.setWidth(900);
+        this.settingsPanel.setHeight(700);
+        this.settingsPanel.setCenteredPosition(centerX,centerY);
+        this.settingsPanel.setIsVisible(false);
+
+    };
 }

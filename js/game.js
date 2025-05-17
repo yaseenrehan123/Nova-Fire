@@ -53,11 +53,11 @@ export class Game{
         };
         this.width = this.canvas.width;
         this.height = this.canvas.height;
-        console.log("Width and height from Game: ",this.width,this.height)
         this.screenCenterPos = {x:this.width/2,y:this.height/2};
         this.sceneRotation = 0;
         this.nextSceneRotation = 0;
         this.totalSceneRotation = 0;
+        this.isPaused = false;
 
         this.mouse = null;
         this.physics = null;
@@ -290,4 +290,12 @@ export class Game{
     }
     return a + (b - a) * t;
     };
+    returnIsPaused(){
+        return this.isPaused;
+    }
+    pauseGame(){
+        this.isPaused = true;
+        this.ecs.entitySim.pause();
+    };
+    
 }
