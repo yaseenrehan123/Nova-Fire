@@ -90,6 +90,7 @@ export class Game{
         this.ecs.customSystems.debugMatterBodies();
         this.ecs.customSystems.traceMatterBodies();
         this.ecs.customSystems.DebugShootingDirection();
+        this.ecs.customSystems.drawBar();
         //this.ecs.customSystems.trackPlayerRotation();
 
         //this.shapeBuilder.builder.draw(this.ctx);

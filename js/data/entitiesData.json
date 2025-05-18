@@ -434,6 +434,32 @@
         },
         "isActive":true
       }
+    },
+    "bar":{
+      "components":{
+        "pos":{"x":0,"y":0},
+        "width":300,
+        "height":50,
+        "bar":{
+          "value":1,
+          "maxValue":1,
+          "fillColor":"green",
+          "background":{
+            "enabled":false,
+            "color":"black"
+          },
+          "outline":{
+            "enabled":false,
+            "color":"grey",
+            "width":8
+          },
+          "lerping":{
+            "enabled":false,
+            "step":0.2
+          }
+        },
+        "isActive":true
+      }
     }
     
   }

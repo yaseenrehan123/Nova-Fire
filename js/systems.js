@@ -261,6 +261,51 @@ class CustomSystems {
         e.setComponent('shootEnergy', shootEnergy);
         e.setComponent('shootBullet', shootBullet);
 
+    };
+    drawBar(){
+        const ctx = this.game.ctx;
+        const req = ['bar','pos','width','height','isActive'];
+        const entities = Object.values(this.game.ecs.entityEngine.entities);
+
+        for(const e of entities){
+            if (!req.every(c => e.hasComponent(c))) continue;
+
+            const isActive = e.getComponent('isActive');
+            if(!isActive) continue;
+            const pos = e.getComponent('pos');
+            const width = e.getComponent('width');
+            const height = e.getComponent('height');
+            const bar = e.getComponent('bar');
+
+            const backgroundEnabled = bar.background.enabled;
+            const outlineEnabled = bar.outline.enabled;
+            const lerpingEnabled = bar.lerping.enabled;
+
+            const x = pos.x;
+            const y = pos.y;
+            const w = width;
+            const h = height;
+            const fillAmount = bar.value / bar.maxValue * w;
+            ctx.save();
+
+            //background
+            if(backgroundEnabled){
+                ctx.fillStyle = bar.background.color;
+                ctx.fillRect(x,y,w,h);
+            };
+            
+            //bar
+            ctx.fillStyle = bar.fillColor;
+            ctx.fillRect(x,y,fillAmount,h);
+
+            //outline
+            if(outlineEnabled){
+                ctx.strokeStyle = bar.outline.color;
+                ctx.strokeRect(x,y,w,h);
+            }
+            ctx.restore();
+        }
+        
     }
 
 }
