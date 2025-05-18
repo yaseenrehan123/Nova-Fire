@@ -54,7 +54,8 @@
           "regenDelay":1,
           "regenCooldown":0,
           "isDepleted":false
-        }
+        },
+        "isActive":true
       }
     },
     "blueBattery":{
@@ -85,7 +86,8 @@
         "notPlayer": true,
         "sceneOrientedRotation": true,
         "changeSpawnKey":"blueBullet",
-        "changeDelayComponent":0.3
+        "changeDelayComponent":0.3,
+        "isActive":true
       }
     },
     "purpleBattery":{
@@ -116,7 +118,8 @@
       "notPlayer": true,
       "sceneOrientedRotation": true,
       "changeSpawnKey":"purpleBullet",
-      "changeDelayComponent":0.7
+      "changeDelayComponent":0.7,
+      "isActive":true
       }
     },
     "yellowBattery":{
@@ -147,7 +150,8 @@
       "notPlayer": true,
       "sceneOrientedRotation": true,
       "changeSpawnKey":"yellowBullet",
-      "changeDelayComponent":0.2
+      "changeDelayComponent":0.2,
+      "isActive":true
       }
     },
     "greenBattery":{
@@ -178,7 +182,8 @@
       "notPlayer": true,
       "sceneOrientedRotation": true,
       "changeSpawnKey":"greenBullet",
-      "changeDelayComponent":0.5
+      "changeDelayComponent":0.5,
+      "isActive":true
       }
     },
     "enemy1":{
@@ -209,7 +214,8 @@
         "notPlayer": true,
         "sceneOrientedRotation": true,
         "health":10,
-        "damage":10
+        "damage":10,
+        "isActive":true
       }
     },
     "enemy2":{
@@ -240,7 +246,8 @@
         "notPlayer": true,
         "sceneOrientedRotation": true,
         "health":20,
-        "damage":10
+        "damage":10,
+        "isActive":true
       }
     },
     "enemy3":{
@@ -271,7 +278,8 @@
         "notPlayer": true,
         "sceneOrientedRotation": true,
         "health":3,
-        "damage":10
+        "damage":10,
+        "isActive":true
       }
     },
     "greenBullet":{
@@ -300,7 +308,8 @@
         "speed": 2,
         "moveVector": { "x": 0, "y": 0 },
         "notPlayer": true,
-        "damage":10
+        "damage":10,
+        "isActive":true
         }
     },
     "blueBullet":{
@@ -328,7 +337,8 @@
         "speed": 15,
         "moveVector": { "x": 0, "y": 0 },
         "notPlayer": true,
-        "damage":5
+        "damage":5,
+        "isActive":true
       }
     },
     "purpleBullet":{
@@ -357,7 +367,8 @@
         "speed": 2,
         "moveVector": { "x": 0, "y": 0 },
         "notPlayer": true,
-        "damage":20
+        "damage":20,
+        "isActive":true
       }
     },
     "yellowBullet":{
@@ -386,7 +397,8 @@
         "speed": 30,
         "moveVector": { "x": 0, "y": 0 },
         "notPlayer": true,
-        "damage":3
+        "damage":3,
+        "isActive":true
       }
     },
     "powerup":{
@@ -419,7 +431,8 @@
         "changeShootTimes":{
           "changeEffect":"increase",
           "value":1
-        }
+        },
+        "isActive":true
       }
     }
     

@@ -274,9 +274,10 @@ class ECSSystems {
     }
     changeBodyRotationSystem() {
         const engine = this.game.ecs.entityEngine;
-        engine.system('rotationMatterBodies', ['rotation', 'matterBody', 'matterBodyType'], (entity, {
-            rotation, matterBody, matterBodyType
+        engine.system('rotationMatterBodies', ['rotation', 'matterBody', 'matterBodyType','isActive'], (entity, {
+            rotation, matterBody, matterBodyType,isActive
         }) => {
+            if(!isActive)  return;
             const typesToRotate = ['rectangle'];
             if (!typesToRotate.includes(matterBodyType)) return;
             const rotationInRadians = rotation * (Math.PI / 180);
@@ -287,8 +288,10 @@ class ECSSystems {
 
     movePlayerSystem() {
         const engine = this.game.ecs.entityEngine;
-        engine.system('movePlayer', ['player', 'speed', 'moveVector', 'pos', 'matterBody'],
-            (entity, { player, speed, moveVector, pos, matterBody }) => {
+        engine.system('movePlayer', ['player', 'speed', 'moveVector', 'pos', 'matterBody','isActive'],
+            (entity, { player, speed, moveVector, pos, matterBody,isActive }) => {
+                if(!isActive)  return;
+                console.log("Plaayer move system running");
                 const mouseX = this.game.mouse.pos.x;
                 const mouseY = this.game.mouse.pos.y;
                 const playerX = pos.x;
@@ -324,8 +327,9 @@ class ECSSystems {
     }
     moveEntitiesSystem() {//used to move all entities 
         const engine = this.game.ecs.entityEngine;
-        engine.system('moveObjects', ['pos', 'rotation', 'matterBody', 'moveVector', 'speed', 'notPlayer'],
-            (entity, { pos, rotation, matterBody, moveVector, speed, notPlayer }) => {
+        engine.system('moveObjects', ['pos', 'rotation', 'matterBody', 'moveVector', 'speed', 'notPlayer','isActive'],
+            (entity, { pos, rotation, matterBody, moveVector, speed, notPlayer,isActive }) => {
+                if(!isActive)  return;
                 const rad = rotation * (Math.PI / 180)
                 //console.log(`${entity.name} + ${pos.x}`)
                 moveVector = {
@@ -354,9 +358,9 @@ class ECSSystems {
     };
     shootBulletsSystem() {
         const engine = this.game.ecs.entityEngine;
-        engine.system('shootBullets', ['pos', 'shootBullet', 'rotation', 'spawnPos', 'shootTimes',],
-            (entity, { pos, shootBullet, rotation, spawnPos, shootTimes }) => {
-
+        engine.system('shootBullets', ['pos', 'shootBullet', 'rotation', 'spawnPos', 'shootTimes','isActive'],
+            (entity, { pos, shootBullet, rotation, spawnPos, shootTimes,isActive }) => {
+                if(!isActive)  return;
                 //console.log("Rotation from shootBullets System:",rotation);
 
                 // ✅ Always update spawn positions
@@ -438,49 +442,51 @@ class ECSSystems {
     manageShootEnergySystem() {
         const engine = this.game.ecs.entityEngine;
 
-        engine.system('manageShootEnergySystem', ['shootEnergy', 'shootBullet'], (entity, { shootEnergy, shootBullet }) => {
-            const delta = this.game.deltaTime;
+        engine.system('manageShootEnergySystem', ['shootEnergy', 'shootBullet', 'isActive']
+            , (entity, { shootEnergy, shootBullet, isActive }) => {
+                if (!isActive) return;
+                const delta = this.game.deltaTime;
 
-            const fireActive = shootBullet.active;
-            let energy = shootEnergy.current;
-            const max = shootEnergy.max;
-            const regenRate = shootEnergy.regenRate;
-            const isPlayer = entity.hasComponent('player');
+                const fireActive = shootBullet.active;
+                let energy = shootEnergy.current;
+                const max = shootEnergy.max;
+                const regenRate = shootEnergy.regenRate;
+                const isPlayer = entity.hasComponent('player');
 
-            // Handle regeneration delay cooldown
-            if (shootEnergy.isDepleted) {
-                if (shootEnergy.regenCooldown > 0) {
-                    shootEnergy.regenCooldown -= delta;
-                    entity.setComponent('shootEnergy', shootEnergy);
-                    return; // Still waiting before regen starts
-                }
-            }
-
-            // Can only regen if not firing and not over max
-            if (!fireActive && energy < max) {
-                energy += regenRate * delta;
-
-                if (energy > max) {
-                    energy = max;
-                }
-
-                shootEnergy.current = energy;
-
-                // Fully recharged → no longer depleted
-                if (shootEnergy.isDepleted && energy >= max) {
-                    shootEnergy.isDepleted = false;
-                    if (isPlayer) {
-                        if (this.game.player.isFireHeld) {
-                            const shootBullet = entity.getComponent('shootBullet');
-                            shootBullet.active = true;
-                            entity.setComponent('shootBullet', shootBullet);
-                        }
+                // Handle regeneration delay cooldown
+                if (shootEnergy.isDepleted) {
+                    if (shootEnergy.regenCooldown > 0) {
+                        shootEnergy.regenCooldown -= delta;
+                        entity.setComponent('shootEnergy', shootEnergy);
+                        return; // Still waiting before regen starts
                     }
                 }
 
-                entity.setComponent('shootEnergy', shootEnergy);
-            }
-        });
+                // Can only regen if not firing and not over max
+                if (!fireActive && energy < max) {
+                    energy += regenRate * delta;
+
+                    if (energy > max) {
+                        energy = max;
+                    }
+
+                    shootEnergy.current = energy;
+
+                    // Fully recharged → no longer depleted
+                    if (shootEnergy.isDepleted && energy >= max) {
+                        shootEnergy.isDepleted = false;
+                        if (isPlayer) {
+                            if (this.game.player.isFireHeld) {
+                                const shootBullet = entity.getComponent('shootBullet');
+                                shootBullet.active = true;
+                                entity.setComponent('shootBullet', shootBullet);
+                            }
+                        }
+                    }
+
+                    entity.setComponent('shootEnergy', shootEnergy);
+                }
+            });
     }
     playerEnergyBarColorSystem() {
         const engine = this.game.ecs.entityEngine;
