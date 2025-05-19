@@ -441,7 +441,7 @@
         "width":300,
         "height":50,
         "bar":{
-          "value":1,
+          "value":0,
           "maxValue":1,
           "fillColor":"green",
           "background":{
@@ -456,6 +456,14 @@
           "lerping":{
             "enabled":false,
             "step":0.2
+          },
+          "flashEffect":{
+            "enabled":false,
+            "color":"white",
+            "step":0.3,
+            "value":0,
+            "prevValue":0,
+            "targetValue":0
           }
         },
         "isActive":true

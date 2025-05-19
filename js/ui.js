@@ -17,6 +17,8 @@ class PlayerUi{
         //this.healthBackgroundBar = null;
         this.healthBar = null;
         this.healthEffectBar = null;
+        this.healthBarEntity = null;
+        this.healthEffectBarEntity = null;
         this.energyBar = null;
         this.energyEffectBar = null;
 
@@ -52,8 +54,19 @@ class PlayerUi{
         const currentHealth = this.game.player.playerEntity.getComponent('health');
         const barPercentage = currentHealth / maxHealth;
         this.barPercentage = barPercentage;
-
+        
         this.healthBar.setValue(barPercentage);
+        const healthBarComponent = this.healthBarEntity.getComponent('bar');
+        const flashEffectEnabled = healthBarComponent.flashEffect.enabled;
+        if(flashEffectEnabled){
+            healthBarComponent.flashEffect.prevValue = healthBarComponent.flashEffect.value;
+            healthBarComponent.flashEffect.targetValue = barPercentage;
+        }
+        healthBarComponent.value = barPercentage;
+
+        console.log("FLASH PREVVALUE: ",healthBarComponent.flashEffect.prevValue);
+        console.log("Flash TARGET VALUE:",healthBarComponent.flashEffect.targetValue);
+        this.healthBarEntity.setComponent('bar',healthBarComponent);
 
     };
     initHealthBar(){
@@ -94,7 +107,50 @@ class PlayerUi{
         this.healthEffectBar.setFillColor(effectFillColor)
         this.healthEffectBar.setValue(1);
 
+        this.healthBarEntity = this.game.spawnEntity({
+            passedKey: 'bar',
+            componentsToModify: {
+                pos: { x: 500, y: 500 },
+                bar: {
+                    value:0,
+                    maxValue:1,
+                    fillColor:'green',
+                    background:{
+                        enabled:true,
+                        color:'black'
+                    },
+                    outline:{
+                        enabled:true,
+                        color:'grey',
+                        width:8
+                    },
+                    lerping:{
+                        enabled:false,
+                        step:0.2
+                    },
+                    flashEffect:{
+                        enabled:true,
+                        color:'white',
+                        step:0.2,
+                        value:0,
+                        prevValue:0,
+                        targetValue:0
+                    }
+                }
+
+            }
+        });
+        /*
+        this.healthEffectBarEntity = this.game.spawnEntity({
+            passedKey: 'bar',
+            componentsToModify : {
+                pos: { x: 500, y: 500 },
+            }
+        })
+            */
         this.updateHealthBar();
+
+        
     };
     initEnergyBar(){
 

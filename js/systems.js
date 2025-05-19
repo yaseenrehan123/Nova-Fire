@@ -280,7 +280,7 @@ class CustomSystems {
             const backgroundEnabled = bar.background.enabled;
             const outlineEnabled = bar.outline.enabled;
             const lerpingEnabled = bar.lerping.enabled;
-
+            const flashEffectEnabled = bar.flashEffect.enabled;
             const x = pos.x;
             const y = pos.y;
             const w = width;
@@ -293,7 +293,19 @@ class CustomSystems {
                 ctx.fillStyle = bar.background.color;
                 ctx.fillRect(x,y,w,h);
             };
-            
+            //flash effect
+            if(flashEffectEnabled){
+                ctx.fillStyle = bar.flashEffect.color;
+                const prevValue = bar.flashEffect.prevValue;
+                const targetValue = bar.flashEffect.targetValue;
+                const step = bar.flashEffect.step;
+                const value = this.game.lerp(prevValue,targetValue,step);
+                bar.flashEffect.value = value;
+                bar.flashEffect.prevValue = value;
+                const flashFillAmount = value / bar.maxValue * w;
+                ctx.fillRect(x,y,flashFillAmount,h);
+                console.log("FLASH VALUE",value);
+            }
             //bar
             ctx.fillStyle = bar.fillColor;
             ctx.fillRect(x,y,fillAmount,h);
@@ -304,6 +316,8 @@ class CustomSystems {
                 ctx.strokeRect(x,y,w,h);
             }
             ctx.restore();
+
+            e.setComponent('bar',bar);
         }
         
     }
@@ -336,7 +350,7 @@ class ECSSystems {
         engine.system('movePlayer', ['player', 'speed', 'moveVector', 'pos', 'matterBody','isActive'],
             (entity, { player, speed, moveVector, pos, matterBody,isActive }) => {
                 if(!isActive)  return;
-                console.log("Plaayer move system running");
+                //console.log("Plaayer move system running");
                 const mouseX = this.game.mouse.pos.x;
                 const mouseY = this.game.mouse.pos.y;
                 const playerX = pos.x;

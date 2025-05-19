@@ -11,13 +11,7 @@ function start(resources){
     
     game.player = new Player(game)
     game.ui = new Ui(game);
-    game.spawnEntity({
-        passedKey:'bar',
-        componentsToModify:{
-            pos:{x:500,y:500},
-            
-        }
-    })
+
     const yellowBattery = game.spawnEntity({
         passedKey:'yellowBattery',
         componentsToModify:{
