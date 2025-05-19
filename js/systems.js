@@ -239,6 +239,8 @@ class CustomSystems {
         e.setComponent('shootEnergy', shootEnergy);
         e.setComponent('shootBullet', shootBullet);
 
+        this.game.ui.playerUi.updateEnergyBar();
+
     };
     drawBar(){
         const ctx = this.game.ctx;
@@ -526,16 +528,12 @@ class ECSSystems {
                 //console.log("ShootEnergy In PlayerEnergyBar:", shootEnergy);
                 if (shootEnergy.isDepleted) {
                     const depletedColor = 'rgb(44, 6, 50)';
-                    this.game.ui.playerUi.energyBar.setFillColor(depletedColor);
-
                     const energyBarEntity = this.game.ui.playerUi.energyBarEntity;
                     const barComponent = energyBarEntity.getComponent('bar');
                     barComponent.fillColor = depletedColor;
                     energyBarEntity.setComponent('bar',barComponent);
                 }
                 else {
-                    this.game.ui.playerUi.energyBar.setFillColor('purple');
-
                     const energyBarEntity = this.game.ui.playerUi.energyBarEntity;
                     const barComponent = energyBarEntity.getComponent('bar');
                     barComponent.fillColor = 'purple';

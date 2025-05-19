@@ -14,13 +14,8 @@ class PlayerUi{
         this.game = game;
         this.ctx = game.ctx;
 
-        //this.healthBackgroundBar = null;
-        this.healthBar = null;
-        this.healthEffectBar = null;
         this.healthBarEntity = null;
         this.energyBarEntity = null;
-        this.energyBar = null;
-        this.energyEffectBar = null;
 
         this.barPercentage = null;
         this.energyBarPercentage = null;
@@ -35,38 +30,18 @@ class PlayerUi{
       
     };
     update(){
-        //console.log("Update called from player ui!");
-        //console.log("Effect bar value",this.healthEffectBar.value)
-        this.healthEffectBar.draw();
-        this.healthBar.draw();
-        
-        this.energyEffectBar.draw();
-        this.energyBar.draw();
         
         this.game.ui.playerUi.updateEnergyBar();
 
-        this.healthEffectBar.lerpValue(this.barPercentage);
-        this.energyEffectBar.lerpValue(this.energyBarPercentage);
-        
     };
     updateHealthBar(){
         const maxHealth = this.game.player.maxHealth;
         const currentHealth = this.game.player.playerEntity.getComponent('health');
-        const barPercentage = currentHealth / maxHealth;
-        this.barPercentage = barPercentage;
-        
-        this.healthBar.setValue(barPercentage);
-        const healthBarComponent = this.healthBarEntity.getComponent('bar');
-        const flashEffectEnabled = healthBarComponent.flashEffect.enabled;
-        if(flashEffectEnabled){
-            healthBarComponent.flashEffect.prevValue = healthBarComponent.flashEffect.value;
-            healthBarComponent.flashEffect.targetValue = barPercentage;
-        }
-        healthBarComponent.value = barPercentage;
-
-        //console.log("FLASH PREVVALUE: ",healthBarComponent.flashEffect.prevValue);
-        //console.log("Flash TARGET VALUE:",healthBarComponent.flashEffect.targetValue);
-        this.healthBarEntity.setComponent('bar',healthBarComponent);
+        this.game.setBarValue({
+            max:maxHealth,
+            current:currentHealth,
+            barEntity:this.healthBarEntity
+        });
 
     };
     initHealthBar(){
@@ -74,43 +49,11 @@ class PlayerUi{
         const outlineColor = 'rgb(30, 28, 39)';
         const backGroundFillColor = 'rgb(3, 0, 14)';
         const healthFillColor = 'rgb(1, 213, 11)';
-        const effectFillColor = 'white';
-
-        this.healthBar = new Bar({
-            game:this.game,
-            pos:{x:0,y:0},
-            width:300,
-            height:50,
-        });
-
-        this.healthEffectBar = new Bar({
-            game:this.game,
-            pos:{x:0,y:0},
-            width:300,
-            height:50,
-            outline:{
-                enabled:true,
-                width:8
-            },
-            background:{
-                enabled:true,
-            },
-            lerp:{
-                enabled:true,
-                step:0.2
-            }
-        });
-        this.healthBar.setFillColor(healthFillColor);
-
-        this.healthEffectBar.setBackGroundColor(backGroundFillColor);
-        this.healthEffectBar.setOutlineColor(outlineColor);
-        this.healthEffectBar.setFillColor(effectFillColor)
-        this.healthEffectBar.setValue(1);
 
         this.healthBarEntity = this.game.spawnEntity({
             passedKey: 'bar',
             componentsToModify: {
-                pos: { x: 500, y: 500 },
+                pos: { x: 0, y: 0 },
                 bar: {
                     fillColor:healthFillColor,
                     background:{
@@ -138,41 +81,10 @@ class PlayerUi{
         const outlineColor = 'rgb(32, 30, 39)';
         const backGroundFillColor = 'rgb(3, 0, 14)';
 
-        this.energyBar = new Bar({
-            game:this.game,
-            pos:{x:0,y:54},
-            width:150,
-            height:30,
-        });
-
-        this.energyEffectBar = new Bar({
-            game:this.game,
-            pos:{x:0,y:54},
-            width:150,
-            height:30,
-            outline:{
-                enabled:true,
-                width:4
-            },
-            background:{
-                enabled:true,
-            },
-            lerp:{
-                enabled:true,
-                step:0.1
-            }
-        })
-
-        this.energyBar.setValue(1);
-
-        this.energyEffectBar.setFillColor('white');
-        this.energyEffectBar.setOutlineColor(outlineColor);
-        this.energyEffectBar.setBackGroundColor(backGroundFillColor);
-        
         this.energyBarEntity = this.game.spawnEntity({
             passedKey:'bar',
             componentsToModify:{
-                pos:{x:500,y:600},
+                pos:{x:0,y:54},
                 width:150,
                 height:30,
                 bar:{
@@ -198,19 +110,13 @@ class PlayerUi{
     };
     updateEnergyBar(){
         const shootEnergyComponent = this.game.player.playerEntity.getComponent('shootEnergy');
-        const energyBarPercentage = shootEnergyComponent.current / shootEnergyComponent.max;
-        this.energyBar.setValue(energyBarPercentage);
-        this.energyBarPercentage = energyBarPercentage;
-
-        const barComponent = this.energyBarEntity.getComponent('bar');
-        const flashEffectEnabled = barComponent.flashEffect.enabled;
-        if(flashEffectEnabled){
-            barComponent.flashEffect.prevValue = barComponent.flashEffect.value;
-            barComponent.flashEffect.targetValue = energyBarPercentage;
-        }
-        barComponent.value = energyBarPercentage;
-
-        this.energyBarEntity.setComponent('bar',barComponent);
+        const max = shootEnergyComponent.max;
+        const current = shootEnergyComponent.current;
+        this.game.setBarValue({
+            max:max,
+            current:current,
+            barEntity:this.energyBarEntity
+        });
     };
 };
 class SettingsUi{

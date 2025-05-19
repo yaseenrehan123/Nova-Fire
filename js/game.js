@@ -305,5 +305,25 @@ export class Game{
         for(const e of entities){
             this.queryAllComponents(e, reqComponents, callback);
         };
-    }
+    };
+    setBarValue(options){
+        const {
+            max = 0,
+            current = 0,
+            barEntity = null
+        } = options;
+
+        const newValue = current / max;// gives value between 0 and 1
+
+        const barComponent = barEntity.getComponent('bar');
+        const flashEffectEnabled = barComponent.flashEffect.enabled;
+        console.log("FLASH EFFECT ENABLED:",flashEffectEnabled);
+        if(flashEffectEnabled){
+            barComponent.flashEffect.prevValue = barComponent.flashEffect.value;
+            barComponent.flashEffect.targetValue = newValue;
+        };
+        barComponent.value = newValue;
+
+        barEntity.setComponent('bar',barComponent);
+    };
 }
