@@ -38,41 +38,35 @@ class CustomSystems {
         this.game = game;
     }
     addSceneRotation() {
-        const req = ['rotation', 'sceneOrientedRotation', 'baseRotation'];
-        const entities = Object.values(this.game.ecs.entityEngine.entities);
+        this.game.filterEntitiesByComponents(
+            ['rotation', 'sceneOrientedRotation', 'baseRotation'],
+            (e) =>{
 
-        for (let e of entities) {
-            if (!req.every(c => e.hasComponent(c))) continue;
-
-            let baseRotation = e.getComponent('baseRotation');
-            let rotation = 0;
-            rotation = baseRotation + this.game.sceneRotation;
-            e.setComponent('rotation', rotation);
-        }
+                let baseRotation = e.getComponent('baseRotation');
+                let rotation = 0;
+                rotation = baseRotation + this.game.sceneRotation;
+                e.setComponent('rotation', rotation);
+            }
+        )
     }
     setBaseRotation() {
-        const req = ['rotation', 'sceneOrientedRotation', 'baseRotation'];
-        const entities = Object.values(this.game.ecs.entityEngine.entities);
-        for (let e of entities) {
-            if (!req.every(c => e.hasComponent(c))) continue;
-            const rotation = e.getComponent('rotation');
-            let baseRotation = 0;
-            baseRotation = rotation - this.game.sceneRotation;
+        this.game.filterEntitiesByComponents(
+            ['rotation', 'sceneOrientedRotation', 'baseRotation'],
+            (e) => {
+                const rotation = e.getComponent('rotation');
+                let baseRotation = 0;
+                baseRotation = rotation - this.game.sceneRotation;
 
-            e.setComponent('baseRotation', baseRotation)// set base rotation to rotation
-        }
+                e.setComponent('baseRotation', baseRotation)
+            }
+        );
     }
     debugMatterBodies() {
-        if (this.game.matter.debugBodies) {
-            //const builder = this.shapeBuilder.builder;
-            //builder.clear();
+        if (!this.game.matter.debugBodies) return;
 
-            const req = ['pos', 'matterBody', 'matterBodyType', 'rotation'];
-            const entities = Object.values(this.game.ecs.entityEngine.entities);
-
-            for (let e of entities) {
-                if (!req.every(c => e.hasComponent(c))) continue;
-
+        this.game.filterEntitiesByComponents(
+            ['pos', 'matterBody', 'matterBodyType', 'rotation'],
+            (e) => {
                 //const pos = e.getComponent('pos');
                 const body = e.getComponent('matterBody');
                 const bodyType = e.getComponent('matterBodyType');
@@ -126,18 +120,15 @@ class CustomSystems {
                         break;
                 }
             }
-        }
+        );
+
 
     }
     drawSprites() {
-        const req = ['imgKey', 'pos', 'width', 'height', 'rotation', 'centerImage'];
-        const entities = Object.values(this.game.ecs.entityEngine.entities);
-
-        for (let e of entities) {
-            // only draw if it has every required component
-            if (!req.every(c => e.hasComponent(c))) continue;
-
-            // grab them out
+        this.game.filterEntitiesByComponents(
+            ['imgKey', 'pos', 'width', 'height', 'rotation', 'centerImage'],
+            (e) => {
+                 // grab them out
             const imgKey = e.getComponent('imgKey');
             const pos = e.getComponent('pos');
             const width = e.getComponent('width');
@@ -149,7 +140,7 @@ class CustomSystems {
             const img = this.game.images[imgKey];
             if (!img) {
                 console.warn(`No image for key "${imgKey}"`);
-                continue;
+                return;
             }
 
             // call your helper
@@ -161,80 +152,67 @@ class CustomSystems {
                 rotation,
                 centerImage
             });
-        }
+            }
+        );
+      
 
 
     }
     traceMatterBodies() {// draws a line from center of screen to all body positions
         if (!this.game.matter.debugBodies) return
-        const req = ['matterBody'];
-        const entities = Object.values(this.game.ecs.entityEngine.entities);
-
         const ctx = this.game.ctx;
         const color = 'red';
+        this.game.filterEntitiesByComponents(
+            ['matterBody'],
+            (e) => {
+                const matterBody = e.getComponent('matterBody');
 
-        for (let e of entities) {
-            // only draw if it has every required component
-            if (!req.every(c => e.hasComponent(c))) continue;
-
-            const matterBody = e.getComponent('matterBody');
-
-            ctx.strokeStyle = color;
-            ctx.beginPath();
-            ctx.moveTo(this.game.screenCenterPos.x, this.game.screenCenterPos.y);
-            ctx.lineTo(matterBody.position.x, matterBody.position.y);
-            ctx.stroke();
-        }
+                ctx.strokeStyle = color;
+                ctx.beginPath();
+                ctx.moveTo(this.game.screenCenterPos.x, this.game.screenCenterPos.y);
+                ctx.lineTo(matterBody.position.x, matterBody.position.y);
+                ctx.stroke();
+            }
+        );
     };
     DebugShootingDirection() {
-        const req = ['rotation', 'pos', 'spawnPos', 'shootBullet'];
-        const entities = Object.values(this.game.ecs.entityEngine.entities);
+        this.game.filterEntitiesByComponents(
+            ['rotation', 'pos', 'spawnPos', 'shootBullet'],
+            (e) => {
+                const rotation = e.getComponent('rotation');
+                //const pos = e.getComponent('pos');
+                const spawnPos = e.getComponent('spawnPos');
 
-        for (let e of entities) {
+                //console.log("Spawn pos form debugShootingDirection",spawnPos);
 
-            if (!req.every(c => e.hasComponent(c))) continue;
+                const length = 300;
+                const ctx = this.game.ctx;
+                ctx.strokeStyle = 'red';
 
-            const rotation = e.getComponent('rotation');
-            const pos = e.getComponent('pos');
-            const spawnPos = e.getComponent('spawnPos');
+                spawnPos.forEach((point) => {
+                    const angleInRads = (rotation - 90) * (Math.PI / 180);
+                    const endX = point.pos.x + Math.cos(angleInRads) * length;
+                    const endY = point.pos.y + Math.sin(angleInRads) * length;
 
-            //console.log("Spawn pos form debugShootingDirection",spawnPos);
+                    ctx.beginPath();
+                    ctx.moveTo(point.pos.x, point.pos.y);
+                    ctx.lineTo(endX, endY);
+                    ctx.stroke();
 
-            const length = 300;
-            const ctx = this.game.ctx;
-            ctx.strokeStyle = 'red';
-
-            spawnPos.forEach((point) => {
-                const angleInRads = (rotation - 90) * (Math.PI / 180);
-                const endX = point.pos.x + Math.cos(angleInRads) * length;
-                const endY = point.pos.y + Math.sin(angleInRads) * length;
-
-                ctx.beginPath();
-                ctx.moveTo(point.pos.x, point.pos.y);
-                ctx.lineTo(endX, endY);
-                ctx.stroke();
-
-            });
-
-        }
+                });
+            }
+        )
     }
     trackPlayerRotation() {
-        const req = ['player', 'rotation'];
-        const entities = Object.values(this.game.ecs.entityEngine.entities);
-
-        for (let e of entities) {
-
-            if (!req.every(c => e.hasComponent(c))) continue;
-
-            const rotation = e.getComponent('rotation');
-            console.log("Player Rotation:", rotation)
-        }
+        this.game.filterEntitiesByComponents(
+            ['player', 'rotation'],
+            (e) => {
+                const rotation = e.getComponent('rotation');
+                console.log("Player Rotation:", rotation)
+            }
+        )
     };
     depleteShootEnergy(e) {
-        const req = ['shootEnergy', 'shootBullet'];
-
-        if (!req.every(c => e.hasComponent(c))) return;
-
         const shootEnergy = e.getComponent('shootEnergy');
         const shootBullet = e.getComponent('shootBullet');
         //const isPlayer = e.hasComponent('player');
@@ -264,14 +242,11 @@ class CustomSystems {
     };
     drawBar(){
         const ctx = this.game.ctx;
-        const req = ['bar','pos','width','height','isActive'];
-        const entities = Object.values(this.game.ecs.entityEngine.entities);
-
-        for(const e of entities){
-            if (!req.every(c => e.hasComponent(c))) continue;
-
-            const isActive = e.getComponent('isActive');
-            if(!isActive) continue;
+        this.game.filterEntitiesByComponents(
+            ['bar','pos','width','height','isActive'],
+            (e) => {
+                 const isActive = e.getComponent('isActive');
+            if(!isActive) return;
             const pos = e.getComponent('pos');
             const width = e.getComponent('width');
             const height = e.getComponent('height');
@@ -304,7 +279,7 @@ class CustomSystems {
                 bar.flashEffect.prevValue = value;
                 const flashFillAmount = value / bar.maxValue * w;
                 ctx.fillRect(x,y,flashFillAmount,h);
-                console.log("FLASH VALUE",value);
+                //console.log("FLASH VALUE",value);
             }
             //bar
             ctx.fillStyle = bar.fillColor;
@@ -318,8 +293,8 @@ class CustomSystems {
             ctx.restore();
 
             e.setComponent('bar',bar);
-        }
-        
+            }
+        )
     }
 
 }
@@ -439,8 +414,7 @@ class ECSSystems {
                     return;
                 }
 
-                this.game.ecs.customSystems.depleteShootEnergy(entity);
-
+                
                 const playerComp = entity.hasComponent('player');
                 let shotByPlayer = false;
                 let matterBodyOptions = {};
@@ -450,6 +424,7 @@ class ECSSystems {
                 }
 
                 if (shotByPlayer) {
+                    this.game.ecs.customSystems.depleteShootEnergy(entity);
                     matterBodyOptions = {
                         label: "playerBullet",
                         collisionFilter: {

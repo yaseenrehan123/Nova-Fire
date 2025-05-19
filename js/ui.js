@@ -18,7 +18,6 @@ class PlayerUi{
         this.healthBar = null;
         this.healthEffectBar = null;
         this.healthBarEntity = null;
-        this.healthEffectBarEntity = null;
         this.energyBar = null;
         this.energyEffectBar = null;
 
@@ -64,8 +63,8 @@ class PlayerUi{
         }
         healthBarComponent.value = barPercentage;
 
-        console.log("FLASH PREVVALUE: ",healthBarComponent.flashEffect.prevValue);
-        console.log("Flash TARGET VALUE:",healthBarComponent.flashEffect.targetValue);
+        //console.log("FLASH PREVVALUE: ",healthBarComponent.flashEffect.prevValue);
+        //console.log("Flash TARGET VALUE:",healthBarComponent.flashEffect.targetValue);
         this.healthBarEntity.setComponent('bar',healthBarComponent);
 
     };

@@ -59,7 +59,7 @@ export class Physics{
                     });
                     //set healthbar
                     this.game.ui.playerUi.updateHealthBar();
-                    console.log("Player health: " , playerEntity.getComponent('health'));
+                    //console.log("Player health: " , playerEntity.getComponent('health'));
                     // destroy enemy
                     this.game.removeEntity(enemyEntity);
                     //console.log("Player collided with enemy");

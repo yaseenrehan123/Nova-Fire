@@ -256,7 +256,7 @@ export class Game{
             health:newHealth
         })
 
-        console.log('healthComponent new health:',newHealth);
+        //console.log('healthComponent new health:',newHealth);
     }
     onHealthEmpty(options){
         const {
@@ -294,5 +294,16 @@ export class Game{
         this.isPaused = true;
         this.ecs.entitySim.pause();
     };
-    
+    queryAllComponents(e,reqComponents,callback){
+        if(!reqComponents.every(c => e.hasComponent(c)))return;
+        callback(e);
+    }
+    filterEntitiesByComponents(reqComponents,callback){
+        const entities = Object.values(this.ecs.entityEngine.entities);
+
+        //console.log("ENTITIES:",entities);
+        for(const e of entities){
+            this.queryAllComponents(e, reqComponents, callback);
+        };
+    }
 }
