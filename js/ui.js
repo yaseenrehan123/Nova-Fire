@@ -18,6 +18,7 @@ class PlayerUi{
         this.healthBar = null;
         this.healthEffectBar = null;
         this.healthBarEntity = null;
+        this.energyBarEntity = null;
         this.energyBar = null;
         this.energyEffectBar = null;
 
@@ -111,11 +112,14 @@ class PlayerUi{
             componentsToModify: {
                 pos: { x: 500, y: 500 },
                 bar: {
+                    fillColor:healthFillColor,
                     background:{
                         enabled:true,
+                        color:backGroundFillColor
                     },
                     outline:{
                         enabled:true,
+                        color:outlineColor
                     },
                     flashEffect:{
                         enabled:true,
@@ -164,7 +168,32 @@ class PlayerUi{
         this.energyEffectBar.setFillColor('white');
         this.energyEffectBar.setOutlineColor(outlineColor);
         this.energyEffectBar.setBackGroundColor(backGroundFillColor);
-       
+        
+        this.energyBarEntity = this.game.spawnEntity({
+            passedKey:'bar',
+            componentsToModify:{
+                pos:{x:500,y:600},
+                width:150,
+                height:30,
+                bar:{
+                    fillColor:'purple',
+                    background:{
+                        enabled:true,
+                        color:backGroundFillColor
+                    },
+                    outline:{
+                        enabled:true,
+                        color:outlineColor,
+                        width:4
+                    },
+                    flashEffect:{
+                        enabled:true,
+                        step:0.1
+                    }
+                }
+            }
+        })
+
         this.updateEnergyBar();
     };
     updateEnergyBar(){
@@ -172,6 +201,16 @@ class PlayerUi{
         const energyBarPercentage = shootEnergyComponent.current / shootEnergyComponent.max;
         this.energyBar.setValue(energyBarPercentage);
         this.energyBarPercentage = energyBarPercentage;
+
+        const barComponent = this.energyBarEntity.getComponent('bar');
+        const flashEffectEnabled = barComponent.flashEffect.enabled;
+        if(flashEffectEnabled){
+            barComponent.flashEffect.prevValue = barComponent.flashEffect.value;
+            barComponent.flashEffect.targetValue = energyBarPercentage;
+        }
+        barComponent.value = energyBarPercentage;
+
+        this.energyBarEntity.setComponent('bar',barComponent);
     };
 };
 class SettingsUi{

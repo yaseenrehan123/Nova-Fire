@@ -288,6 +288,7 @@ class CustomSystems {
             //outline
             if(outlineEnabled){
                 ctx.strokeStyle = bar.outline.color;
+                ctx.lineWidth = bar.outline.width;
                 ctx.strokeRect(x,y,w,h);
             }
             ctx.restore();
@@ -524,10 +525,21 @@ class ECSSystems {
             (entity, { player, shootEnergy }) => {
                 //console.log("ShootEnergy In PlayerEnergyBar:", shootEnergy);
                 if (shootEnergy.isDepleted) {
-                    this.game.ui.playerUi.energyBar.setFillColor('rgb(44, 6, 50)');
+                    const depletedColor = 'rgb(44, 6, 50)';
+                    this.game.ui.playerUi.energyBar.setFillColor(depletedColor);
+
+                    const energyBarEntity = this.game.ui.playerUi.energyBarEntity;
+                    const barComponent = energyBarEntity.getComponent('bar');
+                    barComponent.fillColor = depletedColor;
+                    energyBarEntity.setComponent('bar',barComponent);
                 }
                 else {
                     this.game.ui.playerUi.energyBar.setFillColor('purple');
+
+                    const energyBarEntity = this.game.ui.playerUi.energyBarEntity;
+                    const barComponent = energyBarEntity.getComponent('bar');
+                    barComponent.fillColor = 'purple';
+                    energyBarEntity.setComponent('bar',barComponent);
                 }
             }
         )
