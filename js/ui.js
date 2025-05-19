@@ -112,42 +112,20 @@ class PlayerUi{
             componentsToModify: {
                 pos: { x: 500, y: 500 },
                 bar: {
-                    value:0,
-                    maxValue:1,
-                    fillColor:'green',
                     background:{
                         enabled:true,
-                        color:'black'
                     },
                     outline:{
                         enabled:true,
-                        color:'grey',
-                        width:8
-                    },
-                    lerping:{
-                        enabled:false,
-                        step:0.2
                     },
                     flashEffect:{
                         enabled:true,
-                        color:'white',
-                        step:0.2,
-                        value:0,
-                        prevValue:0,
-                        targetValue:0
                     }
                 }
 
             }
         });
-        /*
-        this.healthEffectBarEntity = this.game.spawnEntity({
-            passedKey: 'bar',
-            componentsToModify : {
-                pos: { x: 500, y: 500 },
-            }
-        })
-            */
+       
         this.updateHealthBar();
 
         

@@ -4,7 +4,7 @@ import {Engine as EntityEngine,Simulator as EntitySimulator} from 'jecs';
 import { World } from 'matter-js';
 import { Systems } from './systems.js';
 import { Physics } from './physics.js';
-import { Ui } from './ui.js';
+import merge from 'lodash.merge';
 //import { Builder, shapes } from "shape-builder";
 //const { Point, Rectangle } = shapes;
 
@@ -173,18 +173,14 @@ export class Game{
             throw new Error(`Requested data not found in entitiesData: ${passedKey}`);
         }
 
-        const components = reqData.components;
-        for(const key in componentsToModify){
-            if(components.hasOwnProperty(key)){
-                components[key] = componentsToModify[key];
-            }
-        }
+        const originalComponents = reqData.components;
+        const modifiedComponents = merge({},originalComponents,componentsToModify);
         //console.log("Modified Components:",components);
 
         id = new CreateEntity({
             game:this,
             name:passedKey,
-            components:components
+            components:modifiedComponents
         }).entity;
         
         return id;

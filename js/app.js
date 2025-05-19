@@ -20,9 +20,7 @@ function start(resources){
             baseRotation:180,
             matterBodyOptions:{
                 label: "item",
-                isSensor: true,
                 collisionFilter:{
-                    group:0,
                     category:game.collisionCategories.itemCategory,
                     mask:game.collisionCategories.playerCategory
                 }
@@ -38,9 +36,7 @@ function start(resources){
             baseRotation:180,
             matterBodyOptions:{
                 label: "item",
-                isSensor: true,
                 collisionFilter:{
-                    group:0,
                     category:game.collisionCategories.itemCategory,
                     mask:game.collisionCategories.playerCategory
                 }
@@ -57,9 +53,7 @@ function start(resources){
             baseRotation:180,
             matterBodyOptions:{
                 label: "item",
-                isSensor: true,
                 collisionFilter:{
-                    group:0,
                     category:game.collisionCategories.itemCategory,
                     mask:game.collisionCategories.playerCategory
                 }
@@ -75,9 +69,7 @@ function start(resources){
             baseRotation:180,
             matterBodyOptions:{
                 label: "item",
-                isSensor: true,
                 collisionFilter:{
-                    group:0,
                     category:game.collisionCategories.itemCategory,
                     mask:game.collisionCategories.playerCategory
                 }
@@ -93,9 +85,7 @@ function start(resources){
             baseRotation:180,
             matterBodyOptions:{
                 label: "item",
-                isSensor: true,
                 collisionFilter:{
-                    group:0,
                     category:game.collisionCategories.itemCategory,
                     mask:game.collisionCategories.playerCategory
                 }
@@ -111,9 +101,7 @@ function start(resources){
             baseRotation:180,
              matterBodyOptions:{
                 label: "enemy",
-                //isSensor: true,
                 collisionFilter:{
-                    group:0,
                     category:game.collisionCategories.enemyCategory,
                     mask:game.collisionCategories.playerCategory | game.collisionCategories.playerBulletCategory
                 }
@@ -129,9 +117,7 @@ function start(resources){
             baseRotation:180,
              matterBodyOptions:{
                 label: "enemy",
-                //isSensor: true,
                 collisionFilter:{
-                    group:0,
                     category:game.collisionCategories.enemyCategory,
                     mask:game.collisionCategories.playerCategory | game.collisionCategories.playerBulletCategory
                 }
@@ -147,9 +133,7 @@ function start(resources){
             baseRotation:180,
              matterBodyOptions:{
                 label: "enemy",
-                //isSensor: true,
                 collisionFilter:{
-                    group:0,
                     category:game.collisionCategories.enemyCategory,
                     mask:game.collisionCategories.playerCategory | game.collisionCategories.playerBulletCategory
                 }

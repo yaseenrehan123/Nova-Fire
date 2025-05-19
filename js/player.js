@@ -20,9 +20,7 @@ export class Player{
                 },
                 matterBodyOptions:{
                     label: "player",
-                    isSensor: true,
                     collisionFilter:{
-                        group:0,
                         category:this.game.collisionCategories.playerCategory,
                         mask:this.game.collisionCategories.itemCategory | this.game.collisionCategories.enemyCategory
                     }
