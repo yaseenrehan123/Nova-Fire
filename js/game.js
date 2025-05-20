@@ -327,4 +327,36 @@ export class Game{
 
         barEntity.setComponent('bar',barComponent);
     };
+    alignmentHorizontal(x, w, xAlignment) {
+        let posX = null;
+        if (xAlignment === 'left') {
+            posX = x;
+        }
+        else if (xAlignment === 'center') {
+            posX = x + w / 2;
+        }
+        else if (xAlignment === 'right') {
+            posX = x + w;
+        };
+        return posX;
+    };
+    alignmentVertical(y, h, yAlignment) {
+        let posY = null;
+        if (yAlignment === 'top') {
+            posY = y;
+        }
+        else if (yAlignment === 'middle') {
+            posY = y + h / 2;
+        }
+        else if (yAlignment === 'bottom') {
+            posY = y + h
+        };
+        return posY;
+    };
+    setIsActive(entity,bool){
+        let isActive = entity.getComponent('isActive');
+        if(isActive === null) return;
+        isActive = bool;
+        entity.setComponent('isActive',isActive);
+    }
 }

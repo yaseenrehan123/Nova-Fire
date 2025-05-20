@@ -319,13 +319,13 @@ class CustomSystems {
         const height = e.getComponent('height');
         const rectangleShape = e.getComponent('rectangleShape');
         const color = e.getComponent('shapeColor');
+        const alignment = e.getComponent('alignment');
 
         const w = width;
         const h = height;
         const isRoundedEnabled = rectangleShape.rounded.enabled;
         const isOutlineEnabled = rectangleShape.outline.enabled;
-        const isCenterEnabled = rectangleShape.centered.enabled;
-
+       
         let x = pos.x;
         let y = pos.y;
 
@@ -334,12 +334,15 @@ class CustomSystems {
         ctx.beginPath();
         //shape
         ctx.fillStyle = color;
-        if(isCenterEnabled){
-            const boundX = rectangleShape.centered.boundX;
-            const boundY = rectangleShape.centered.boundY;
-
-            x = boundX - w/2;
-            y = boundY - h/2;
+        if(alignment){
+            const alignmentX = alignment.alignmentX;
+            const alignmentY = alignment.alignmentY;
+            const bw = alignment.borderWidth;
+            const bh = alignment.borderHeight;
+            ctx.textAlign = alignmentX;
+            ctx.textBaseline = alignmentY;
+            x = this.game.alignmentHorizontal(0, bw - width, alignmentX);
+            y = this.game.alignmentVertical(0, bh - height, alignmentY);
         }
         if(isRoundedEnabled){
             const r = rectangleShape.rounded.radius;

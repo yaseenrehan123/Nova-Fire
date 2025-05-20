@@ -477,11 +477,6 @@
         "shapeColor":"white",
         "shapeType":"rectangle",
         "rectangleShape":{
-          "centered":{
-            "enabled":true,
-            "boundX":0,
-            "boundY":0
-          },
           "rounded":{
             "enabled":false,
             "radius":20
@@ -492,7 +487,13 @@
             "color":"grey"
           }
         },
-        "isActive":true
+        "isActive":true,
+        "alignment":{
+          "alignmentX":"center",
+          "alignmentY":"middle",
+          "borderWidth":0,
+          "borderHeight":0
+        }
       }
     }
     

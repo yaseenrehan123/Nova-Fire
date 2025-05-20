@@ -122,8 +122,7 @@ class SettingsUi{
         this.ctx = game.ctx;
 
         this.settingsBtn = null;
-        this.settingsPanel = null;
-        this.settingPanelEntity = null;
+        this.settingsPanelEntity = null;
 
         this.start();
     };
@@ -134,7 +133,6 @@ class SettingsUi{
     };
     update(){
         this.settingsBtn.draw();
-        this.settingsPanel.draw();
     };
     initSettingsBtn(){
         this.settingsBtn = new Button(this.game);
@@ -152,7 +150,7 @@ class SettingsUi{
         this.settingsBtn.setHeight(100);
         this.settingsBtn.setFontText('Settings');
         this.settingsBtn.setOnPress(()=>{
-            this.settingsPanel.setIsVisible(true);
+            this.game.setIsActive(this.settingsPanelEntity,true);
             this.game.pauseGame();;
         });
         this.settingsBtn.setOnRelease(()=>{
@@ -160,18 +158,12 @@ class SettingsUi{
         })
     };
     initSettingsPanel(){
-        this.settingsPanel = new Panel(this.game);
 
         const bgColor = 'rgb(33, 76, 141)';
-        const centerX = this.game.screenCenterPos.x;
-        const centerY = this.game.screenCenterPos.y;
-        this.settingsPanel.setBackgroundColor(bgColor);
-        this.settingsPanel.setWidth(900);
-        this.settingsPanel.setHeight(700);
-        this.settingsPanel.setCenteredPosition(centerX,centerY);
-        this.settingsPanel.setIsVisible(false);
+        const screenWidth = this.game.width;
+        const screenHeight = this.game.height;
 
-        this.settingPanelEntity = this.game.spawnEntity({
+        this.settingsPanelEntity = this.game.spawnEntity({
             passedKey:'panel',
             componentsToModify:{
                 pos:this.game.screenCenterPos,
@@ -182,12 +174,12 @@ class SettingsUi{
                     rounded:{
                         enabled:true
                     },
-                    centered:{
-                        enabled:true,
-                        boundX:centerX,
-                        boundY:centerY
-                    }
-                }
+                },
+                alignment: {
+                    borderWidth: screenWidth,
+                    borderHeight: screenHeight,
+                },
+                isActive:false
             }
         })
     };
