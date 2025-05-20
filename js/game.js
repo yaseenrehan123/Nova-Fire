@@ -91,6 +91,7 @@ export class Game{
         this.ecs.customSystems.traceMatterBodies();
         this.ecs.customSystems.DebugShootingDirection();
         this.ecs.customSystems.drawBar();
+        this.ecs.customSystems.drawShapes();
         //this.ecs.customSystems.trackPlayerRotation();
 
         //this.shapeBuilder.builder.draw(this.ctx);
@@ -317,7 +318,7 @@ export class Game{
 
         const barComponent = barEntity.getComponent('bar');
         const flashEffectEnabled = barComponent.flashEffect.enabled;
-        console.log("FLASH EFFECT ENABLED:",flashEffectEnabled);
+        //console.log("FLASH EFFECT ENABLED:",flashEffectEnabled);
         if(flashEffectEnabled){
             barComponent.flashEffect.prevValue = barComponent.flashEffect.value;
             barComponent.flashEffect.targetValue = newValue;

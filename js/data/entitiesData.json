@@ -468,6 +468,32 @@
         },
         "isActive":true
       }
+    },
+    "panel":{
+      "components":{
+        "pos":{"x":0,"y":0},
+        "width:":100,
+        "height":100,
+        "shapeColor":"white",
+        "shapeType":"rectangle",
+        "rectangleShape":{
+          "centered":{
+            "enabled":true,
+            "boundX":0,
+            "boundY":0
+          },
+          "rounded":{
+            "enabled":false,
+            "radius":20
+          },
+          "outline":{
+            "enabled":false,
+            "width":8,
+            "color":"grey"
+          }
+        },
+        "isActive":true
+      }
     }
     
   }

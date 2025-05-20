@@ -17,9 +17,6 @@ class PlayerUi{
         this.healthBarEntity = null;
         this.energyBarEntity = null;
 
-        this.barPercentage = null;
-        this.energyBarPercentage = null;
-
         this.start();
     };
     start(){
@@ -126,6 +123,7 @@ class SettingsUi{
 
         this.settingsBtn = null;
         this.settingsPanel = null;
+        this.settingPanelEntity = null;
 
         this.start();
     };
@@ -173,5 +171,24 @@ class SettingsUi{
         this.settingsPanel.setCenteredPosition(centerX,centerY);
         this.settingsPanel.setIsVisible(false);
 
+        this.settingPanelEntity = this.game.spawnEntity({
+            passedKey:'panel',
+            componentsToModify:{
+                pos:this.game.screenCenterPos,
+                width:900,
+                height:700,
+                shapeColor:bgColor,
+                rectangleShape:{
+                    rounded:{
+                        enabled:true
+                    },
+                    centered:{
+                        enabled:true,
+                        boundX:centerX,
+                        boundY:centerY
+                    }
+                }
+            }
+        })
     };
 }

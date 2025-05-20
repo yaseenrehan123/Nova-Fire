@@ -242,63 +242,122 @@ class CustomSystems {
         this.game.ui.playerUi.updateEnergyBar();
 
     };
-    drawBar(){
+    drawBar() {
         const ctx = this.game.ctx;
         this.game.filterEntitiesByComponents(
-            ['bar','pos','width','height','isActive'],
+            ['bar', 'pos', 'width', 'height', 'isActive'],
             (e) => {
-                 const isActive = e.getComponent('isActive');
-            if(!isActive) return;
-            const pos = e.getComponent('pos');
-            const width = e.getComponent('width');
-            const height = e.getComponent('height');
-            const bar = e.getComponent('bar');
+                const isActive = e.getComponent('isActive');
+                if (!isActive) return;
+                const pos = e.getComponent('pos');
+                const width = e.getComponent('width');
+                const height = e.getComponent('height');
+                const bar = e.getComponent('bar');
 
-            const backgroundEnabled = bar.background.enabled;
-            const outlineEnabled = bar.outline.enabled;
-            const lerpingEnabled = bar.lerping.enabled;
-            const flashEffectEnabled = bar.flashEffect.enabled;
-            const x = pos.x;
-            const y = pos.y;
-            const w = width;
-            const h = height;
-            const fillAmount = bar.value / bar.maxValue * w;
-            ctx.save();
+                const backgroundEnabled = bar.background.enabled;
+                const outlineEnabled = bar.outline.enabled;
+                const lerpingEnabled = bar.lerping.enabled;
+                const flashEffectEnabled = bar.flashEffect.enabled;
+                const x = pos.x;
+                const y = pos.y;
+                const w = width;
+                const h = height;
+                const fillAmount = bar.value / bar.maxValue * w;
+                ctx.save();
 
-            //background
-            if(backgroundEnabled){
-                ctx.fillStyle = bar.background.color;
-                ctx.fillRect(x,y,w,h);
-            };
-            //flash effect
-            if(flashEffectEnabled){
-                ctx.fillStyle = bar.flashEffect.color;
-                const prevValue = bar.flashEffect.prevValue;
-                const targetValue = bar.flashEffect.targetValue;
-                const step = bar.flashEffect.step;
-                const value = this.game.lerp(prevValue,targetValue,step);
-                bar.flashEffect.value = value;
-                bar.flashEffect.prevValue = value;
-                const flashFillAmount = value / bar.maxValue * w;
-                ctx.fillRect(x,y,flashFillAmount,h);
-                //console.log("FLASH VALUE",value);
-            }
-            //bar
-            ctx.fillStyle = bar.fillColor;
-            ctx.fillRect(x,y,fillAmount,h);
+                //background
+                if (backgroundEnabled) {
+                    ctx.fillStyle = bar.background.color;
+                    ctx.fillRect(x, y, w, h);
+                };
+                //flash effect
+                if (flashEffectEnabled) {
+                    ctx.fillStyle = bar.flashEffect.color;
+                    const prevValue = bar.flashEffect.prevValue;
+                    const targetValue = bar.flashEffect.targetValue;
+                    const step = bar.flashEffect.step;
+                    const value = this.game.lerp(prevValue, targetValue, step);
+                    bar.flashEffect.value = value;
+                    bar.flashEffect.prevValue = value;
+                    const flashFillAmount = value / bar.maxValue * w;
+                    ctx.fillRect(x, y, flashFillAmount, h);
+                    //console.log("FLASH VALUE",value);
+                }
+                //bar
+                ctx.fillStyle = bar.fillColor;
+                ctx.fillRect(x, y, fillAmount, h);
 
-            //outline
-            if(outlineEnabled){
-                ctx.strokeStyle = bar.outline.color;
-                ctx.lineWidth = bar.outline.width;
-                ctx.strokeRect(x,y,w,h);
-            }
-            ctx.restore();
+                //outline
+                if (outlineEnabled) {
+                    ctx.strokeStyle = bar.outline.color;
+                    ctx.lineWidth = bar.outline.width;
+                    ctx.strokeRect(x, y, w, h);
+                }
+                ctx.restore();
 
-            e.setComponent('bar',bar);
+                e.setComponent('bar', bar);
             }
         )
-    }
+    };
+    drawShapes(){
+        this.game.filterEntitiesByComponents(
+            ['isActive','shapeType'],
+            (e) => {
+                const isActive = e.getComponent('isActive');
+                if(!isActive) return;
+                const shapeType = e.getComponent('shapeType');
+                if(shapeType === 'rectangle'){
+                    this.drawRectangle(e);
+                }
+            }
+        )
+    };
+    drawRectangle(e){
+        const ctx = this.game.ctx;
+        const pos = e.getComponent('pos');
+        const width = e.getComponent('width');
+        const height = e.getComponent('height');
+        const rectangleShape = e.getComponent('rectangleShape');
+        const color = e.getComponent('shapeColor');
+
+        const w = width;
+        const h = height;
+        const isRoundedEnabled = rectangleShape.rounded.enabled;
+        const isOutlineEnabled = rectangleShape.outline.enabled;
+        const isCenterEnabled = rectangleShape.centered.enabled;
+
+        let x = pos.x;
+        let y = pos.y;
+
+        ctx.save();
+
+        ctx.beginPath();
+        //shape
+        ctx.fillStyle = color;
+        if(isCenterEnabled){
+            const boundX = rectangleShape.centered.boundX;
+            const boundY = rectangleShape.centered.boundY;
+
+            x = boundX - w/2;
+            y = boundY - h/2;
+        }
+        if(isRoundedEnabled){
+            const r = rectangleShape.rounded.radius;
+            ctx.roundRect(x,y,w,h,r)
+        }
+        else{
+            ctx.rect(x,y,w,h);
+        }
+        ctx.fill();
+
+        //outline
+        if(isOutlineEnabled){
+            ctx.strokeStyle = rectangleShape.outline.color;
+            ctx.strokeWidth = rectangleShape.outline.width;
+            ctx.strokeRect(x,y,w,h);
+        }
+        ctx.restore();
+    };
 
 }
 class ECSSystems {
