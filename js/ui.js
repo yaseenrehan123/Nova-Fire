@@ -122,8 +122,10 @@ class SettingsUi{
         this.ctx = game.ctx;
 
         this.settingsBtn = null;
+        this.settingsBtnEntity = null;
+        this.settingsBtnTextEntity = null;
         this.settingsPanelEntity = null;
-
+        
         this.start();
     };
     start(){
@@ -137,7 +139,7 @@ class SettingsUi{
     initSettingsBtn(){
         this.settingsBtn = new Button(this.game);
 
-        const bgColor = 'rgb(34, 40, 49)';
+        const bgColor = 'rgb(27, 43, 68)';
         const fontSize = 30;
 
         this.settingsBtn.setBackgroundColor(bgColor);
@@ -156,9 +158,47 @@ class SettingsUi{
         this.settingsBtn.setOnRelease(()=>{
             console.log("Settings Btn Released");
         })
+        this.settingsBtnEntity = this.game.spawnEntity({
+            passedKey:'button',
+            componentsToModify:{
+                pos:{x:0,y:0},
+                width:200,
+                height:100,
+                shapeColor:bgColor,
+                rectangleShape:{
+                    rounded:{
+                        enabled:true,
+                        radius:8
+                    },
+                },
+                alignment:{
+                    alignmentX:'right',
+                    alignmentY:'bottom',
+                    borderWidth:this.game.width,
+                    borderHeight:this.game.height
+                }
+            }
+        });
+        const settingsBtnWidth = this.settingsBtnEntity.getComponent('width');
+        const settingsBtnHeight = this.settingsBtnEntity.getComponent('height');
+        this.settingsBtnTextEntity = this.game.spawnEntity({
+            passedKey:'text',
+            componentsToModify:{
+                fontSize:30,
+                fontContent:'Settings Btn',
+                alignment:{
+                    borderWidth:settingsBtnWidth,
+                    borderHeight:settingsBtnHeight,
+                    offsetX:1720,
+                    offsetY:980,
+                    alignmentX:'center',
+                    alignmentY:'middle'
+                }
+            }
+        });
+        //console.log(this.settingsBtnTextEntity)
     };
     initSettingsPanel(){
-
         const bgColor = 'rgb(33, 76, 141)';
         const screenWidth = this.game.width;
         const screenHeight = this.game.height;

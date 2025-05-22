@@ -329,20 +329,22 @@ class CustomSystems {
         let x = pos.x;
         let y = pos.y;
 
+        //console.log("Entity:",e,"X:",pos.x);
+        //console.log("Entity:",e,"Y:",pos.y);
+
         ctx.save();
 
         ctx.beginPath();
         //shape
         ctx.fillStyle = color;
-        if(alignment){
-            const alignmentX = alignment.alignmentX;
-            const alignmentY = alignment.alignmentY;
-            const bw = alignment.borderWidth;
-            const bh = alignment.borderHeight;
-            ctx.textAlign = alignmentX;
-            ctx.textBaseline = alignmentY;
-            x = this.game.alignmentHorizontal(0, bw - width, alignmentX);
-            y = this.game.alignmentVertical(0, bh - height, alignmentY);
+        if(alignment){ 
+           const aligned = this.game.alignEntity(alignment,w,h);
+           x = aligned.x;
+           y = aligned.y;
+           const alignedPos = {x:x,y:y};
+           if(pos !== alignedPos){
+            e.setComponent('pos',alignedPos);
+           }
         }
         if(isRoundedEnabled){
             const r = rectangleShape.rounded.radius;
@@ -360,6 +362,50 @@ class CustomSystems {
             ctx.strokeRect(x,y,w,h);
         }
         ctx.restore();
+    };
+    drawText(){
+        const ctx = this.game.ctx;
+        this.game.filterEntitiesByComponents(
+            ['pos','color','fontSize','fontStyle','fontContent'],
+            (e) => {
+                //console.log("Font system running");
+                const pos = e.getComponent('pos');
+                const color = e.getComponent('color');
+                const size = e.getComponent('fontSize');
+                const style = e.getComponent('style');
+                const content = e.getComponent('fontContent');
+                const alignment = e.getComponent('alignment');
+
+                let x = pos.x;
+                let y = pos.y;
+
+                ctx.save();
+
+                if(alignment){
+                    const textMetrics = ctx.measureText(content);
+                    const textWidth = textMetrics.width;
+                    const textHeight = size;
+                    const aligned = this.game.alignEntity(alignment,textWidth,textHeight);
+                    x = aligned.x;
+                    y = aligned.y;
+                    ctx.textAlign = aligned.alignmentX;
+                    ctx.textBaseline = aligned.alignmentY;
+                    const alignedPos = { x: x, y: y };
+                    if (pos !== alignedPos) {
+                        e.setComponent('pos', alignedPos);
+                    }
+                };
+                
+                //console.log("Entity:",e,"X:",x);
+                //console.log("Entity:",e,"Y:",y);
+
+                ctx.fillStyle = color;
+                ctx.font = `${size}px ${style}`;
+                ctx.fillText(content,x,y);
+
+                ctx.restore();
+            }   
+        );
     };
 
 }

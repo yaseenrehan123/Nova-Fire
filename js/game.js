@@ -92,6 +92,7 @@ export class Game{
         this.ecs.customSystems.DebugShootingDirection();
         this.ecs.customSystems.drawBar();
         this.ecs.customSystems.drawShapes();
+        this.ecs.customSystems.drawText();
         //this.ecs.customSystems.trackPlayerRotation();
 
         //this.shapeBuilder.builder.draw(this.ctx);
@@ -358,5 +359,19 @@ export class Game{
         if(isActive === null) return;
         isActive = bool;
         entity.setComponent('isActive',isActive);
-    }
+    };
+    alignEntity(alignment, width = 0, height = 0) {
+    const alignmentX = alignment.alignmentX || 'center';
+    const alignmentY = alignment.alignmentY || 'middle';
+    const bw = alignment.borderWidth || this.game.width;
+    const bh = alignment.borderHeight || this.game.height;
+    const offsetX = alignment.offsetX || 0;
+    const offsetY = alignment.offsetY || 0;
+    // Compute aligned position
+    const x = this.alignmentHorizontal(offsetX, bw - width, alignmentX);
+    const y = this.alignmentVertical(offsetY, bh - height, alignmentY);
+
+    return { x, y, alignmentX, alignmentY };
+}
+
 }
