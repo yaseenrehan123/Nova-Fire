@@ -175,11 +175,12 @@ class SettingsUi{
                     anchorX:'right',
                     anchorY:'bottom',
                     parentWidth:this.game.width,
-                    parentHeight:this.game.height
+                    parentHeight:this.game.height,
                 }
             }
         });
         this.game.anchorEntity(this.settingsBtnEntity,this.game.sceneEntity);
+        //console.log("SETTINGS BTN ANCHORED POS:",this.settingsBtnEntity.getComponent('pos'));
         const settingsBtnWidth = this.settingsBtnEntity.getComponent('width');
         const settingsBtnHeight = this.settingsBtnEntity.getComponent('height');
         /*

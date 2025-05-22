@@ -330,29 +330,29 @@ export class Game{
 
         barEntity.setComponent('bar',barComponent);
     };
-    anchoringHorizontal(x, w, xAlignment) {
+    anchoringHorizontal(parentX, parentW, anchorX) {
         let posX = null;
-        if (xAlignment === 'left') {
-            posX = x;
+        if (anchorX === 'left') {
+            posX = parentX;
         }
-        else if (xAlignment === 'center') {
-            posX = x + w / 2;
+        else if (anchorX === 'center') {
+            posX = parentX + parentW / 2;
         }
-        else if (xAlignment === 'right') {
-            posX = x + w;
+        else if (anchorX === 'right') {
+            posX = parentX + parentW;
         };
         return posX;
     };
-    anchoringVertical(y, h, yAlignment) {
+    anchoringVertical(parentY, parentH, anchorY) {
         let posY = null;
-        if (yAlignment === 'top') {
-            posY = y;
+        if (anchorY === 'top') {
+            posY = parentY;
         }
-        else if (yAlignment === 'middle') {
-            posY = y + h / 2;
+        else if (anchorY === 'middle') {
+            posY = parentY + parentH / 2;
         }
-        else if (yAlignment === 'bottom') {
-            posY = y + h
+        else if (anchorY === 'bottom') {
+            posY = parentY + parentH;
         };
         return posY;
     };
@@ -370,6 +370,8 @@ export class Game{
 
         const anchoringX = anchoringComponent.anchorX;
         const anchoringY = anchoringComponent.anchorY;
+        const manualOffsetX = anchoringComponent.offsetX;
+        const manualOffsetY = anchoringComponent.offsetY;
 
         const parentPosComponent = parentEntity.getComponent('pos');
         const parentWidthComponent = parentEntity.getComponent('width');
@@ -393,8 +395,8 @@ export class Game{
         else if (anchoringY === 'bottom') offsetY = heightComponent;
 
         const anchoredPos = {
-            x: anchoredPosX - offsetX,
-            y: anchoredPosY - offsetY
+            x: anchoredPosX - offsetX + manualOffsetX,
+            y: anchoredPosY - offsetY + manualOffsetY
         }
 
         if(posComponent){
