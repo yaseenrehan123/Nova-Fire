@@ -319,15 +319,16 @@ class CustomSystems {
         const height = e.getComponent('height');
         const rectangleShape = e.getComponent('rectangleShape');
         const color = e.getComponent('shapeColor');
-        const alignment = e.getComponent('alignment');
+        //const alignment = e.getComponent('alignment');
 
+        const x = pos.x;
+        const y = pos.y;
         const w = width;
         const h = height;
         const isRoundedEnabled = rectangleShape.rounded.enabled;
         const isOutlineEnabled = rectangleShape.outline.enabled;
        
-        let x = pos.x;
-        let y = pos.y;
+       
 
         //console.log("Entity:",e,"X:",pos.x);
         //console.log("Entity:",e,"Y:",pos.y);
@@ -337,6 +338,7 @@ class CustomSystems {
         ctx.beginPath();
         //shape
         ctx.fillStyle = color;
+        /*
         if(alignment){ 
            const aligned = this.game.alignEntity(alignment,w,h);
            x = aligned.x;
@@ -346,6 +348,7 @@ class CustomSystems {
             e.setComponent('pos',alignedPos);
            }
         }
+           */
         if(isRoundedEnabled){
             const r = rectangleShape.rounded.radius;
             ctx.roundRect(x,y,w,h,r)

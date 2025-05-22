@@ -171,16 +171,18 @@ class SettingsUi{
                         radius:8
                     },
                 },
-                alignment:{
-                    alignmentX:'right',
-                    alignmentY:'bottom',
-                    borderWidth:this.game.width,
-                    borderHeight:this.game.height
+                anchoring:{
+                    anchorX:'right',
+                    anchorY:'bottom',
+                    parentWidth:this.game.width,
+                    parentHeight:this.game.height
                 }
             }
         });
+        this.game.anchorEntity(this.settingsBtnEntity,this.game.sceneEntity);
         const settingsBtnWidth = this.settingsBtnEntity.getComponent('width');
         const settingsBtnHeight = this.settingsBtnEntity.getComponent('height');
+        /*
         this.settingsBtnTextEntity = this.game.spawnEntity({
             passedKey:'text',
             componentsToModify:{
@@ -189,13 +191,12 @@ class SettingsUi{
                 alignment:{
                     borderWidth:settingsBtnWidth,
                     borderHeight:settingsBtnHeight,
-                    offsetX:1720,
-                    offsetY:980,
                     alignmentX:'center',
                     alignmentY:'middle'
                 }
             }
         });
+        */
         //console.log(this.settingsBtnTextEntity)
     };
     initSettingsPanel(){

@@ -488,9 +488,9 @@
           }
         },
         "isActive":true,
-        "alignment":{
-          "alignmentX":"center",
-          "alignmentY":"middle",
+        "anchor":{
+          "anchorX":"center",
+          "anchorY":"middle",
           "borderWidth":0,
           "borderHeight":0
         }
@@ -513,11 +513,12 @@
             "color":"grey"
           }
         },
-        "alignment":{
-          "alignmentX":"center",
-          "alignmentY":"middle",
-          "borderWidth":0,
-          "borderHeight":0
+        "anchoring":{
+          "anchorX":"center",
+          "anchorY":"middle",
+          "parentPos":{"x":0,"y":0},
+          "parentWidth":0,
+          "parentHeight":0
         },
         "button":{
           "onPress":"()=>{}",
@@ -538,13 +539,12 @@
         "fontSize": 16,
         "fontStyle": "Arial",
         "fontContent": "",
-        "alignment": {
-          "alignmentX": "center",
-          "alignmentY": "middle",
-          "borderWidth": 0,
-          "borderHeight": 0,
-          "offsetX":0,
-          "offsetY":0
+         "anchoring":{
+          "anchorX":"center",
+          "anchorY":"middle",
+          "parentPos":{"x":0,"y":0},
+          "parentWidth":0,
+          "parentHeight":0
         }
       }
     }
