@@ -377,13 +377,14 @@ class CustomSystems {
                 const size = e.getComponent('fontSize');
                 const style = e.getComponent('style');
                 const content = e.getComponent('fontContent');
-                const alignment = e.getComponent('alignment');
-
-                let x = pos.x;
-                let y = pos.y;
+                const anchoring = e.getComponent('anchoring');
+                const x = pos.x;
+                const y = pos.y;
+                
 
                 ctx.save();
 
+                /*
                 if(alignment){
                     const textMetrics = ctx.measureText(content);
                     const textWidth = textMetrics.width;
@@ -398,10 +399,11 @@ class CustomSystems {
                         e.setComponent('pos', alignedPos);
                     }
                 };
-                
+                */
                 //console.log("Entity:",e,"X:",x);
                 //console.log("Entity:",e,"Y:",y);
-
+                ctx.textAlign = anchoring.anchorX;
+                ctx.textBaseline = anchoring.anchorY;
                 ctx.fillStyle = color;
                 ctx.font = `${size}px ${style}`;
                 ctx.fillText(content,x,y);

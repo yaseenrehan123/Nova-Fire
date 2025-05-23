@@ -94,7 +94,7 @@ export class Game{
         this.ecs.customSystems.DebugShootingDirection();
         this.ecs.customSystems.drawBar();
         this.ecs.customSystems.drawShapes();
-        //this.ecs.customSystems.drawText();
+        this.ecs.customSystems.drawText();
         //this.ecs.customSystems.trackPlayerRotation();
 
         //this.shapeBuilder.builder.draw(this.ctx);
@@ -367,6 +367,7 @@ export class Game{
         const anchoringComponent = anchoredEntity.getComponent('anchoring');
         const widthComponent = anchoredEntity.getComponent('width');
         const heightComponent = anchoredEntity.getComponent('height');
+        const isText = anchoredEntity.hasComponent('fontContent');
 
         const anchoringX = anchoringComponent.anchorX;
         const anchoringY = anchoringComponent.anchorY;
@@ -385,14 +386,20 @@ export class Game{
         const anchoredPosY = this.anchoringVertical(parentY,parentH,anchoringY);
 
         let offsetX = 0;
-        if (anchoringX === 'left') offsetX = 0;
-        else if (anchoringX === 'center') offsetX = widthComponent / 2;
-        else if (anchoringX === 'right') offsetX = widthComponent;
-
         let offsetY = 0;
-        if (anchoringY === 'top') offsetY = 0;
-        else if (anchoringY === 'middle') offsetY = heightComponent / 2;
-        else if (anchoringY === 'bottom') offsetY = heightComponent;
+
+        if (!isText) {
+            offsetX = 0;
+            if (anchoringX === 'left') offsetX = 0;
+            else if (anchoringX === 'center') offsetX = widthComponent / 2;
+            else if (anchoringX === 'right') offsetX = widthComponent;
+
+            offsetY = 0;
+            if (anchoringY === 'top') offsetY = 0;
+            else if (anchoringY === 'middle') offsetY = heightComponent / 2;
+            else if (anchoringY === 'bottom') offsetY = heightComponent;
+        }
+       
 
         const anchoredPos = {
             x: anchoredPosX - offsetX + manualOffsetX,
@@ -413,6 +420,21 @@ export class Game{
                 height:this.height
             }
         }).entity;
-    }
+    };
+    calculateTextWidthAndHeight(textEntity){
+        const ctx = this.ctx;
 
+        const size = textEntity.getComponent('fontSize');
+        const style = textEntity.getComponent('fontStyle');
+        const content = textEntity.getComponent('fontContent');
+
+        ctx.font = `${size}px ${style}`;
+
+        const textMetrics = ctx.measureText(content);
+        const textWidth = textMetrics.width;
+        const textHeight = size;
+
+        textEntity.setComponent('width',textWidth);
+        textEntity.setComponent('height',textHeight);
+    }
 }

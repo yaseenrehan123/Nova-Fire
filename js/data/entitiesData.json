@@ -516,9 +516,6 @@
         "anchoring":{
           "anchorX":"center",
           "anchorY":"middle",
-          "parentPos":{"x":0,"y":0},
-          "parentWidth":0,
-          "parentHeight":0,
           "offsetX":0,
           "offsetY":0
         },
@@ -537,16 +534,15 @@
           "x": 0,
           "y": 0
         },
+        "width":null,
+        "height":null,
         "color": "white",
         "fontSize": 16,
         "fontStyle": "Arial",
-        "fontContent": "",
+        "fontContent": "test",
          "anchoring":{
           "anchorX":"center",
           "anchorY":"middle",
-          "parentPos":{"x":0,"y":0},
-          "parentWidth":0,
-          "parentHeight":0,
           "offsetX":0,
           "offsetY":0
         }

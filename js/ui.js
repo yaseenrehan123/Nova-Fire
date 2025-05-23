@@ -174,30 +174,30 @@ class SettingsUi{
                 anchoring:{
                     anchorX:'right',
                     anchorY:'bottom',
-                    parentWidth:this.game.width,
-                    parentHeight:this.game.height,
                 }
             }
         });
         this.game.anchorEntity(this.settingsBtnEntity,this.game.sceneEntity);
         //console.log("SETTINGS BTN ANCHORED POS:",this.settingsBtnEntity.getComponent('pos'));
-        const settingsBtnWidth = this.settingsBtnEntity.getComponent('width');
-        const settingsBtnHeight = this.settingsBtnEntity.getComponent('height');
-        /*
+      
+        
         this.settingsBtnTextEntity = this.game.spawnEntity({
             passedKey:'text',
             componentsToModify:{
-                fontSize:30,
-                fontContent:'Settings Btn',
+                fontSize:34,
+                fontContent:'Settings',
                 alignment:{
-                    borderWidth:settingsBtnWidth,
-                    borderHeight:settingsBtnHeight,
                     alignmentX:'center',
-                    alignmentY:'middle'
+                    alignmentY:'middle',
                 }
             }
         });
-        */
+        this.game.calculateTextWidthAndHeight(this.settingsBtnTextEntity);
+        const settingsBtnTextWidth = this.settingsBtnTextEntity.getComponent('width');
+        const settingsBtnTextHeight = this.settingsBtnTextEntity.getComponent('height');
+        console.log("SETTINGS BTN TEXT WIDTH:",settingsBtnTextWidth);
+        console.log("SETTINGS BTN TEXT HEIGHT:",settingsBtnTextHeight);
+        this.game.anchorEntity(this.settingsBtnTextEntity,this.settingsBtnEntity);
         //console.log(this.settingsBtnTextEntity)
     };
     initSettingsPanel(){
