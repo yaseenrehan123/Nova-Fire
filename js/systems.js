@@ -62,7 +62,7 @@ class CustomSystems {
         );
     }
     debugMatterBodies() {
-        if (!this.game.matter.debugBodies) return;
+        if (!this.game.debugging.debugMatterBodies) return;
 
         this.game.filterEntitiesByComponents(
             ['pos', 'matterBody', 'matterBodyType', 'rotation'],
@@ -159,7 +159,7 @@ class CustomSystems {
 
     }
     traceMatterBodies() {// draws a line from center of screen to all body positions
-        if (!this.game.matter.debugBodies) return
+        if (!this.game.debugging.debugMatterBodies) return
         const ctx = this.game.ctx;
         const color = 'red';
         this.game.filterEntitiesByComponents(
@@ -176,6 +176,7 @@ class CustomSystems {
         );
     };
     DebugShootingDirection() {
+        if(!this.game.debugging.debugShootDirection) return;
         this.game.filterEntitiesByComponents(
             ['rotation', 'pos', 'spawnPos', 'shootBullet'],
             (e) => {
@@ -412,7 +413,98 @@ class CustomSystems {
             }   
         );
     };
+    debugBtnClickArea(){
+        if(!this.game.debugging.debugUiClickBox) return;
+        const ctx = this.game.ctx;
+        this.game.filterEntitiesByComponents(
+            ['pos','button','isActive'],
+            (e) =>{
+                //console.log("DEBUG BTN CLICK SYSTEM RUNNING!");
+                const isActive = e.getComponent('isActive');
+                if(!isActive) return;
+                const pos = e.getComponent('pos');
+                const button = e.getComponent('button');
 
+                const x = pos.x;
+                const y = pos.y;
+                const clickboxWidth = button.clickBoxWidth;
+                const clickboxHeight = button.clickBoxHeight;
+                
+                const strokeColor = 'green';
+                const strokeWidth = 5;
+
+                ctx.save();
+
+                ctx.beginPath();
+
+                ctx.strokeStyle = strokeColor;
+                ctx.lineWidth = strokeWidth;
+
+                ctx.rect(x,y,clickboxWidth,clickboxHeight);
+                ctx.stroke();
+
+                ctx.restore();
+
+            }
+        );
+    };
+    handleBtnTriggers(){
+        //console.log("MOUSE PRESSED:",this.game.mouse.isPressed);
+        //console.log("MOUSE RELEASED:",this.game.mouse.wasReleased);
+        this.game.filterEntitiesByComponents(
+            ['pos','button','isActive'],
+            (e) => {
+                const isActive = e.getComponent('isActive');
+                if(!isActive) return;
+                const pos = e.getComponent('pos');
+                const button = e.getComponent('button');
+
+                const x = pos.x;
+                const y = pos.y;
+                const w = button.clickBoxWidth;
+                const h = button.clickBoxHeight;
+                const mouse = this.game.mouse;
+
+                const isMouseOver = this.game.isMouseOver(x,y,w,h);
+
+                console.log("MOUSE OVER:",isMouseOver);
+
+                if (isMouseOver && button.onHover) {
+                    const hoverFunction = button.onHover;
+                    if(typeof hoverFunction === 'function'){
+                        hoverFunction();
+                    }
+                    //console.log("BUTTON HOVERED");
+                };
+
+                // Press logic
+                if (isMouseOver && mouse.isPressed && !button.isPressed) {
+                    button.isPressed = true;
+                    if (button.onPress){
+                        const pressFunction = button.onPress;
+                        if(typeof pressFunction === 'function'){
+                            pressFunction();
+                        }
+                    }
+                    console.log("BUTTON PRESSED");
+                };
+
+                // Release logic
+                if (!mouse.isPressed && button.isPressed) {
+                    button.isPressed = false;
+                    if (isMouseOver && button.onRelease){
+                        const releaseFunction = button.onRelease;
+                        if(typeof releaseFunction === 'function'){
+                            releaseFunction();
+                        }
+                        console.log("BUTTON RELEASED");
+                    }
+                };
+
+                mouse.reset();
+            }
+        );
+    }
 }
 class ECSSystems {
     constructor(options) {

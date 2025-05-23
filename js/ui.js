@@ -121,7 +121,6 @@ class SettingsUi{
         this.game = game;
         this.ctx = game.ctx;
 
-        this.settingsBtn = null;
         this.settingsBtnEntity = null;
         this.settingsBtnTextEntity = null;
         this.settingsPanelEntity = null;
@@ -134,30 +133,12 @@ class SettingsUi{
         this.initSettingsPanel();
     };
     update(){
-        this.settingsBtn.draw();
+       
     };
     initSettingsBtn(){
-        this.settingsBtn = new Button(this.game);
-
         const bgColor = 'rgb(27, 43, 68)';
         const fontSize = 30;
 
-        this.settingsBtn.setBackgroundColor(bgColor);
-        this.settingsBtn.setFontSize(fontSize);
-        this.settingsBtn.setPos({
-            x:1720,
-            y:0
-        });
-        this.settingsBtn.setWidth(200);
-        this.settingsBtn.setHeight(100);
-        this.settingsBtn.setFontText('Settings');
-        this.settingsBtn.setOnPress(()=>{
-            this.game.setIsActive(this.settingsPanelEntity,true);
-            this.game.pauseGame();;
-        });
-        this.settingsBtn.setOnRelease(()=>{
-            console.log("Settings Btn Released");
-        })
         this.settingsBtnEntity = this.game.spawnEntity({
             passedKey:'button',
             componentsToModify:{
@@ -173,18 +154,30 @@ class SettingsUi{
                 },
                 anchoring:{
                     anchorX:'right',
-                    anchorY:'bottom',
+                    anchorY:'top',
+                },
+                button:{
+                    clickBoxWidth:200,
+                    clickBoxHeight:100,
+                    onPress: () => {
+                        this.game.setIsActive(this.settingsPanelEntity,true);
+                        this.game.pauseGame();
+                    },
+                    onHover: () =>{
+                        const canvas = this.game.canvas;
+                        canvas.style.cursor = 'pointer';
+                    }
                 }
             }
         });
         this.game.anchorEntity(this.settingsBtnEntity,this.game.sceneEntity);
         //console.log("SETTINGS BTN ANCHORED POS:",this.settingsBtnEntity.getComponent('pos'));
-      
+        console.log("SETTINGS BTN ENTITY:",this.settingsBtnEntity);
         
         this.settingsBtnTextEntity = this.game.spawnEntity({
             passedKey:'text',
             componentsToModify:{
-                fontSize:34,
+                fontSize:fontSize,
                 fontContent:'Settings',
                 alignment:{
                     alignmentX:'center',
@@ -193,17 +186,17 @@ class SettingsUi{
             }
         });
         this.game.calculateTextWidthAndHeight(this.settingsBtnTextEntity);
+        this.game.anchorEntity(this.settingsBtnTextEntity,this.settingsBtnEntity);
+        /*
         const settingsBtnTextWidth = this.settingsBtnTextEntity.getComponent('width');
         const settingsBtnTextHeight = this.settingsBtnTextEntity.getComponent('height');
         console.log("SETTINGS BTN TEXT WIDTH:",settingsBtnTextWidth);
         console.log("SETTINGS BTN TEXT HEIGHT:",settingsBtnTextHeight);
-        this.game.anchorEntity(this.settingsBtnTextEntity,this.settingsBtnEntity);
+        */
         //console.log(this.settingsBtnTextEntity)
     };
     initSettingsPanel(){
         const bgColor = 'rgb(33, 76, 141)';
-        const screenWidth = this.game.width;
-        const screenHeight = this.game.height;
 
         this.settingsPanelEntity = this.game.spawnEntity({
             passedKey:'panel',
@@ -217,12 +210,10 @@ class SettingsUi{
                         enabled:true
                     },
                 },
-                alignment: {
-                    borderWidth: screenWidth,
-                    borderHeight: screenHeight,
-                },
                 isActive:false
             }
-        })
+        });
+        this.game.anchorEntity(this.settingsPanelEntity,this.game.sceneEntity);
+        //console.log("SETTINGS PANEL POS:",this.settingsPanelEntity);
     };
 }

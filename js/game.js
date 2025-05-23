@@ -37,7 +37,6 @@ export class Game{
         this.matter = {
             matterEngine:null,
             matterRunner:null,
-            debugBodies:false
         };
         /*  
         this.shapeBuilder ={
@@ -59,7 +58,11 @@ export class Game{
         this.totalSceneRotation = 0;
         this.isPaused = false;
         this.sceneEntity = null;
-
+        this.debugging = {
+            debugMatterBodies:false,
+            debugShootDirection:true,
+            debugUiClickBox:true
+        };
         this.mouse = null;
         this.physics = null;
         this.player = null;
@@ -95,6 +98,8 @@ export class Game{
         this.ecs.customSystems.drawBar();
         this.ecs.customSystems.drawShapes();
         this.ecs.customSystems.drawText();
+        this.ecs.customSystems.debugBtnClickArea();
+        this.ecs.customSystems.handleBtnTriggers();
         //this.ecs.customSystems.trackPlayerRotation();
 
         //this.shapeBuilder.builder.draw(this.ctx);
@@ -436,5 +441,15 @@ export class Game{
 
         textEntity.setComponent('width',textWidth);
         textEntity.setComponent('height',textHeight);
-    }
+    };
+    isMouseOver(x,y,w,h) {
+        const mouseX = this.mouse.pos.x;
+        const mouseY = this.mouse.pos.y;
+        return (
+            mouseX >= x &&
+            mouseX <= x + w &&
+            mouseY >= y &&
+            mouseY <= y + h
+        );
+    };
 }

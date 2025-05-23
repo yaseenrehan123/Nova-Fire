@@ -488,11 +488,11 @@
           }
         },
         "isActive":true,
-        "anchor":{
+        "anchoring":{
           "anchorX":"center",
           "anchorY":"middle",
-          "borderWidth":0,
-          "borderHeight":0
+          "offsetX":0,
+          "offsetY":0
         }
       }
     },
@@ -522,7 +522,10 @@
         "button":{
           "onPress":"()=>{}",
           "onRelease":"()=>{}",
-          "onHover":"()=>{}"
+          "onHover":"()=>{}",
+          "clickBoxWidth":100,
+          "clickBoxHeight":100,
+          "isPressed":false
         },
         "isActive":true
         
