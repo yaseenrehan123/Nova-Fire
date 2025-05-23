@@ -167,7 +167,8 @@ class SettingsUi{
                         const canvas = this.game.canvas;
                         canvas.style.cursor = 'pointer';
                     }
-                }
+                },
+                orderingLayer:10
             }
         });
         this.game.anchorEntity(this.settingsBtnEntity,this.game.sceneEntity);
@@ -179,10 +180,7 @@ class SettingsUi{
             componentsToModify:{
                 fontSize:fontSize,
                 fontContent:'Settings',
-                alignment:{
-                    alignmentX:'center',
-                    alignmentY:'middle',
-                }
+                orderingLayer:11
             }
         });
         this.game.calculateTextWidthAndHeight(this.settingsBtnTextEntity);
@@ -193,7 +191,7 @@ class SettingsUi{
         console.log("SETTINGS BTN TEXT WIDTH:",settingsBtnTextWidth);
         console.log("SETTINGS BTN TEXT HEIGHT:",settingsBtnTextHeight);
         */
-        //console.log(this.settingsBtnTextEntity)
+        console.log(this.settingsBtnTextEntity)
     };
     initSettingsPanel(){
         const bgColor = 'rgb(33, 76, 141)';
@@ -210,7 +208,8 @@ class SettingsUi{
                         enabled:true
                     },
                 },
-                isActive:false
+                isActive:false,
+                orderingLayer:10
             }
         });
         this.game.anchorEntity(this.settingsPanelEntity,this.game.sceneEntity);

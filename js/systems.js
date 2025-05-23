@@ -124,39 +124,31 @@ class CustomSystems {
 
 
     }
-    drawSprites() {
-        this.game.filterEntitiesByComponents(
-            ['imgKey', 'pos', 'width', 'height', 'rotation', 'centerImage'],
-            (e) => {
-                 // grab them out
-            const imgKey = e.getComponent('imgKey');
-            const pos = e.getComponent('pos');
-            const width = e.getComponent('width');
-            const height = e.getComponent('height');
-            const rotation = e.getComponent('rotation');
-            const centerImage = e.getComponent('centerImage');
-            //console.log(`rotation passed in drawSprites: ${rotation}`);
-            // lookup your preloaded Image object
-            const img = this.game.images[imgKey];
-            if (!img) {
-                console.warn(`No image for key "${imgKey}"`);
-                return;
-            }
+    drawSprite(e) {
+        // grab them out
+        const imgKey = e.getComponent('imgKey');
+        const pos = e.getComponent('pos');
+        const width = e.getComponent('width');
+        const height = e.getComponent('height');
+        const rotation = e.getComponent('rotation');
+        const centerImage = e.getComponent('centerImage');
+        //console.log(`rotation passed in drawSprites: ${rotation}`);
+        // lookup your preloaded Image object
+        const img = this.game.images[imgKey];
+        if (!img) {
+            console.warn(`No image for key "${imgKey}"`);
+            return;
+        }
 
-            // call your helper
-            this.game.drawImage({
-                img,
-                pos,
-                width,
-                height,
-                rotation,
-                centerImage
-            });
-            }
-        );
-      
-
-
+        // call your helper
+        this.game.drawImage({
+            img,
+            pos,
+            width,
+            height,
+            rotation,
+            centerImage
+        });
     }
     traceMatterBodies() {// draws a line from center of screen to all body positions
         if (!this.game.debugging.debugMatterBodies) return
@@ -243,75 +235,57 @@ class CustomSystems {
         this.game.ui.playerUi.updateEnergyBar();
 
     };
-    drawBar() {
+    drawBarEntity(e) {
         const ctx = this.game.ctx;
-        this.game.filterEntitiesByComponents(
-            ['bar', 'pos', 'width', 'height', 'isActive'],
-            (e) => {
-                const isActive = e.getComponent('isActive');
-                if (!isActive) return;
-                const pos = e.getComponent('pos');
-                const width = e.getComponent('width');
-                const height = e.getComponent('height');
-                const bar = e.getComponent('bar');
+        const isActive = e.getComponent('isActive');
+        if (!isActive) return;
+        const pos = e.getComponent('pos');
+        const width = e.getComponent('width');
+        const height = e.getComponent('height');
+        const bar = e.getComponent('bar');
 
-                const backgroundEnabled = bar.background.enabled;
-                const outlineEnabled = bar.outline.enabled;
-                const lerpingEnabled = bar.lerping.enabled;
-                const flashEffectEnabled = bar.flashEffect.enabled;
-                const x = pos.x;
-                const y = pos.y;
-                const w = width;
-                const h = height;
-                const fillAmount = bar.value / bar.maxValue * w;
-                ctx.save();
+        const backgroundEnabled = bar.background.enabled;
+        const outlineEnabled = bar.outline.enabled;
+        const lerpingEnabled = bar.lerping.enabled;
+        const flashEffectEnabled = bar.flashEffect.enabled;
+        const x = pos.x;
+        const y = pos.y;
+        const w = width;
+        const h = height;
+        const fillAmount = bar.value / bar.maxValue * w;
+        ctx.save();
 
-                //background
-                if (backgroundEnabled) {
-                    ctx.fillStyle = bar.background.color;
-                    ctx.fillRect(x, y, w, h);
-                };
-                //flash effect
-                if (flashEffectEnabled) {
-                    ctx.fillStyle = bar.flashEffect.color;
-                    const prevValue = bar.flashEffect.prevValue;
-                    const targetValue = bar.flashEffect.targetValue;
-                    const step = bar.flashEffect.step;
-                    const value = this.game.lerp(prevValue, targetValue, step);
-                    bar.flashEffect.value = value;
-                    bar.flashEffect.prevValue = value;
-                    const flashFillAmount = value / bar.maxValue * w;
-                    ctx.fillRect(x, y, flashFillAmount, h);
-                    //console.log("FLASH VALUE",value);
-                }
-                //bar
-                ctx.fillStyle = bar.fillColor;
-                ctx.fillRect(x, y, fillAmount, h);
+        //background
+        if (backgroundEnabled) {
+            ctx.fillStyle = bar.background.color;
+            ctx.fillRect(x, y, w, h);
+        };
+        //flash effect
+        if (flashEffectEnabled) {
+            ctx.fillStyle = bar.flashEffect.color;
+            const prevValue = bar.flashEffect.prevValue;
+            const targetValue = bar.flashEffect.targetValue;
+            const step = bar.flashEffect.step;
+            const value = this.game.lerp(prevValue, targetValue, step);
+            bar.flashEffect.value = value;
+            bar.flashEffect.prevValue = value;
+            const flashFillAmount = value / bar.maxValue * w;
+            ctx.fillRect(x, y, flashFillAmount, h);
+            //console.log("FLASH VALUE",value);
+        }
+        //bar
+        ctx.fillStyle = bar.fillColor;
+        ctx.fillRect(x, y, fillAmount, h);
 
-                //outline
-                if (outlineEnabled) {
-                    ctx.strokeStyle = bar.outline.color;
-                    ctx.lineWidth = bar.outline.width;
-                    ctx.strokeRect(x, y, w, h);
-                }
-                ctx.restore();
+        //outline
+        if (outlineEnabled) {
+            ctx.strokeStyle = bar.outline.color;
+            ctx.lineWidth = bar.outline.width;
+            ctx.strokeRect(x, y, w, h);
+        }
+        ctx.restore();
 
-                e.setComponent('bar', bar);
-            }
-        )
-    };
-    drawShapes(){
-        this.game.filterEntitiesByComponents(
-            ['isActive','shapeType'],
-            (e) => {
-                const isActive = e.getComponent('isActive');
-                if(!isActive) return;
-                const shapeType = e.getComponent('shapeType');
-                if(shapeType === 'rectangle'){
-                    this.drawRectangle(e);
-                }
-            }
-        )
+        e.setComponent('bar', bar);
     };
     drawRectangle(e){
         const ctx = this.game.ctx;
@@ -329,8 +303,6 @@ class CustomSystems {
         const isRoundedEnabled = rectangleShape.rounded.enabled;
         const isOutlineEnabled = rectangleShape.outline.enabled;
        
-       
-
         //console.log("Entity:",e,"X:",pos.x);
         //console.log("Entity:",e,"Y:",pos.y);
 
@@ -339,17 +311,7 @@ class CustomSystems {
         ctx.beginPath();
         //shape
         ctx.fillStyle = color;
-        /*
-        if(alignment){ 
-           const aligned = this.game.alignEntity(alignment,w,h);
-           x = aligned.x;
-           y = aligned.y;
-           const alignedPos = {x:x,y:y};
-           if(pos !== alignedPos){
-            e.setComponent('pos',alignedPos);
-           }
-        }
-           */
+    
         if(isRoundedEnabled){
             const r = rectangleShape.rounded.radius;
             ctx.roundRect(x,y,w,h,r)
@@ -367,52 +329,34 @@ class CustomSystems {
         }
         ctx.restore();
     };
-    drawText(){
+    drawText(e) {
         const ctx = this.game.ctx;
-        this.game.filterEntitiesByComponents(
-            ['pos','color','fontSize','fontStyle','fontContent'],
-            (e) => {
-                //console.log("Font system running");
-                const pos = e.getComponent('pos');
-                const color = e.getComponent('color');
-                const size = e.getComponent('fontSize');
-                const style = e.getComponent('style');
-                const content = e.getComponent('fontContent');
-                const anchoring = e.getComponent('anchoring');
-                const x = pos.x;
-                const y = pos.y;
-                
 
-                ctx.save();
+        //console.log("Font system running");
+        const pos = e.getComponent('pos');
+        const color = e.getComponent('color');
+        const size = e.getComponent('fontSize');
+        const style = e.getComponent('style');
+        const content = e.getComponent('fontContent');
+        const anchoring = e.getComponent('anchoring');
+        const x = pos.x;
+        const y = pos.y;
 
-                /*
-                if(alignment){
-                    const textMetrics = ctx.measureText(content);
-                    const textWidth = textMetrics.width;
-                    const textHeight = size;
-                    const aligned = this.game.alignEntity(alignment,textWidth,textHeight);
-                    x = aligned.x;
-                    y = aligned.y;
-                    ctx.textAlign = aligned.alignmentX;
-                    ctx.textBaseline = aligned.alignmentY;
-                    const alignedPos = { x: x, y: y };
-                    if (pos !== alignedPos) {
-                        e.setComponent('pos', alignedPos);
-                    }
-                };
-                */
-                //console.log("Entity:",e,"X:",x);
-                //console.log("Entity:",e,"Y:",y);
-                ctx.textAlign = anchoring.anchorX;
-                ctx.textBaseline = anchoring.anchorY;
-                ctx.fillStyle = color;
-                ctx.font = `${size}px ${style}`;
-                ctx.fillText(content,x,y);
 
-                ctx.restore();
-            }   
-        );
-    };
+        ctx.save();
+
+        //console.log("Entity:",e,"X:",x);
+        //console.log("Entity:",e,"Y:",y);
+        ctx.textAlign = anchoring.anchorX;
+        ctx.textBaseline = anchoring.anchorY;
+        ctx.fillStyle = color;
+        ctx.font = `${size}px ${style}`;
+        ctx.fillText(content, x, y);
+
+        ctx.restore();
+    }
+
+
     debugBtnClickArea(){
         if(!this.game.debugging.debugUiClickBox) return;
         const ctx = this.game.ctx;
@@ -504,6 +448,48 @@ class CustomSystems {
                 mouse.reset();
             }
         );
+    };
+    drawAllEntities() {
+        const drawableEntities = [];
+
+        this.game.filterEntitiesByComponents( // add all valid entities in array
+            ['drawType', 'orderingLayer', 'isActive'],
+            (e) => {
+                const isActive = e.getComponent('isActive');
+                if (!isActive) return;
+
+                drawableEntities.push(e);
+            }
+        );
+
+        // Sort by z-index
+        drawableEntities.sort((a, b) => {
+            return a.getComponent("orderingLayer") - b.getComponent("orderingLayer");
+        });
+
+        // Draw in order
+        for (const e of drawableEntities) {
+            const type = e.getComponent("drawType");
+            switch (type) {
+                case "sprite":
+                    this.drawSprite(e);
+                    break;
+                case "rectangle":
+                    //console.log("RECT PASSED IN DRAW FUNC");
+                    this.drawRectangle(e);
+                    break;
+                case "bar":
+                    //console.log("BAR PASSED IN DRAW FUNC");
+                    this.drawBarEntity(e);
+                    break;
+                case "text":
+                    console.log("TEXT PASSED IN DRAW FUNC");
+                    this.drawText(e);
+                    break;
+                default:
+                    console.warn("Unknown drawType:", type);
+            }
+        }
     }
 }
 class ECSSystems {

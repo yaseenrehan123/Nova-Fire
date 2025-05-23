@@ -1,556 +1,789 @@
 {
-    "player": {
-      "components": {
-        "imgKey": "player",
-        "pos": { "x": 0, "y": 0 },
-        "width": 100,
-        "height": 100,
-        "rotation": 0,
-        "baseRotation": 0,
-        "centerImage": true,
-        "sceneOrientedRotation": true,
-        "matterBody": null,
-        "matterBodyType": "rectangle",
-        "matterBodyOffset": { "x": 0, "y": -6 },
-        "matterBodyWidth": 100,
-        "matterBodyHeight": 70,
-        "matterBodyOptions": {
-          "label": "player",
-          "isSensor": true,
-          "frictionAir": 0.05,
-          "collisionFilter": {
-            "group": 1,
-            "category": "playerCategory",
-            "mask": ["itemCategory", "enemyCategory"]
-          }
-        },
-        "matterBodyColor": "white",
-        "moveVector": { "x": 0, "y": 0 },
-        "speed": 30,
-        "player": true,
-        "shootBullet": {
-          "delayInSeconds": 0.5,
-          "counter": 0,
-          "active": false,
-          "spawnKey": "greenBullet"
-        },
-        "spawnPos": [
-          { "pos": { "x": 0, "y": 0 }, "offset": { "x": 0, "y": 0 } },
-          { "pos": { "x": 0, "y": 0 }, "offset": { "x": -20, "y": 0 } },
-          { "pos": { "x": 0, "y": 0 }, "offset": { "x": 20, "y": 0 } },
-          { "pos": { "x": 0, "y": 0 }, "offset": { "x": 30, "y": 0 } },
-          { "pos": { "x": 0, "y": 0 }, "offset": { "x": -30, "y": 0 } },
-          { "pos": { "x": 0, "y": 0 }, "offset": { "x": 0, "y": -10 } },
-          { "pos": { "x": 0, "y": 0 }, "offset": { "x": 10, "y": -10 } },
-          { "pos": { "x": 0, "y": 0 }, "offset": { "x": -10, "y": -10 } }
-        ],
-        "shootTimes": 1,
-        "health":50,
-        "shootEnergy":{
-          "max":100,
-          "current":100,
-          "depletionPerShot":2.5,
-          "regenRate":40,
-          "regenDelay":1,
-          "regenCooldown":0,
-          "isDepleted":false
-        },
-        "isActive":true
-      }
-    },
-    "blueBattery":{
-      "components":{
-        "imgKey": "blueBattery",
-        "pos": {"x":0,"y":0},
-        "width": 50,
-        "height": 50,
-        "rotation": 180,
-        "baseRotation": 180,
-        "centerImage": true,
-        "matterBody": null,
-        "matterBodyType": "rectangle",
-        "matterBodyOffset": { "x": 0, "y": 0 },
-        "matterBodyWidth": 50,
-        "matterBodyHeight": 50,
-        "matterBodyOptions": {
-          "label": "item",
-          "isSensor": true,
-          "collisionFilter": {
-            "group": 0,
-            "category": "{{itemCategory}}",
-            "mask": "{{playerCategory}}"
-          }
-        },
-        "speed": 1.3,
-        "moveVector": { "x": 0, "y": 0 },
-        "notPlayer": true,
-        "sceneOrientedRotation": true,
-        "changeSpawnKey":"blueBullet",
-        "changeDelayComponent":0.3,
-        "isActive":true
-      }
-    },
-    "purpleBattery":{
-      "components":{
-      "imgKey": "purpleBattery",
-      "pos": {"x":0,"y":0},
-      "width": 50,
-      "height": 50,
-      "rotation": 180,
-      "baseRotation": 180,
+  "player": {
+    "components": {
+      "imgKey": "player",
+      "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "width": 100,
+      "height": 100,
+      "rotation": 0,
+      "baseRotation": 0,
       "centerImage": true,
+      "sceneOrientedRotation": true,
       "matterBody": null,
       "matterBodyType": "rectangle",
-      "matterBodyOffset": { "x": 0, "y": 0 },
-      "matterBodyWidth": 50,
-      "matterBodyHeight": 50,
+      "matterBodyOffset": {
+        "x": 0,
+        "y": -6
+      },
+      "matterBodyWidth": 100,
+      "matterBodyHeight": 70,
       "matterBodyOptions": {
-        "label": "item",
+        "label": "player",
         "isSensor": true,
+        "frictionAir": 0.05,
         "collisionFilter": {
-          "group": 0,
-          "category": "{{itemCategory}}",
-          "mask": "{{playerCategory}}"
+          "group": 1,
+          "category": "playerCategory",
+          "mask": [
+            "itemCategory",
+            "enemyCategory"
+          ]
         }
       },
-      "speed": 1.3,
-      "moveVector": { "x": 0, "y": 0 },
-      "notPlayer": true,
-      "sceneOrientedRotation": true,
-      "changeSpawnKey":"purpleBullet",
-      "changeDelayComponent":0.7,
-      "isActive":true
-      }
-    },
-    "yellowBattery":{
-      "components":{
-        "imgKey": "yellowBattery",
-      "pos": {"x":0,"y":0},
-      "width": 50,
-      "height": 50,
-      "rotation": 180,
-      "baseRotation": 180,
-      "centerImage": true,
-      "matterBody": null,
-      "matterBodyType": "rectangle",
-      "matterBodyOffset": { "x": 0, "y": 0 },
-      "matterBodyWidth": 50,
-      "matterBodyHeight": 50,
-      "matterBodyOptions": {
-        "label": "item",
-        "isSensor": true,
-        "collisionFilter": {
-          "group": 0,
-          "category": "{{itemCategory}}",
-          "mask": "{{playerCategory}}"
-        }
+      "matterBodyColor": "white",
+      "moveVector": {
+        "x": 0,
+        "y": 0
       },
-      "speed": 1.3,
-      "moveVector": { "x": 0, "y": 0 },
-      "notPlayer": true,
-      "sceneOrientedRotation": true,
-      "changeSpawnKey":"yellowBullet",
-      "changeDelayComponent":0.2,
-      "isActive":true
-      }
-    },
-    "greenBattery":{
-      "components":{
-        "imgKey": "greenBattery",
-      "pos":{"x":0,"y":0},
-      "width": 50,
-      "height": 50,
-      "rotation": 180,
-      "baseRotation": 180,
-      "centerImage": true,
-      "matterBody": null,
-      "matterBodyType": "rectangle",
-      "matterBodyOffset": { "x": 0, "y": 0 },
-      "matterBodyWidth": 50,
-      "matterBodyHeight": 50,
-      "matterBodyOptions": {
-        "label": "item",
-        "isSensor": true,
-        "collisionFilter": {
-          "group": 0,
-          "category": "{{itemCategory}}",
-          "mask": "{{playerCategory}}"
-        }
+      "speed": 30,
+      "player": true,
+      "shootBullet": {
+        "delayInSeconds": 0.5,
+        "counter": 0,
+        "active": false,
+        "spawnKey": "greenBullet"
       },
-      "speed": 1.3,
-      "moveVector": { "x": 0, "y": 0 },
-      "notPlayer": true,
-      "sceneOrientedRotation": true,
-      "changeSpawnKey":"greenBullet",
-      "changeDelayComponent":0.5,
-      "isActive":true
-      }
-    },
-    "enemy1":{
-      "components":{
-        "imgKey": "enemy1",
-        "pos": {"x":0,"y":0},
-        "width": 100,
-        "height": 100,
-        "rotation": 180,
-        "baseRotation": 180,
-        "centerImage": true,
-        "matterBody": null,
-        "matterBodyType": "rectangle",
-        "matterBodyOffset": { "x": 0, "y": 0 },
-        "matterBodyWidth": 100,
-        "matterBodyHeight": 100,
-        "matterBodyOptions": {
-          "label": "enemy",
-          "isSensor": true,
-          "collisionFilter": {
-            "group": 0,
-            "category": "{{enemyCategory}}",
-            "mask": "{{playerCategory}}"
+      "spawnPos": [
+        {
+          "pos": {
+            "x": 0,
+            "y": 0
+          },
+          "offset": {
+            "x": 0,
+            "y": 0
           }
         },
-        "speed": 2,
-        "moveVector": { "x": 0, "y": 0 },
-        "notPlayer": true,
-        "sceneOrientedRotation": true,
-        "health":10,
-        "damage":10,
-        "isActive":true
-      }
-    },
-    "enemy2":{
-      "components":{
-        "imgKey": "enemy2",
-        "pos": {"x":0,"y":0},
-        "width": 100,
-        "height": 100,
-        "rotation": 180,
-        "baseRotation": 180,
-        "centerImage": true,
-        "matterBody": null,
-        "matterBodyType": "rectangle",
-        "matterBodyOffset": { "x": 0, "y": 0 },
-        "matterBodyWidth": 100,
-        "matterBodyHeight": 100,
-        "matterBodyOptions": {
-          "label": "enemy",
-          "isSensor": true,
-          "collisionFilter": {
-            "group": 0,
-            "category": "{{enemyCategory}}",
-            "mask": "{{playerCategory}}"
+        {
+          "pos": {
+            "x": 0,
+            "y": 0
+          },
+          "offset": {
+            "x": -20,
+            "y": 0
           }
         },
-        "speed": 1,
-        "moveVector": { "x": 0, "y": 0 },
-        "notPlayer": true,
-        "sceneOrientedRotation": true,
-        "health":20,
-        "damage":10,
-        "isActive":true
-      }
-    },
-    "enemy3":{
-      "components":{
-        "imgKey": "enemy3",
-        "pos": {"x":0,"y":0},
-        "width": 100,
-        "height": 100,
-        "rotation": 180,
-        "baseRotation": 180,
-        "centerImage": true,
-        "matterBody": null,
-        "matterBodyType": "rectangle",
-        "matterBodyOffset": { "x": 0, "y": 0 },
-        "matterBodyWidth": 100,
-        "matterBodyHeight": 100,
-        "matterBodyOptions": {
-          "label": "enemy",
-          "isSensor": true,
-          "collisionFilter": {
-            "group": 0,
-            "category": "{{enemyCategory}}",
-            "mask": "{{playerCategory}}"
+        {
+          "pos": {
+            "x": 0,
+            "y": 0
+          },
+          "offset": {
+            "x": 20,
+            "y": 0
           }
         },
-        "speed": 5,
-        "moveVector": { "x": 0, "y": 0 },
-        "notPlayer": true,
-        "sceneOrientedRotation": true,
-        "health":3,
-        "damage":10,
-        "isActive":true
-      }
-    },
-    "greenBullet":{
-        "components": {
-        "imgKey": "greenBullet",
-        "pos": { "x": 0, "y": 0 },
-        "width": 100,
-        "height": 100,
-        "rotation": 0,
-        "baseRotation": 0,
-        "centerImage": true,
-        "matterBody": null,
-        "matterBodyType": "rectangle",
-        "matterBodyOffset": { "x": 0, "y": 0 },
-        "matterBodyWidth": 76,
-        "matterBodyHeight": 40,
-        "matterBodyOptions": {
-            "label": "playerBullet",
-            "isSensor": true,
-            "collisionFilter": {
-            "group": 0,
-            "category": "playerBulletCategory",
-            "mask": "this.collisionCategories.enemyCategory"
-            }
+        {
+          "pos": {
+            "x": 0,
+            "y": 0
+          },
+          "offset": {
+            "x": 30,
+            "y": 0
+          }
         },
-        "speed": 2,
-        "moveVector": { "x": 0, "y": 0 },
-        "notPlayer": true,
-        "damage":10,
-        "isActive":true
+        {
+          "pos": {
+            "x": 0,
+            "y": 0
+          },
+          "offset": {
+            "x": -30,
+            "y": 0
+          }
+        },
+        {
+          "pos": {
+            "x": 0,
+            "y": 0
+          },
+          "offset": {
+            "x": 0,
+            "y": -10
+          }
+        },
+        {
+          "pos": {
+            "x": 0,
+            "y": 0
+          },
+          "offset": {
+            "x": 10,
+            "y": -10
+          }
+        },
+        {
+          "pos": {
+            "x": 0,
+            "y": 0
+          },
+          "offset": {
+            "x": -10,
+            "y": -10
+          }
         }
-    },
-    "blueBullet":{
-      "components":{
-        "imgKey":"blueBullet",
-        "pos": { "x": 0, "y": 0 },
-        "width": 100,
-        "height": 100,
-        "rotation": 0,
-        "baseRotation": 0,
-        "centerImage": true,
-        "matterBody": null,
-        "matterBodyType": "circle",
-        "matterBodyOffset": { "x": 0, "y": 0 },
-        "matterBodyRadius":20,
-        "matterBodyOptions": {
-            "label": "playerBullet",
-            "isSensor": true,
-            "collisionFilter": {
-            "group": 0,
-            "category": "playerBulletCategory",
-            "mask": "this.collisionCategories.enemyCategory"
-            }
-        },
-        "speed": 15,
-        "moveVector": { "x": 0, "y": 0 },
-        "notPlayer": true,
-        "damage":5,
-        "isActive":true
-      }
-    },
-    "purpleBullet":{
-      "components":{
-        "imgKey": "purpleBullet",
-        "pos": { "x": 0, "y": 0 },
-        "width": 100,
-        "height": 100,
-        "rotation": 0,
-        "baseRotation": 0,
-        "centerImage": true,
-        "matterBody": null,
-        "matterBodyType": "rectangle",
-        "matterBodyOffset": { "x": 0, "y": -30 },
-        "matterBodyWidth": 100,
-        "matterBodyHeight": 40,
-        "matterBodyOptions": {
-            "label": "playerBullet",
-            "isSensor": true,
-            "collisionFilter": {
-            "group": 0,
-            "category": "playerBulletCategory",
-            "mask": "this.collisionCategories.enemyCategory"
-            }
-        },
-        "speed": 2,
-        "moveVector": { "x": 0, "y": 0 },
-        "notPlayer": true,
-        "damage":20,
-        "isActive":true
-      }
-    },
-    "yellowBullet":{
-      "components":{
-        "imgKey": "yellowBullet",
-        "pos": { "x": 0, "y": 0 },
-        "width": 100,
-        "height": 100,
-        "rotation": 0,
-        "baseRotation": 0,
-        "centerImage": true,
-        "matterBody": null,
-        "matterBodyType": "rectangle",
-        "matterBodyOffset": { "x": 0, "y": -20 },
-        "matterBodyWidth": 76,
-        "matterBodyHeight": 40,
-        "matterBodyOptions": {
-            "label": "playerBullet",
-            "isSensor": true,
-            "collisionFilter": {
-            "group": 0,
-            "category": "playerBulletCategory",
-            "mask": "this.collisionCategories.enemyCategory"
-            }
-        },
-        "speed": 30,
-        "moveVector": { "x": 0, "y": 0 },
-        "notPlayer": true,
-        "damage":3,
-        "isActive":true
-      }
-    },
-    "powerup":{
-      "components":{
-        "imgKey": "powerup",
-        "pos": {"x":0,"y":0},
-        "width": 50,
-        "height": 50,
-        "rotation": 180,
-        "baseRotation": 180,
-        "centerImage": true,
-        "matterBody": null,
-        "matterBodyType": "rectangle",
-        "matterBodyOffset": { "x": 0, "y": 0 },
-        "matterBodyWidth": 50,
-        "matterBodyHeight": 50,
-        "matterBodyOptions": {
-          "label": "item",
-          "isSensor": true,
-          "collisionFilter": {
-            "group": 0,
-            "category": "{{itemCategory}}",
-            "mask": "{{playerCategory}}"
-          }
-        },
-        "speed": 1.3,
-        "moveVector": { "x": 0, "y": 0 },
-        "notPlayer": true,
-        "sceneOrientedRotation": true,
-        "changeShootTimes":{
-          "changeEffect":"increase",
-          "value":1
-        },
-        "isActive":true
-      }
-    },
-    "bar":{
-      "components":{
-        "pos":{"x":0,"y":0},
-        "width":300,
-        "height":50,
-        "bar":{
-          "value":0,
-          "maxValue":1,
-          "fillColor":"green",
-          "background":{
-            "enabled":false,
-            "color":"black"
-          },
-          "outline":{
-            "enabled":false,
-            "color":"grey",
-            "width":8
-          },
-          "lerping":{
-            "enabled":false,
-            "step":0.2
-          },
-          "flashEffect":{
-            "enabled":false,
-            "color":"white",
-            "step":0.3,
-            "value":0,
-            "prevValue":0,
-            "targetValue":0
-          }
-        },
-        "isActive":true
-      }
-    },
-    "panel":{
-      "components":{
-        "pos":{"x":0,"y":0},
-        "width:":100,
-        "height":100,
-        "shapeColor":"white",
-        "shapeType":"rectangle",
-        "rectangleShape":{
-          "rounded":{
-            "enabled":false,
-            "radius":20
-          },
-          "outline":{
-            "enabled":false,
-            "width":8,
-            "color":"grey"
-          }
-        },
-        "isActive":true,
-        "anchoring":{
-          "anchorX":"center",
-          "anchorY":"middle",
-          "offsetX":0,
-          "offsetY":0
-        }
-      }
-    },
-    "button":{
-      "components":{
-        "pos":{"x":0,"y":0},
-        "width":100,
-        "height":50,
-        "shapeType":"rectangle",
-        "rectangleShape":{
-          "rounded":{
-            "enabled":false,
-            "radius":20
-          },
-          "outline":{
-            "enabled":false,
-            "width":8,
-            "color":"grey"
-          }
-        },
-        "anchoring":{
-          "anchorX":"center",
-          "anchorY":"middle",
-          "offsetX":0,
-          "offsetY":0
-        },
-        "button":{
-          "onPress":"()=>{}",
-          "onRelease":"()=>{}",
-          "onHover":"()=>{}",
-          "clickBoxWidth":100,
-          "clickBoxHeight":100,
-          "isPressed":false
-        },
-        "isActive":true
-        
-      }
-    },
-    "text": {
-      "components": {
-        "pos": {
-          "x": 0,
-          "y": 0
-        },
-        "width":null,
-        "height":null,
-        "color": "white",
-        "fontSize": 16,
-        "fontStyle": "Arial",
-        "fontContent": "test",
-         "anchoring":{
-          "anchorX":"center",
-          "anchorY":"middle",
-          "offsetX":0,
-          "offsetY":0
-        }
-      }
+      ],
+      "shootTimes": 1,
+      "health": 50,
+      "shootEnergy": {
+        "max": 100,
+        "current": 100,
+        "depletionPerShot": 2.5,
+        "regenRate": 40,
+        "regenDelay": 1,
+        "regenCooldown": 0,
+        "isDepleted": false
+      },
+      "isActive": true,
+      "drawType": "sprite",
+      "orderingLayer": 0
     }
-    
+  },
+  "blueBattery": {
+    "components": {
+      "imgKey": "blueBattery",
+      "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "width": 50,
+      "height": 50,
+      "rotation": 180,
+      "baseRotation": 180,
+      "centerImage": true,
+      "matterBody": null,
+      "matterBodyType": "rectangle",
+      "matterBodyOffset": {
+        "x": 0,
+        "y": 0
+      },
+      "matterBodyWidth": 50,
+      "matterBodyHeight": 50,
+      "matterBodyOptions": {
+        "label": "item",
+        "isSensor": true,
+        "collisionFilter": {
+          "group": 0,
+          "category": "{{itemCategory}}",
+          "mask": "{{playerCategory}}"
+        }
+      },
+      "speed": 1.3,
+      "moveVector": {
+        "x": 0,
+        "y": 0
+      },
+      "notPlayer": true,
+      "sceneOrientedRotation": true,
+      "changeSpawnKey": "blueBullet",
+      "changeDelayComponent": 0.3,
+      "isActive": true,
+      "drawType": "sprite",
+      "orderingLayer": 0
+    }
+  },
+  "purpleBattery": {
+    "components": {
+      "imgKey": "purpleBattery",
+      "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "width": 50,
+      "height": 50,
+      "rotation": 180,
+      "baseRotation": 180,
+      "centerImage": true,
+      "matterBody": null,
+      "matterBodyType": "rectangle",
+      "matterBodyOffset": {
+        "x": 0,
+        "y": 0
+      },
+      "matterBodyWidth": 50,
+      "matterBodyHeight": 50,
+      "matterBodyOptions": {
+        "label": "item",
+        "isSensor": true,
+        "collisionFilter": {
+          "group": 0,
+          "category": "{{itemCategory}}",
+          "mask": "{{playerCategory}}"
+        }
+      },
+      "speed": 1.3,
+      "moveVector": {
+        "x": 0,
+        "y": 0
+      },
+      "notPlayer": true,
+      "sceneOrientedRotation": true,
+      "changeSpawnKey": "purpleBullet",
+      "changeDelayComponent": 0.7,
+      "isActive": true,
+      "drawType": "sprite",
+      "orderingLayer": 0
+    }
+  },
+  "yellowBattery": {
+    "components": {
+      "imgKey": "yellowBattery",
+      "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "width": 50,
+      "height": 50,
+      "rotation": 180,
+      "baseRotation": 180,
+      "centerImage": true,
+      "matterBody": null,
+      "matterBodyType": "rectangle",
+      "matterBodyOffset": {
+        "x": 0,
+        "y": 0
+      },
+      "matterBodyWidth": 50,
+      "matterBodyHeight": 50,
+      "matterBodyOptions": {
+        "label": "item",
+        "isSensor": true,
+        "collisionFilter": {
+          "group": 0,
+          "category": "{{itemCategory}}",
+          "mask": "{{playerCategory}}"
+        }
+      },
+      "speed": 1.3,
+      "moveVector": {
+        "x": 0,
+        "y": 0
+      },
+      "notPlayer": true,
+      "sceneOrientedRotation": true,
+      "changeSpawnKey": "yellowBullet",
+      "changeDelayComponent": 0.2,
+      "isActive": true,
+      "drawType": "sprite",
+      "orderingLayer": 0
+    }
+  },
+  "greenBattery": {
+    "components": {
+      "imgKey": "greenBattery",
+      "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "width": 50,
+      "height": 50,
+      "rotation": 180,
+      "baseRotation": 180,
+      "centerImage": true,
+      "matterBody": null,
+      "matterBodyType": "rectangle",
+      "matterBodyOffset": {
+        "x": 0,
+        "y": 0
+      },
+      "matterBodyWidth": 50,
+      "matterBodyHeight": 50,
+      "matterBodyOptions": {
+        "label": "item",
+        "isSensor": true,
+        "collisionFilter": {
+          "group": 0,
+          "category": "{{itemCategory}}",
+          "mask": "{{playerCategory}}"
+        }
+      },
+      "speed": 1.3,
+      "moveVector": {
+        "x": 0,
+        "y": 0
+      },
+      "notPlayer": true,
+      "sceneOrientedRotation": true,
+      "changeSpawnKey": "greenBullet",
+      "changeDelayComponent": 0.5,
+      "isActive": true,
+      "drawType": "sprite",
+      "orderingLayer": 0
+    }
+  },
+  "enemy1": {
+    "components": {
+      "imgKey": "enemy1",
+      "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "width": 100,
+      "height": 100,
+      "rotation": 180,
+      "baseRotation": 180,
+      "centerImage": true,
+      "matterBody": null,
+      "matterBodyType": "rectangle",
+      "matterBodyOffset": {
+        "x": 0,
+        "y": 0
+      },
+      "matterBodyWidth": 100,
+      "matterBodyHeight": 100,
+      "matterBodyOptions": {
+        "label": "enemy",
+        "isSensor": true,
+        "collisionFilter": {
+          "group": 0,
+          "category": "{{enemyCategory}}",
+          "mask": "{{playerCategory}}"
+        }
+      },
+      "speed": 2,
+      "moveVector": {
+        "x": 0,
+        "y": 0
+      },
+      "notPlayer": true,
+      "sceneOrientedRotation": true,
+      "health": 10,
+      "damage": 10,
+      "isActive": true,
+      "drawType": "sprite",
+      "orderingLayer": 0
+    }
+  },
+  "enemy2": {
+    "components": {
+      "imgKey": "enemy2",
+      "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "width": 100,
+      "height": 100,
+      "rotation": 180,
+      "baseRotation": 180,
+      "centerImage": true,
+      "matterBody": null,
+      "matterBodyType": "rectangle",
+      "matterBodyOffset": {
+        "x": 0,
+        "y": 0
+      },
+      "matterBodyWidth": 100,
+      "matterBodyHeight": 100,
+      "matterBodyOptions": {
+        "label": "enemy",
+        "isSensor": true,
+        "collisionFilter": {
+          "group": 0,
+          "category": "{{enemyCategory}}",
+          "mask": "{{playerCategory}}"
+        }
+      },
+      "speed": 1,
+      "moveVector": {
+        "x": 0,
+        "y": 0
+      },
+      "notPlayer": true,
+      "sceneOrientedRotation": true,
+      "health": 20,
+      "damage": 10,
+      "isActive": true,
+      "drawType": "sprite",
+      "orderingLayer": 0
+    }
+  },
+  "enemy3": {
+    "components": {
+      "imgKey": "enemy3",
+      "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "width": 100,
+      "height": 100,
+      "rotation": 180,
+      "baseRotation": 180,
+      "centerImage": true,
+      "matterBody": null,
+      "matterBodyType": "rectangle",
+      "matterBodyOffset": {
+        "x": 0,
+        "y": 0
+      },
+      "matterBodyWidth": 100,
+      "matterBodyHeight": 100,
+      "matterBodyOptions": {
+        "label": "enemy",
+        "isSensor": true,
+        "collisionFilter": {
+          "group": 0,
+          "category": "{{enemyCategory}}",
+          "mask": "{{playerCategory}}"
+        }
+      },
+      "speed": 5,
+      "moveVector": {
+        "x": 0,
+        "y": 0
+      },
+      "notPlayer": true,
+      "sceneOrientedRotation": true,
+      "health": 3,
+      "damage": 10,
+      "isActive": true,
+      "drawType": "sprite",
+      "orderingLayer": 0
+    }
+  },
+  "greenBullet": {
+    "components": {
+      "imgKey": "greenBullet",
+      "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "width": 100,
+      "height": 100,
+      "rotation": 0,
+      "baseRotation": 0,
+      "centerImage": true,
+      "matterBody": null,
+      "matterBodyType": "rectangle",
+      "matterBodyOffset": {
+        "x": 0,
+        "y": 0
+      },
+      "matterBodyWidth": 76,
+      "matterBodyHeight": 40,
+      "matterBodyOptions": {
+        "label": "playerBullet",
+        "isSensor": true,
+        "collisionFilter": {
+          "group": 0,
+          "category": "playerBulletCategory",
+          "mask": "this.collisionCategories.enemyCategory"
+        }
+      },
+      "speed": 2,
+      "moveVector": {
+        "x": 0,
+        "y": 0
+      },
+      "notPlayer": true,
+      "damage": 10,
+      "isActive": true,
+      "drawType": "sprite",
+      "orderingLayer": 0
+    }
+  },
+  "blueBullet": {
+    "components": {
+      "imgKey": "blueBullet",
+      "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "width": 100,
+      "height": 100,
+      "rotation": 0,
+      "baseRotation": 0,
+      "centerImage": true,
+      "matterBody": null,
+      "matterBodyType": "circle",
+      "matterBodyOffset": {
+        "x": 0,
+        "y": 0
+      },
+      "matterBodyRadius": 20,
+      "matterBodyOptions": {
+        "label": "playerBullet",
+        "isSensor": true,
+        "collisionFilter": {
+          "group": 0,
+          "category": "playerBulletCategory",
+          "mask": "this.collisionCategories.enemyCategory"
+        }
+      },
+      "speed": 15,
+      "moveVector": {
+        "x": 0,
+        "y": 0
+      },
+      "notPlayer": true,
+      "damage": 5,
+      "isActive": true,
+      "drawType": "sprite",
+      "orderingLayer": 0
+    }
+  },
+  "purpleBullet": {
+    "components": {
+      "imgKey": "purpleBullet",
+      "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "width": 100,
+      "height": 100,
+      "rotation": 0,
+      "baseRotation": 0,
+      "centerImage": true,
+      "matterBody": null,
+      "matterBodyType": "rectangle",
+      "matterBodyOffset": {
+        "x": 0,
+        "y": -30
+      },
+      "matterBodyWidth": 100,
+      "matterBodyHeight": 40,
+      "matterBodyOptions": {
+        "label": "playerBullet",
+        "isSensor": true,
+        "collisionFilter": {
+          "group": 0,
+          "category": "playerBulletCategory",
+          "mask": "this.collisionCategories.enemyCategory"
+        }
+      },
+      "speed": 2,
+      "moveVector": {
+        "x": 0,
+        "y": 0
+      },
+      "notPlayer": true,
+      "damage": 20,
+      "isActive": true,
+      "drawType": "sprite",
+      "orderingLayer": 0
+    }
+  },
+  "yellowBullet": {
+    "components": {
+      "imgKey": "yellowBullet",
+      "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "width": 100,
+      "height": 100,
+      "rotation": 0,
+      "baseRotation": 0,
+      "centerImage": true,
+      "matterBody": null,
+      "matterBodyType": "rectangle",
+      "matterBodyOffset": {
+        "x": 0,
+        "y": -20
+      },
+      "matterBodyWidth": 76,
+      "matterBodyHeight": 40,
+      "matterBodyOptions": {
+        "label": "playerBullet",
+        "isSensor": true,
+        "collisionFilter": {
+          "group": 0,
+          "category": "playerBulletCategory",
+          "mask": "this.collisionCategories.enemyCategory"
+        }
+      },
+      "speed": 30,
+      "moveVector": {
+        "x": 0,
+        "y": 0
+      },
+      "notPlayer": true,
+      "damage": 3,
+      "isActive": true,
+      "drawType": "sprite",
+      "orderingLayer": 0
+    }
+  },
+  "powerup": {
+    "components": {
+      "imgKey": "powerup",
+      "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "width": 50,
+      "height": 50,
+      "rotation": 180,
+      "baseRotation": 180,
+      "centerImage": true,
+      "matterBody": null,
+      "matterBodyType": "rectangle",
+      "matterBodyOffset": {
+        "x": 0,
+        "y": 0
+      },
+      "matterBodyWidth": 50,
+      "matterBodyHeight": 50,
+      "matterBodyOptions": {
+        "label": "item",
+        "isSensor": true,
+        "collisionFilter": {
+          "group": 0,
+          "category": "{{itemCategory}}",
+          "mask": "{{playerCategory}}"
+        }
+      },
+      "speed": 1.3,
+      "moveVector": {
+        "x": 0,
+        "y": 0
+      },
+      "notPlayer": true,
+      "sceneOrientedRotation": true,
+      "changeShootTimes": {
+        "changeEffect": "increase",
+        "value": 1
+      },
+      "isActive": true,
+      "drawType": "sprite",
+      "orderingLayer": 0
+    }
+  },
+  "bar": {
+    "components": {
+      "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "width": 300,
+      "height": 50,
+      "bar": {
+        "value": 0,
+        "maxValue": 1,
+        "fillColor": "green",
+        "background": {
+          "enabled": false,
+          "color": "black"
+        },
+        "outline": {
+          "enabled": false,
+          "color": "grey",
+          "width": 8
+        },
+        "lerping": {
+          "enabled": false,
+          "step": 0.2
+        },
+        "flashEffect": {
+          "enabled": false,
+          "color": "white",
+          "step": 0.3,
+          "value": 0,
+          "prevValue": 0,
+          "targetValue": 0
+        }
+      },
+      "isActive": true,
+      "drawType": "bar",
+      "orderingLayer": 0
+    }
+  },
+  "panel": {
+    "components": {
+      "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "width:": 100,
+      "height": 100,
+      "shapeColor": "white",
+      "shapeType": "rectangle",
+      "rectangleShape": {
+        "rounded": {
+          "enabled": false,
+          "radius": 20
+        },
+        "outline": {
+          "enabled": false,
+          "width": 8,
+          "color": "grey"
+        }
+      },
+      "isActive": true,
+      "anchoring": {
+        "anchorX": "center",
+        "anchorY": "middle",
+        "offsetX": 0,
+        "offsetY": 0
+      },
+      "drawType": "rectangle",
+      "orderingLayer": 0
+    }
+  },
+  "button": {
+    "components": {
+      "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "width": 100,
+      "height": 50,
+      "shapeType": "rectangle",
+      "rectangleShape": {
+        "rounded": {
+          "enabled": false,
+          "radius": 20
+        },
+        "outline": {
+          "enabled": false,
+          "width": 8,
+          "color": "grey"
+        }
+      },
+      "anchoring": {
+        "anchorX": "center",
+        "anchorY": "middle",
+        "offsetX": 0,
+        "offsetY": 0
+      },
+      "button": {
+        "onPress": "()=>{}",
+        "onRelease": "()=>{}",
+        "onHover": "()=>{}",
+        "clickBoxWidth": 100,
+        "clickBoxHeight": 100,
+        "isPressed": false
+      },
+      "isActive": true,
+      "drawType": "rectangle",
+      "orderingLayer": 0
+    }
+  },
+  "text": {
+    "components": {
+      "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "width": null,
+      "height": null,
+      "color": "white",
+      "fontSize": 16,
+      "fontStyle": "Arial",
+      "fontContent": "test",
+      "anchoring": {
+        "anchorX": "center",
+        "anchorY": "middle",
+        "offsetX": 0,
+        "offsetY": 0
+      },
+      "isActive":true,
+      "drawType": "text",
+      "orderingLayer": 0
+    }
   }
-  
+}

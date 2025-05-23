@@ -89,20 +89,14 @@ export class Game{
         this.deltaTime = deltaTime;
 
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        //this.shapeBuilder.builder.removeShapes();
-
-        this.ecs.customSystems.drawSprites()
+        
+        this.ecs.customSystems.drawAllEntities();
         this.ecs.customSystems.debugMatterBodies();
         this.ecs.customSystems.traceMatterBodies();
         this.ecs.customSystems.DebugShootingDirection();
-        this.ecs.customSystems.drawBar();
-        this.ecs.customSystems.drawShapes();
-        this.ecs.customSystems.drawText();
         this.ecs.customSystems.debugBtnClickArea();
         this.ecs.customSystems.handleBtnTriggers();
         //this.ecs.customSystems.trackPlayerRotation();
-
-        //this.shapeBuilder.builder.draw(this.ctx);
 
         this.registeredObj.forEach((obj)=>{
             obj.update();
