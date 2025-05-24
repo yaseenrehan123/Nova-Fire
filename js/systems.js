@@ -204,7 +204,7 @@ class CustomSystems {
         this.game.filterEntitiesByComponents(
             ['player', 'rotation'],
             (e) => {
-                if(!this.game.isEntityActive(e)) return;
+                
                 const rotation = e.getComponent('rotation');
                 console.log("Player Rotation:", rotation)
             }
@@ -451,45 +451,83 @@ class CustomSystems {
         );
     };
     drawAllEntities() {
-        const drawableEntities = [];
+    const allEntities = [];
 
-        this.game.filterEntitiesByComponents( // add all valid entities in array
-            ['drawType', 'orderingLayer'],
-            (e) => {
-                if(!this.game.isEntityActive(e)) return;
-                drawableEntities.push(e);
+    // Gather all drawable entities
+    this.game.filterEntitiesByComponents(['drawType'], (e) => {
+        if (this.game.isEntityActive(e)) {
+            allEntities.push(e);
+        }
+    });
+
+    // Build a map of children
+    const parentToChildren = new Map();
+    const rootEntities = [];
+
+    for (const entity of allEntities) {
+        const parent = entity.getComponent('parent');
+        if (parent && allEntities.includes(parent)) {
+            if (!parentToChildren.has(parent)) {
+                parentToChildren.set(parent, []);
             }
-        );
-
-        // Sort by z-index
-        drawableEntities.sort((a, b) => {
-            return a.getComponent("orderingLayer") - b.getComponent("orderingLayer");
-        });
-
-        // Draw in order
-        for (const e of drawableEntities) {
-            const type = e.getComponent("drawType");
-            switch (type) {
-                case "sprite":
-                    this.drawSprite(e);
-                    break;
-                case "rectangle":
-                    //console.log("RECT PASSED IN DRAW FUNC");
-                    this.drawRectangle(e);
-                    break;
-                case "bar":
-                    //console.log("BAR PASSED IN DRAW FUNC");
-                    this.drawBarEntity(e);
-                    break;
-                case "text":
-                    //console.log("TEXT PASSED IN DRAW FUNC");
-                    this.drawText(e);
-                    break;
-                default:
-                    console.warn("Unknown drawType:", type);
-            }
+            parentToChildren.get(parent).push(entity);
+        } else {
+            rootEntities.push(entity);
         }
     }
+
+    // Sort by orderingLayer at the top level
+    rootEntities.sort((a, b) => {
+        return (a.getComponent('orderingLayer') || 0) - (b.getComponent('orderingLayer') || 0);
+    });
+
+    // Recursively flatten draw order
+    const flattenedDrawList = [];
+
+    const addEntityAndChildren = (entity) => {
+        flattenedDrawList.push(entity);
+
+        const children = parentToChildren.get(entity);
+        if (children) {
+            // Sort children by orderingLayer if they override it
+            children.sort((a, b) => {
+                const aOrder = a.getComponent('orderingLayer') ?? entity.getComponent('orderingLayer') ?? 0;
+                const bOrder = b.getComponent('orderingLayer') ?? entity.getComponent('orderingLayer') ?? 0;
+                return aOrder - bOrder;
+            });
+
+            for (const child of children) {
+                addEntityAndChildren(child);
+            }
+        }
+    };
+
+    for (const root of rootEntities) {
+        addEntityAndChildren(root);
+    }
+
+    // Draw in calculated order
+    for (const e of flattenedDrawList) {
+        const type = e.getComponent("drawType");
+        switch (type) {
+            case "sprite":
+                this.drawSprite(e);
+                break;
+            case "rectangle":
+                this.drawRectangle(e);
+                break;
+            case "bar":
+                this.drawBarEntity(e);
+                break;
+            case "text":
+                this.drawText(e);
+                break;
+            default:
+                console.warn("Unknown drawType:", type);
+        }
+    }
+}
+
 }
 class ECSSystems {
     constructor(options) {

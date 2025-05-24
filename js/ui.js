@@ -183,7 +183,6 @@ class SettingsUi{
             componentsToModify:{
                 fontSize:fontSize,
                 fontContent:'Settings',
-                orderingLayer:11,
                 parent:this.settingsBtnEntity
             }
         });
@@ -223,7 +222,6 @@ class SettingsUi{
             passedKey:"text",
             componentsToModify:{
                 fontSize:80,
-                orderingLayer:11,
                 anchoring:{
                     anchorY:'top'
                 },
@@ -253,7 +251,6 @@ class SettingsUi{
                     clickBoxWidth:200,
                     clickBoxHeight:100
                 },
-                orderingLayer:11,
                 parent:this.settingsPanelEntity
             }
         });
@@ -264,7 +261,6 @@ class SettingsUi{
             componentsToModify:{
                 fontSize:30,
                 fontContent:'MainMenu',
-                orderingLayer:12,
                 parent:this.mainMenuBtnEntity
             }
         });
