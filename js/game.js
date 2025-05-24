@@ -475,4 +475,17 @@ export class Game{
 
         //console.log("CHILD ENTITY PARENT COMPONENT AFTER SET:",childEntity.getComponent('parent'));
     };
+    isEntityActive(entity) {
+        let current = entity;
+
+        while (current) {
+            const isActive = current.getComponent('isActive');
+            if (!isActive) return false;
+
+            current = current.getComponent('parent');
+        }
+
+        return true;
+    }
+
 }
