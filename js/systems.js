@@ -411,7 +411,7 @@ class CustomSystems {
 
                 const isMouseOver = this.game.isMouseOver(x,y,w,h);
 
-                console.log("MOUSE OVER:",isMouseOver);
+                //onsole.log("MOUSE OVER:",isMouseOver);
 
                 if (isMouseOver && button.onHover) {
                     const hoverFunction = button.onHover;
@@ -483,7 +483,7 @@ class CustomSystems {
                     this.drawBarEntity(e);
                     break;
                 case "text":
-                    console.log("TEXT PASSED IN DRAW FUNC");
+                    //console.log("TEXT PASSED IN DRAW FUNC");
                     this.drawText(e);
                     break;
                 default:
@@ -642,7 +642,7 @@ class ECSSystems {
                 spawnPos.forEach((point) => {
                     if (remainingShots <= 0) return;
 
-                    this.game.spawnEntity({
+                    const bullet = this.game.spawnEntity({
                         passedKey: shootBullet.spawnKey,
                         componentsToModify: {
                             pos: {
@@ -651,9 +651,11 @@ class ECSSystems {
                             },
                             rotation: rotation,
                             baseRotation: rotation,
-                            matterBodyOptions: matterBodyOptions
+                            matterBodyOptions: matterBodyOptions,
                         }
                     });
+
+                    //this.game.assignParent(bullet,this.game.sceneEntity);
 
                     remainingShots--;
                 });

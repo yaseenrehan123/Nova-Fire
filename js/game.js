@@ -186,6 +186,17 @@ export class Game{
             components:modifiedComponents
         }).entity;
         
+        if (id.hasComponent('parent')) {
+            const defaultParentEntity = this.sceneEntity;
+            const idParentComponent = id.getComponent('parent');//get the refrence
+
+            if (!idParentComponent) {// if no parent is assigned than by default,make it sceneEntity
+                this.assignParent(id, defaultParentEntity);
+            } else {
+                this.assignParent(id, idParentComponent);
+            }
+        }
+        
         return id;
 
     };
@@ -416,9 +427,12 @@ export class Game{
             components:{
                 pos:{x:0,y:0},
                 width:this.width,
-                height:this.height
+                height:this.height,
+                isActive:true,
+                children:[]
             }
         }).entity;
+        console.log("SCENE ENTITY:",this.sceneEntity);
     };
     calculateTextWidthAndHeight(textEntity){
         const ctx = this.ctx;
@@ -445,5 +459,20 @@ export class Game{
             mouseY >= y &&
             mouseY <= y + h
         );
+    };
+    assignParent(childEntity,parentEntity){
+        let childEntityParentComponent = childEntity.getComponent('parent');// an obj/entity ref
+        let parentEntityChildrenComponent = parentEntity.getComponent('children');// an array
+
+        if(parentEntityChildrenComponent.includes(childEntityParentComponent)) return;
+
+        childEntityParentComponent = parentEntity;
+        //console.log("CHILD ENTITY PARENT COMPONENT:",childEntityParentComponent);
+        parentEntityChildrenComponent.push(childEntity);
+
+        childEntity.setComponent('parent',childEntityParentComponent);
+        parentEntity.setComponent('children',parentEntityChildrenComponent);
+
+        //console.log("CHILD ENTITY PARENT COMPONENT AFTER SET:",childEntity.getComponent('parent'));
     };
 }

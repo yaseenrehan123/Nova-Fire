@@ -68,7 +68,8 @@ class PlayerUi{
 
             }
         });
-       
+    
+
         this.updateHealthBar();
 
         
@@ -182,7 +183,8 @@ class SettingsUi{
             componentsToModify:{
                 fontSize:fontSize,
                 fontContent:'Settings',
-                orderingLayer:11
+                orderingLayer:11,
+                parent:this.settingsBtnEntity
             }
         });
         this.game.calculateTextWidthAndHeight(this.settingsBtnTextEntity);
@@ -225,7 +227,8 @@ class SettingsUi{
                 anchoring:{
                     anchorY:'top'
                 },
-                fontContent:'Paused'
+                fontContent:'Paused',
+                parent:this.settingsPanelEntity
             }
         });
         this.game.anchorEntity(this.pausedTextEntity,this.settingsPanelEntity);
@@ -250,7 +253,8 @@ class SettingsUi{
                     clickBoxWidth:200,
                     clickBoxHeight:100
                 },
-                orderingLayer:11
+                orderingLayer:11,
+                parent:this.settingsPanelEntity
             }
         });
         this.game.anchorEntity(this.mainMenuBtnEntity,this.settingsPanelEntity);
@@ -260,7 +264,8 @@ class SettingsUi{
             componentsToModify:{
                 fontSize:30,
                 fontContent:'MainMenu',
-                orderingLayer:12
+                orderingLayer:12,
+                parent:this.mainMenuBtnEntity
             }
         });
         this.game.anchorEntity(this.mainMenuTextEntity,this.mainMenuBtnEntity);

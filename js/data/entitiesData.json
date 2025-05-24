@@ -141,7 +141,9 @@
       },
       "isActive": true,
       "drawType": "sprite",
-      "orderingLayer": 0
+      "orderingLayer": 0,
+      "parent":null,
+      "children":[]
     }
   },
   "blueBattery": {
@@ -184,7 +186,9 @@
       "changeDelayComponent": 0.3,
       "isActive": true,
       "drawType": "sprite",
-      "orderingLayer": 0
+      "orderingLayer": 0,
+      "parent":null,
+      "children":[]
     }
   },
   "purpleBattery": {
@@ -227,7 +231,9 @@
       "changeDelayComponent": 0.7,
       "isActive": true,
       "drawType": "sprite",
-      "orderingLayer": 0
+      "orderingLayer": 0,
+      "parent":null,
+      "children":[]
     }
   },
   "yellowBattery": {
@@ -270,7 +276,9 @@
       "changeDelayComponent": 0.2,
       "isActive": true,
       "drawType": "sprite",
-      "orderingLayer": 0
+      "orderingLayer": 0,
+      "parent":null,
+      "children":[]
     }
   },
   "greenBattery": {
@@ -313,7 +321,9 @@
       "changeDelayComponent": 0.5,
       "isActive": true,
       "drawType": "sprite",
-      "orderingLayer": 0
+      "orderingLayer": 0,
+      "parent":null,
+      "children":[]
     }
   },
   "enemy1": {
@@ -356,7 +366,9 @@
       "damage": 10,
       "isActive": true,
       "drawType": "sprite",
-      "orderingLayer": 0
+      "orderingLayer": 0,
+      "parent":null,
+      "children":[]
     }
   },
   "enemy2": {
@@ -399,7 +411,9 @@
       "damage": 10,
       "isActive": true,
       "drawType": "sprite",
-      "orderingLayer": 0
+      "orderingLayer": 0,
+      "parent":null,
+      "children":[]
     }
   },
   "enemy3": {
@@ -442,7 +456,9 @@
       "damage": 10,
       "isActive": true,
       "drawType": "sprite",
-      "orderingLayer": 0
+      "orderingLayer": 0,
+      "parent":null,
+      "children":[]
     }
   },
   "greenBullet": {
@@ -483,7 +499,9 @@
       "damage": 10,
       "isActive": true,
       "drawType": "sprite",
-      "orderingLayer": 0
+      "orderingLayer": 0,
+      "parent":null,
+      "children":[]
     }
   },
   "blueBullet": {
@@ -523,7 +541,9 @@
       "damage": 5,
       "isActive": true,
       "drawType": "sprite",
-      "orderingLayer": 0
+      "orderingLayer": 0,
+      "parent":null,
+      "children":[]
     }
   },
   "purpleBullet": {
@@ -564,7 +584,9 @@
       "damage": 20,
       "isActive": true,
       "drawType": "sprite",
-      "orderingLayer": 0
+      "orderingLayer": 0,
+      "parent":null,
+      "children":[]
     }
   },
   "yellowBullet": {
@@ -605,7 +627,9 @@
       "damage": 3,
       "isActive": true,
       "drawType": "sprite",
-      "orderingLayer": 0
+      "orderingLayer": 0,
+      "parent":null,
+      "children":[]
     }
   },
   "powerup": {
@@ -650,7 +674,9 @@
       },
       "isActive": true,
       "drawType": "sprite",
-      "orderingLayer": 0
+      "orderingLayer": 0,
+      "parent":null,
+      "children":[]
     }
   },
   "bar": {
@@ -689,7 +715,9 @@
       },
       "isActive": true,
       "drawType": "bar",
-      "orderingLayer": 0
+      "orderingLayer": 0,
+      "parent":null,
+      "children":[]
     }
   },
   "panel": {
@@ -721,7 +749,9 @@
         "offsetY": 0
       },
       "drawType": "rectangle",
-      "orderingLayer": 0
+      "orderingLayer": 0,
+      "parent":null,
+      "children":[]
     }
   },
   "button": {
@@ -760,7 +790,9 @@
       },
       "isActive": true,
       "drawType": "rectangle",
-      "orderingLayer": 0
+      "orderingLayer": 0,
+      "parent":null,
+      "children":[]
     }
   },
   "text": {
@@ -783,7 +815,9 @@
       },
       "isActive":true,
       "drawType": "text",
-      "orderingLayer": 0
+      "orderingLayer": 0,
+      "parent":null,
+      "children":[]
     }
   }
 }

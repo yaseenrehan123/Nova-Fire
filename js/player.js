@@ -9,8 +9,8 @@ export class Player{
         this.init();
     }
     init(){
-        console.log("Game instance from player!" ,this.game)
-        console.log("Game Center pos " ,this.game.screenCenterPos)
+        //console.log("Game instance from player!" ,this.game)
+        //console.log("Game Center pos " ,this.game.screenCenterPos)
         this.playerEntity = this.game.spawnEntity({
             passedKey:'player',
             componentsToModify:{
@@ -27,6 +27,8 @@ export class Player{
                 }
             }
         });
+
+        //this.game.assignParent(this.playerEntity,this.game.sceneEntity);
 
         this.maxHealth = this.playerEntity.getComponent('health');// set maxhealth
 
