@@ -124,6 +124,9 @@ class SettingsUi{
         this.settingsBtnEntity = null;
         this.settingsBtnTextEntity = null;
         this.settingsPanelEntity = null;
+        this.pausedTextEntity = null;
+        this.mainMenuBtnEntity = null;
+        this.mainMenuTextEntity = null;
         
         this.start();
     };
@@ -136,16 +139,15 @@ class SettingsUi{
        
     };
     initSettingsBtn(){
-        const bgColor = 'rgb(27, 43, 68)';
+        const btnColor = 'rgb(27, 43, 68)';
         const fontSize = 30;
 
         this.settingsBtnEntity = this.game.spawnEntity({
             passedKey:'button',
             componentsToModify:{
-                pos:{x:0,y:0},
                 width:200,
                 height:100,
-                shapeColor:bgColor,
+                shapeColor:btnColor,
                 rectangleShape:{
                     rounded:{
                         enabled:true,
@@ -195,7 +197,7 @@ class SettingsUi{
     };
     initSettingsPanel(){
         const bgColor = 'rgb(33, 76, 141)';
-
+        const btnColor = 'rgb(27, 59, 106)';
         this.settingsPanelEntity = this.game.spawnEntity({
             passedKey:'panel',
             componentsToModify:{
@@ -214,5 +216,53 @@ class SettingsUi{
         });
         this.game.anchorEntity(this.settingsPanelEntity,this.game.sceneEntity);
         //console.log("SETTINGS PANEL POS:",this.settingsPanelEntity);
+
+        this.pausedTextEntity = this.game.spawnEntity({
+            passedKey:"text",
+            componentsToModify:{
+                fontSize:80,
+                orderingLayer:11,
+                anchoring:{
+                    anchorY:'top'
+                },
+                fontContent:'Paused'
+            }
+        });
+        this.game.anchorEntity(this.pausedTextEntity,this.settingsPanelEntity);
+        
+        this.mainMenuBtnEntity = this.game.spawnEntity({
+            passedKey:'button',
+            componentsToModify:{
+                width:200,
+                height:100,
+                shapeColor:btnColor,
+                rectangleShape:{
+                    rounded:{
+                        enabled:true,
+                        radius:6
+                    }
+                },
+                anchoring:{
+                    anchorY:'top',
+                    offsetY:150
+                },
+                button:{
+                    clickBoxWidth:200,
+                    clickBoxHeight:100
+                },
+                orderingLayer:11
+            }
+        });
+        this.game.anchorEntity(this.mainMenuBtnEntity,this.settingsPanelEntity);
+
+        this.mainMenuTextEntity = this.game.spawnEntity({
+            passedKey:'text',
+            componentsToModify:{
+                fontSize:30,
+                fontContent:'MainMenu',
+                orderingLayer:12
+            }
+        });
+        this.game.anchorEntity(this.mainMenuTextEntity,this.mainMenuBtnEntity);
     };
 }
