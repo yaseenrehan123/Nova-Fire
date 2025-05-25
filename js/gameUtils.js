@@ -179,12 +179,20 @@ export class GameUtils {
         return a + (b - a) * t;
     };
     returnIsPaused() {
-        return this.isPaused;
+        return this.game.isPaused;
     }
     pauseGame() {
-        this.isPaused = true;
+        this.game.isPaused = true;
         this.game.ecs.entitySim.pause();
+        this.game.matter.matterRunner.enabled = false;
+        console.log("IS SIMULATION PAUSED?", this.game.ecs.entitySim.isPaused());
     };
+    unPauseGame(){
+        this.game.isPaused = false;
+        this.game.ecs.entitySim.start();
+       this.game.matter.matterRunner.enabled = true;
+        console.log("IS SIMULATION RUNNING?", this.game.ecs.entitySim.isRunning());
+    }
     queryAllComponents(e, reqComponents, callback) {
         if (!reqComponents.every(c => e.hasComponent(c))) return;
         callback(e);

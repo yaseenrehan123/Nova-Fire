@@ -887,5 +887,34 @@
       "parent": null,
       "children": []
     }
+  },
+  "textureButton":{
+    "components":{
+      "imgKey":"crossIcon",
+      "centerImage":false,
+      "pos":{"x":0,"y":0},
+      "localPos":{"x":0,"y":0},
+       "anchoring": {
+        "anchorX": "center",
+        "anchorY": "middle",
+        "offsetX": 0,
+        "offsetY": 0
+      },
+      "width":100,
+      "height":100,
+      "button": {
+        "onPress": "()=>{}",
+        "onRelease": "()=>{}",
+        "onHover": "()=>{}",
+        "clickBoxWidth": 100,
+        "clickBoxHeight": 100,
+        "isPressed": false
+      },
+      "isActive": true,
+      "drawType": "sprite",
+      "orderingLayer": 0,
+      "parent": null,
+      "children": []
+    }
   }
 }

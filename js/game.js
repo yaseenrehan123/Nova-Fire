@@ -58,10 +58,10 @@ export class Game{
         this.isPaused = false;
         this.sceneEntity = null;
         this.debugging = {
-            debugMatterBodies:false,
+            debugMatterBodies:true,
             debugShootDirection:true,
             debugUiClickBox:true,
-            debugLocalPos:false
+            debugLocalPos:true
         };
         this.mouse = null;
         this.physics = null;

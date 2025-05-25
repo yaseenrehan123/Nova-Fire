@@ -357,9 +357,7 @@ class CustomSystems {
         ctx.fillText(content, x, y);
 
         ctx.restore();
-    }
-
-
+    };
     debugBtnClickArea() {
         if (!this.game.debugging.debugUiClickBox) return;
         const ctx = this.game.ctx;
@@ -528,14 +526,14 @@ class CustomSystems {
         };
 
     };
-    traceLocalPositions(){
-        if(!this.game.debugging.debugLocalPos) return;
+    traceLocalPositions() {
+        if (!this.game.debugging.debugLocalPos) return;
         //console.log("TRACE LOCAL POS RUNNING");
         const ctx = this.game.ctx;
         this.game.gameUtils.filterEntitiesByComponents(
-            ['localPos','parent'],
+            ['localPos', 'parent'],
             (e) => {
-                if(!this.game.gameUtils.isEntityActive(e)) return;
+                if (!this.game.gameUtils.isEntityActive(e)) return;
 
                 const globalPos = this.game.gameUtils.getGlobalFromLocalPos(e);
                 const center = this.game.screenCenterPos;
@@ -546,7 +544,7 @@ class CustomSystems {
 
                 ctx.strokeStyle = 'green';
 
-                ctx.moveTo(center.x,center.y);
+                ctx.moveTo(center.x, center.y);
                 ctx.lineTo(globalPos.x, globalPos.y);
 
                 ctx.stroke();
