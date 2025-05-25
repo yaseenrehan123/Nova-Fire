@@ -61,7 +61,8 @@ export class Game{
         this.debugging = {
             debugMatterBodies:false,
             debugShootDirection:true,
-            debugUiClickBox:true
+            debugUiClickBox:true,
+            debugLocalPos:false
         };
         this.mouse = null;
         this.physics = null;
@@ -96,6 +97,7 @@ export class Game{
         this.ecs.customSystems.DebugShootingDirection();
         this.ecs.customSystems.debugBtnClickArea();
         this.ecs.customSystems.handleBtnTriggers();
+        this.ecs.customSystems.traceLocalPositions();
         //this.ecs.customSystems.trackPlayerRotation();
 
         this.registeredObj.forEach((obj)=>{
@@ -153,6 +155,7 @@ export class Game{
         systems.shootBulletsSystem();
         systems.manageShootEnergySystem();
         systems.playerEnergyBarColorSystem();
+        systems.handleLocalPosSystem();
     };
   
 
@@ -486,6 +489,22 @@ export class Game{
         }
 
         return true;
-    }
+    };
+    getGlobalFromLocalPos(entity){
+        let pos = {x:0,y:0};
+
+        const localPos = entity.getComponent('localPos');
+        const parent = entity.getComponent('parent');
+
+        const parentPos = parent.getComponent('pos');
+
+        if(localPos && parentPos){
+            pos = {
+                x: localPos.x + parentPos.x,
+                y: localPos.y + parentPos.y
+            };
+        };
+        return pos;
+    }   
 
 }

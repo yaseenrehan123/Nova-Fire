@@ -6,6 +6,10 @@
         "x": 0,
         "y": 0
       },
+      "localPos": {
+        "x": 0,
+        "y": 0
+      },
       "width": 100,
       "height": 100,
       "rotation": 0,
@@ -142,14 +146,18 @@
       "isActive": true,
       "drawType": "sprite",
       "orderingLayer": 0,
-      "parent":null,
-      "children":[]
+      "parent": null,
+      "children": []
     }
   },
   "blueBattery": {
     "components": {
       "imgKey": "blueBattery",
       "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "localPos": {
         "x": 0,
         "y": 0
       },
@@ -187,14 +195,18 @@
       "isActive": true,
       "drawType": "sprite",
       "orderingLayer": 0,
-      "parent":null,
-      "children":[]
+      "parent": null,
+      "children": []
     }
   },
   "purpleBattery": {
     "components": {
       "imgKey": "purpleBattery",
       "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "localPos": {
         "x": 0,
         "y": 0
       },
@@ -232,14 +244,18 @@
       "isActive": true,
       "drawType": "sprite",
       "orderingLayer": 0,
-      "parent":null,
-      "children":[]
+      "parent": null,
+      "children": []
     }
   },
   "yellowBattery": {
     "components": {
       "imgKey": "yellowBattery",
       "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "localPos": {
         "x": 0,
         "y": 0
       },
@@ -277,14 +293,18 @@
       "isActive": true,
       "drawType": "sprite",
       "orderingLayer": 0,
-      "parent":null,
-      "children":[]
+      "parent": null,
+      "children": []
     }
   },
   "greenBattery": {
     "components": {
       "imgKey": "greenBattery",
       "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "localPos": {
         "x": 0,
         "y": 0
       },
@@ -322,14 +342,18 @@
       "isActive": true,
       "drawType": "sprite",
       "orderingLayer": 0,
-      "parent":null,
-      "children":[]
+      "parent": null,
+      "children": []
     }
   },
   "enemy1": {
     "components": {
       "imgKey": "enemy1",
       "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "localPos": {
         "x": 0,
         "y": 0
       },
@@ -367,14 +391,18 @@
       "isActive": true,
       "drawType": "sprite",
       "orderingLayer": 0,
-      "parent":null,
-      "children":[]
+      "parent": null,
+      "children": []
     }
   },
   "enemy2": {
     "components": {
       "imgKey": "enemy2",
       "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "localPos": {
         "x": 0,
         "y": 0
       },
@@ -412,14 +440,18 @@
       "isActive": true,
       "drawType": "sprite",
       "orderingLayer": 0,
-      "parent":null,
-      "children":[]
+      "parent": null,
+      "children": []
     }
   },
   "enemy3": {
     "components": {
       "imgKey": "enemy3",
       "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "localPos": {
         "x": 0,
         "y": 0
       },
@@ -457,14 +489,18 @@
       "isActive": true,
       "drawType": "sprite",
       "orderingLayer": 0,
-      "parent":null,
-      "children":[]
+      "parent": null,
+      "children": []
     }
   },
   "greenBullet": {
     "components": {
       "imgKey": "greenBullet",
       "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "localPos": {
         "x": 0,
         "y": 0
       },
@@ -500,14 +536,18 @@
       "isActive": true,
       "drawType": "sprite",
       "orderingLayer": 0,
-      "parent":null,
-      "children":[]
+      "parent": null,
+      "children": []
     }
   },
   "blueBullet": {
     "components": {
       "imgKey": "blueBullet",
       "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "localPos": {
         "x": 0,
         "y": 0
       },
@@ -542,14 +582,18 @@
       "isActive": true,
       "drawType": "sprite",
       "orderingLayer": 0,
-      "parent":null,
-      "children":[]
+      "parent": null,
+      "children": []
     }
   },
   "purpleBullet": {
     "components": {
       "imgKey": "purpleBullet",
       "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "localPos": {
         "x": 0,
         "y": 0
       },
@@ -585,14 +629,18 @@
       "isActive": true,
       "drawType": "sprite",
       "orderingLayer": 0,
-      "parent":null,
-      "children":[]
+      "parent": null,
+      "children": []
     }
   },
   "yellowBullet": {
     "components": {
       "imgKey": "yellowBullet",
       "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "localPos": {
         "x": 0,
         "y": 0
       },
@@ -628,14 +676,18 @@
       "isActive": true,
       "drawType": "sprite",
       "orderingLayer": 0,
-      "parent":null,
-      "children":[]
+      "parent": null,
+      "children": []
     }
   },
   "powerup": {
     "components": {
       "imgKey": "powerup",
       "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "localPos": {
         "x": 0,
         "y": 0
       },
@@ -675,13 +727,17 @@
       "isActive": true,
       "drawType": "sprite",
       "orderingLayer": 0,
-      "parent":null,
-      "children":[]
+      "parent": null,
+      "children": []
     }
   },
   "bar": {
     "components": {
       "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "localPos": {
         "x": 0,
         "y": 0
       },
@@ -716,13 +772,17 @@
       "isActive": true,
       "drawType": "bar",
       "orderingLayer": 0,
-      "parent":null,
-      "children":[]
+      "parent": null,
+      "children": []
     }
   },
   "panel": {
     "components": {
       "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "localPos": {
         "x": 0,
         "y": 0
       },
@@ -750,13 +810,17 @@
       },
       "drawType": "rectangle",
       "orderingLayer": 0,
-      "parent":null,
-      "children":[]
+      "parent": null,
+      "children": []
     }
   },
   "button": {
     "components": {
       "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "localPos": {
         "x": 0,
         "y": 0
       },
@@ -791,13 +855,17 @@
       "isActive": true,
       "drawType": "rectangle",
       "orderingLayer": 0,
-      "parent":null,
-      "children":[]
+      "parent": null,
+      "children": []
     }
   },
   "text": {
     "components": {
       "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "localPos": {
         "x": 0,
         "y": 0
       },
@@ -813,11 +881,11 @@
         "offsetX": 0,
         "offsetY": 0
       },
-      "isActive":true,
+      "isActive": true,
       "drawType": "text",
       "orderingLayer": 0,
-      "parent":null,
-      "children":[]
+      "parent": null,
+      "children": []
     }
   }
 }

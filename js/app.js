@@ -29,7 +29,7 @@ function start(resources) {
         }
     });
 
-    game.assignParent(yellowBattery, game.sceneEntity);
+    //game.assignParent(yellowBattery, game.sceneEntity);
 
     const purpleBattery = game.spawnEntity({
         passedKey: 'purpleBattery',
@@ -49,7 +49,7 @@ function start(resources) {
 
     });
 
-    game.assignParent(purpleBattery, game.sceneEntity);
+    //game.assignParent(purpleBattery, game.sceneEntity);
 
     const greenBattery = game.spawnEntity({
         passedKey: 'greenBattery',
@@ -68,7 +68,7 @@ function start(resources) {
         }
     });
 
-    game.assignParent(greenBattery, game.sceneEntity);
+    //game.assignParent(greenBattery, game.sceneEntity);
 
     const blueBattery = game.spawnEntity({
         passedKey: 'blueBattery',
@@ -87,7 +87,7 @@ function start(resources) {
         }
     });
 
-    game.assignParent(blueBattery, game.sceneEntity);
+    //game.assignParent(blueBattery, game.sceneEntity);
 
     const powerup = game.spawnEntity({
         passedKey: 'powerup',
@@ -106,7 +106,7 @@ function start(resources) {
         }
     });
 
-    game.assignParent(powerup, game.sceneEntity);
+    //game.assignParent(powerup, game.sceneEntity);
 
     const enemy1 = game.spawnEntity({
         passedKey: 'enemy1',
@@ -125,7 +125,7 @@ function start(resources) {
         }
     });
 
-    game.assignParent(enemy1, game.sceneEntity);
+    //game.assignParent(enemy1, game.sceneEntity);
 
     const enemy2 = game.spawnEntity({
         passedKey: 'enemy2',
@@ -144,7 +144,7 @@ function start(resources) {
         }
     });
 
-    game.assignParent(enemy2, game.sceneEntity);
+    //game.assignParent(enemy2, game.sceneEntity);
 
     const enemy3 = game.spawnEntity({
         passedKey: 'enemy3',
@@ -163,7 +163,7 @@ function start(resources) {
         }
     });
 
-    game.assignParent(enemy3, game.sceneEntity);
+    //game.assignParent(enemy3, game.sceneEntity);
 
     new ChangeView({
         newRotation: 0,

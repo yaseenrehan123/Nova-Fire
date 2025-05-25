@@ -40,8 +40,8 @@ class CustomSystems {
     addSceneRotation() {
         this.game.filterEntitiesByComponents(
             ['rotation', 'sceneOrientedRotation', 'baseRotation'],
-            (e) =>{
-                if(!this.game.isEntityActive(e)) return;
+            (e) => {
+                if (!this.game.isEntityActive(e)) return;
                 let baseRotation = e.getComponent('baseRotation');
                 let rotation = 0;
                 rotation = baseRotation + this.game.sceneRotation;
@@ -53,7 +53,7 @@ class CustomSystems {
         this.game.filterEntitiesByComponents(
             ['rotation', 'sceneOrientedRotation', 'baseRotation'],
             (e) => {
-                if(!this.game.isEntityActive(e)) return;
+                if (!this.game.isEntityActive(e)) return;
                 const rotation = e.getComponent('rotation');
                 let baseRotation = 0;
                 baseRotation = rotation - this.game.sceneRotation;
@@ -68,7 +68,7 @@ class CustomSystems {
         this.game.filterEntitiesByComponents(
             ['pos', 'matterBody', 'matterBodyType', 'rotation'],
             (e) => {
-                if(!this.game.isEntityActive(e)) return;
+                if (!this.game.isEntityActive(e)) return;
                 //const pos = e.getComponent('pos');
                 const body = e.getComponent('matterBody');
                 const bodyType = e.getComponent('matterBodyType');
@@ -159,7 +159,7 @@ class CustomSystems {
         this.game.filterEntitiesByComponents(
             ['matterBody'],
             (e) => {
-                if(!this.game.isEntityActive(e)) return;
+                if (!this.game.isEntityActive(e)) return;
                 const matterBody = e.getComponent('matterBody');
 
                 ctx.strokeStyle = color;
@@ -171,11 +171,11 @@ class CustomSystems {
         );
     };
     DebugShootingDirection() {
-        if(!this.game.debugging.debugShootDirection) return;
+        if (!this.game.debugging.debugShootDirection) return;
         this.game.filterEntitiesByComponents(
             ['rotation', 'pos', 'spawnPos', 'shootBullet'],
             (e) => {
-                if(!this.game.isEntityActive(e)) return;
+                if (!this.game.isEntityActive(e)) return;
                 const rotation = e.getComponent('rotation');
                 //const pos = e.getComponent('pos');
                 const spawnPos = e.getComponent('spawnPos');
@@ -204,7 +204,7 @@ class CustomSystems {
         this.game.filterEntitiesByComponents(
             ['player', 'rotation'],
             (e) => {
-                
+
                 const rotation = e.getComponent('rotation');
                 console.log("Player Rotation:", rotation)
             }
@@ -290,7 +290,7 @@ class CustomSystems {
 
         e.setComponent('bar', bar);
     };
-    drawRectangle(e){
+    drawRectangle(e) {
         const ctx = this.game.ctx;
         const pos = e.getComponent('pos');
         const width = e.getComponent('width');
@@ -305,7 +305,7 @@ class CustomSystems {
         const h = height;
         const isRoundedEnabled = rectangleShape.rounded.enabled;
         const isOutlineEnabled = rectangleShape.outline.enabled;
-       
+
         //console.log("Entity:",e,"X:",pos.x);
         //console.log("Entity:",e,"Y:",pos.y);
 
@@ -314,21 +314,21 @@ class CustomSystems {
         ctx.beginPath();
         //shape
         ctx.fillStyle = color;
-    
-        if(isRoundedEnabled){
+
+        if (isRoundedEnabled) {
             const r = rectangleShape.rounded.radius;
-            ctx.roundRect(x,y,w,h,r)
+            ctx.roundRect(x, y, w, h, r)
         }
-        else{
-            ctx.rect(x,y,w,h);
+        else {
+            ctx.rect(x, y, w, h);
         }
         ctx.fill();
 
         //outline
-        if(isOutlineEnabled){
+        if (isOutlineEnabled) {
             ctx.strokeStyle = rectangleShape.outline.color;
             ctx.strokeWidth = rectangleShape.outline.width;
-            ctx.strokeRect(x,y,w,h);
+            ctx.strokeRect(x, y, w, h);
         }
         ctx.restore();
     };
@@ -360,14 +360,14 @@ class CustomSystems {
     }
 
 
-    debugBtnClickArea(){
-        if(!this.game.debugging.debugUiClickBox) return;
+    debugBtnClickArea() {
+        if (!this.game.debugging.debugUiClickBox) return;
         const ctx = this.game.ctx;
         this.game.filterEntitiesByComponents(
-            ['pos','button'],
-            (e) =>{
+            ['pos', 'button'],
+            (e) => {
                 //console.log("DEBUG BTN CLICK SYSTEM RUNNING!");
-                if(!this.game.isEntityActive(e)) return;
+                if (!this.game.isEntityActive(e)) return;
                 const pos = e.getComponent('pos');
                 const button = e.getComponent('button');
 
@@ -375,7 +375,7 @@ class CustomSystems {
                 const y = pos.y;
                 const clickboxWidth = button.clickBoxWidth;
                 const clickboxHeight = button.clickBoxHeight;
-                
+
                 const strokeColor = 'green';
                 const strokeWidth = 5;
 
@@ -386,7 +386,7 @@ class CustomSystems {
                 ctx.strokeStyle = strokeColor;
                 ctx.lineWidth = strokeWidth;
 
-                ctx.rect(x,y,clickboxWidth,clickboxHeight);
+                ctx.rect(x, y, clickboxWidth, clickboxHeight);
                 ctx.stroke();
 
                 ctx.restore();
@@ -394,13 +394,13 @@ class CustomSystems {
             }
         );
     };
-    handleBtnTriggers(){
+    handleBtnTriggers() {
         //console.log("MOUSE PRESSED:",this.game.mouse.isPressed);
         //console.log("MOUSE RELEASED:",this.game.mouse.wasReleased);
         this.game.filterEntitiesByComponents(
-            ['pos','button'],
+            ['pos', 'button'],
             (e) => {
-               if(!this.game.isEntityActive(e)) return;
+                if (!this.game.isEntityActive(e)) return;
                 const pos = e.getComponent('pos');
                 const button = e.getComponent('button');
 
@@ -410,13 +410,13 @@ class CustomSystems {
                 const h = button.clickBoxHeight;
                 const mouse = this.game.mouse;
 
-                const isMouseOver = this.game.isMouseOver(x,y,w,h);
+                const isMouseOver = this.game.isMouseOver(x, y, w, h);
 
                 //onsole.log("MOUSE OVER:",isMouseOver);
 
                 if (isMouseOver && button.onHover) {
                     const hoverFunction = button.onHover;
-                    if(typeof hoverFunction === 'function'){
+                    if (typeof hoverFunction === 'function') {
                         hoverFunction();
                     }
                     //console.log("BUTTON HOVERED");
@@ -425,9 +425,9 @@ class CustomSystems {
                 // Press logic
                 if (isMouseOver && mouse.isPressed && !button.isPressed) {
                     button.isPressed = true;
-                    if (button.onPress){
+                    if (button.onPress) {
                         const pressFunction = button.onPress;
-                        if(typeof pressFunction === 'function'){
+                        if (typeof pressFunction === 'function') {
                             pressFunction();
                         }
                     }
@@ -437,9 +437,9 @@ class CustomSystems {
                 // Release logic
                 if (!mouse.isPressed && button.isPressed) {
                     button.isPressed = false;
-                    if (isMouseOver && button.onRelease){
+                    if (isMouseOver && button.onRelease) {
                         const releaseFunction = button.onRelease;
-                        if(typeof releaseFunction === 'function'){
+                        if (typeof releaseFunction === 'function') {
                             releaseFunction();
                         }
                         console.log("BUTTON RELEASED");
@@ -451,82 +451,110 @@ class CustomSystems {
         );
     };
     drawAllEntities() {
-    const allEntities = [];
+        const allEntities = [];
 
-    // Gather all drawable entities
-    this.game.filterEntitiesByComponents(['drawType'], (e) => {
-        if (this.game.isEntityActive(e)) {
-            allEntities.push(e);
-        }
-    });
-
-    // Build a map of children
-    const parentToChildren = new Map();
-    const rootEntities = [];
-
-    for (const entity of allEntities) {
-        const parent = entity.getComponent('parent');
-        if (parent && allEntities.includes(parent)) {
-            if (!parentToChildren.has(parent)) {
-                parentToChildren.set(parent, []);
+        // Gather all drawable entities
+        this.game.filterEntitiesByComponents(['drawType'], (e) => {
+            if (this.game.isEntityActive(e)) {
+                allEntities.push(e);
             }
-            parentToChildren.get(parent).push(entity);
-        } else {
-            rootEntities.push(entity);
-        }
-    }
+        });
 
-    // Sort by orderingLayer at the top level
-    rootEntities.sort((a, b) => {
-        return (a.getComponent('orderingLayer') || 0) - (b.getComponent('orderingLayer') || 0);
-    });
+        // Build a map of children
+        const parentToChildren = new Map();
+        const rootEntities = [];
 
-    // Recursively flatten draw order
-    const flattenedDrawList = [];
-
-    const addEntityAndChildren = (entity) => {
-        flattenedDrawList.push(entity);
-
-        const children = parentToChildren.get(entity);
-        if (children) {
-            // Sort children by orderingLayer if they override it
-            children.sort((a, b) => {
-                const aOrder = a.getComponent('orderingLayer') ?? entity.getComponent('orderingLayer') ?? 0;
-                const bOrder = b.getComponent('orderingLayer') ?? entity.getComponent('orderingLayer') ?? 0;
-                return aOrder - bOrder;
-            });
-
-            for (const child of children) {
-                addEntityAndChildren(child);
+        for (const entity of allEntities) {
+            const parent = entity.getComponent('parent');
+            if (parent && allEntities.includes(parent)) {
+                if (!parentToChildren.has(parent)) {
+                    parentToChildren.set(parent, []);
+                }
+                parentToChildren.get(parent).push(entity);
+            } else {
+                rootEntities.push(entity);
             }
         }
+
+        // Sort by orderingLayer at the top level
+        rootEntities.sort((a, b) => {
+            return (a.getComponent('orderingLayer') || 0) - (b.getComponent('orderingLayer') || 0);
+        });
+
+        // Recursively flatten draw order
+        const flattenedDrawList = [];
+
+        const addEntityAndChildren = (entity) => {
+            flattenedDrawList.push(entity);
+
+            const children = parentToChildren.get(entity);
+            if (children) {
+                // Sort children by orderingLayer if they override it
+                children.sort((a, b) => {
+                    const aOrder = a.getComponent('orderingLayer') ?? entity.getComponent('orderingLayer') ?? 0;
+                    const bOrder = b.getComponent('orderingLayer') ?? entity.getComponent('orderingLayer') ?? 0;
+                    return aOrder - bOrder;
+                });
+
+                for (const child of children) {
+                    addEntityAndChildren(child);
+                }
+            }
+        };
+
+        for (const root of rootEntities) {
+            addEntityAndChildren(root);
+        }
+
+        // Draw in calculated order
+        for (const e of flattenedDrawList) {
+            const type = e.getComponent("drawType");
+            switch (type) {
+                case "sprite":
+                    this.drawSprite(e);
+                    break;
+                case "rectangle":
+                    this.drawRectangle(e);
+                    break;
+                case "bar":
+                    this.drawBarEntity(e);
+                    break;
+                case "text":
+                    this.drawText(e);
+                    break;
+                default:
+                    console.warn("Unknown drawType:", type);
+            }
+        };
+
     };
+    traceLocalPositions(){
+        if(!this.game.debugging.debugLocalPos) return;
+        //console.log("TRACE LOCAL POS RUNNING");
+        const ctx = this.game.ctx;
+        this.game.filterEntitiesByComponents(
+            ['localPos','parent'],
+            (e) => {
+                if(!this.game.isEntityActive(e)) return;
 
-    for (const root of rootEntities) {
-        addEntityAndChildren(root);
-    }
+                const globalPos = this.game.getGlobalFromLocalPos(e);
+                const center = this.game.screenCenterPos;
 
-    // Draw in calculated order
-    for (const e of flattenedDrawList) {
-        const type = e.getComponent("drawType");
-        switch (type) {
-            case "sprite":
-                this.drawSprite(e);
-                break;
-            case "rectangle":
-                this.drawRectangle(e);
-                break;
-            case "bar":
-                this.drawBarEntity(e);
-                break;
-            case "text":
-                this.drawText(e);
-                break;
-            default:
-                console.warn("Unknown drawType:", type);
-        }
-    }
-}
+                ctx.save();
+
+                ctx.beginPath();
+
+                ctx.strokeStyle = 'green';
+
+                ctx.moveTo(center.x,center.y);
+                ctx.lineTo(globalPos.x, globalPos.y);
+
+                ctx.stroke();
+
+                ctx.restore();
+            }
+        );
+    };
 
 }
 class ECSSystems {
@@ -542,7 +570,7 @@ class ECSSystems {
         engine.system('rotationMatterBodies', ['rotation', 'matterBody', 'matterBodyType'], (entity, {
             rotation, matterBody, matterBodyType
         }) => {
-            if(!this.game.isEntityActive(entity)) return;
+            if (!this.game.isEntityActive(entity)) return;
             const typesToRotate = ['rectangle'];
             if (!typesToRotate.includes(matterBodyType)) return;
             const rotationInRadians = rotation * (Math.PI / 180);
@@ -555,7 +583,7 @@ class ECSSystems {
         const engine = this.game.ecs.entityEngine;
         engine.system('movePlayer', ['player', 'speed', 'moveVector', 'pos', 'matterBody'],
             (entity, { player, speed, moveVector, pos, matterBody, }) => {
-                if(!this.game.isEntityActive(entity)) return;
+                if (!this.game.isEntityActive(entity)) return;
                 //console.log("Plaayer move system running");
                 const mouseX = this.game.mouse.pos.x;
                 const mouseY = this.game.mouse.pos.y;
@@ -594,7 +622,7 @@ class ECSSystems {
         const engine = this.game.ecs.entityEngine;
         engine.system('moveObjects', ['pos', 'rotation', 'matterBody', 'moveVector', 'speed', 'notPlayer'],
             (entity, { pos, rotation, matterBody, moveVector, speed, notPlayer }) => {
-                if(!this.game.isEntityActive(entity)) return;
+                if (!this.game.isEntityActive(entity)) return;
                 const rad = rotation * (Math.PI / 180)
                 //console.log(`${entity.name} + ${pos.x}`)
                 moveVector = {
@@ -625,7 +653,7 @@ class ECSSystems {
         const engine = this.game.ecs.entityEngine;
         engine.system('shootBullets', ['pos', 'shootBullet', 'rotation', 'spawnPos', 'shootTimes'],
             (entity, { pos, shootBullet, rotation, spawnPos, shootTimes, }) => {
-                if(!this.game.isEntityActive(entity)) return;
+                if (!this.game.isEntityActive(entity)) return;
                 //console.log("Rotation from shootBullets System:",rotation);
 
                 // ✅ Always update spawn positions
@@ -645,7 +673,7 @@ class ECSSystems {
                     return;
                 }
 
-                
+
                 const playerComp = entity.hasComponent('player');
                 let shotByPlayer = false;
                 let matterBodyOptions = {};
@@ -706,8 +734,8 @@ class ECSSystems {
         const engine = this.game.ecs.entityEngine;
 
         engine.system('manageShootEnergySystem', ['shootEnergy', 'shootBullet']
-            , (entity, { shootEnergy, shootBullet,  }) => {
-                if(!this.game.isEntityActive(entity)) return;
+            , (entity, { shootEnergy, shootBullet, }) => {
+                if (!this.game.isEntityActive(entity)) return;
                 const delta = this.game.deltaTime;
 
                 const fireActive = shootBullet.active;
@@ -761,16 +789,33 @@ class ECSSystems {
                     const energyBarEntity = this.game.ui.playerUi.energyBarEntity;
                     const barComponent = energyBarEntity.getComponent('bar');
                     barComponent.fillColor = depletedColor;
-                    energyBarEntity.setComponent('bar',barComponent);
+                    energyBarEntity.setComponent('bar', barComponent);
                 }
                 else {
                     const energyBarEntity = this.game.ui.playerUi.energyBarEntity;
                     const barComponent = energyBarEntity.getComponent('bar');
                     barComponent.fillColor = 'purple';
-                    energyBarEntity.setComponent('bar',barComponent);
+                    energyBarEntity.setComponent('bar', barComponent);
                 }
             }
         )
-    }
+    };
+    handleLocalPosSystem() {
+        const engine = this.game.ecs.entityEngine;
+
+        engine.system('handleLocalPosSystem', ['pos', 'localPos', 'parent'], (entity, { pos, localPos, parent }) => {
+            const parentPos = parent.getComponent('pos');
+            const calculatedLocalPos = {  // subtract global pos from parent pos
+                x: pos.x - parentPos.x,
+                y: pos.y - parentPos.y
+            };
+
+            localPos = calculatedLocalPos;
+
+            entity.setComponent('localPos', localPos);
+
+            console.log("ENTITY NAME:", entity.name, "LOCAL POS:", localPos);
+        });
+    };
 
 }
