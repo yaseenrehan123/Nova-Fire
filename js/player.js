@@ -11,7 +11,7 @@ export class Player{
     init(){
         //console.log("Game instance from player!" ,this.game)
         //console.log("Game Center pos " ,this.game.screenCenterPos)
-        this.playerEntity = this.game.spawnEntity({
+        this.playerEntity = this.game.gameUtils.spawnEntity({
             passedKey:'player',
             componentsToModify:{
                 pos:{

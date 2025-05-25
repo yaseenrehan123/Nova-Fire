@@ -20,7 +20,7 @@ class PlayerUi{
         this.start();
     };
     start(){
-       this.game.addObj(this);
+       this.game.gameUtils.addObj(this);
        
        this.initHealthBar();
        this.initEnergyBar();
@@ -34,7 +34,7 @@ class PlayerUi{
     updateHealthBar(){
         const maxHealth = this.game.player.maxHealth;
         const currentHealth = this.game.player.playerEntity.getComponent('health');
-        this.game.setBarValue({
+        this.game.gameUtils.setBarValue({
             max:maxHealth,
             current:currentHealth,
             barEntity:this.healthBarEntity
@@ -47,7 +47,7 @@ class PlayerUi{
         const backGroundFillColor = 'rgb(3, 0, 14)';
         const healthFillColor = 'rgb(1, 213, 11)';
 
-        this.healthBarEntity = this.game.spawnEntity({
+        this.healthBarEntity = this.game.gameUtils.spawnEntity({
             passedKey: 'bar',
             componentsToModify: {
                 pos: { x: 0, y: 0 },
@@ -79,7 +79,7 @@ class PlayerUi{
         const outlineColor = 'rgb(32, 30, 39)';
         const backGroundFillColor = 'rgb(3, 0, 14)';
 
-        this.energyBarEntity = this.game.spawnEntity({
+        this.energyBarEntity = this.game.gameUtils.spawnEntity({
             passedKey:'bar',
             componentsToModify:{
                 pos:{x:0,y:54},
@@ -110,7 +110,7 @@ class PlayerUi{
         const shootEnergyComponent = this.game.player.playerEntity.getComponent('shootEnergy');
         const max = shootEnergyComponent.max;
         const current = shootEnergyComponent.current;
-        this.game.setBarValue({
+        this.game.gameUtils.setBarValue({
             max:max,
             current:current,
             barEntity:this.energyBarEntity
@@ -132,7 +132,7 @@ class SettingsUi{
         this.start();
     };
     start(){
-        this.game.addObj(this);
+        this.game.gameUtils.addObj(this);
         this.initSettingsBtn();
         this.initSettingsPanel();
     };
@@ -143,7 +143,7 @@ class SettingsUi{
         const btnColor = 'rgb(27, 43, 68)';
         const fontSize = 30;
 
-        this.settingsBtnEntity = this.game.spawnEntity({
+        this.settingsBtnEntity = this.game.gameUtils.spawnEntity({
             passedKey:'button',
             componentsToModify:{
                 width:200,
@@ -163,8 +163,8 @@ class SettingsUi{
                     clickBoxWidth:200,
                     clickBoxHeight:100,
                     onPress: () => {
-                        this.game.setIsActive(this.settingsPanelEntity,true);
-                        this.game.pauseGame();
+                        this.game.gameUtils.setIsActive(this.settingsPanelEntity,true);
+                        this.game.gameUtils.pauseGame();
                     },
                     onHover: () =>{
                         const canvas = this.game.canvas;
@@ -174,11 +174,11 @@ class SettingsUi{
                 orderingLayer:10
             }
         });
-        this.game.anchorEntity(this.settingsBtnEntity,this.game.sceneEntity);
+        this.game.gameUtils.anchorEntity(this.settingsBtnEntity,this.game.sceneEntity);
         //console.log("SETTINGS BTN ANCHORED POS:",this.settingsBtnEntity.getComponent('pos'));
         console.log("SETTINGS BTN ENTITY:",this.settingsBtnEntity);
         
-        this.settingsBtnTextEntity = this.game.spawnEntity({
+        this.settingsBtnTextEntity = this.game.gameUtils.spawnEntity({
             passedKey:'text',
             componentsToModify:{
                 fontSize:fontSize,
@@ -186,8 +186,8 @@ class SettingsUi{
                 parent:this.settingsBtnEntity
             }
         });
-        this.game.calculateTextWidthAndHeight(this.settingsBtnTextEntity);
-        this.game.anchorEntity(this.settingsBtnTextEntity,this.settingsBtnEntity);
+        this.game.gameUtils.calculateTextWidthAndHeight(this.settingsBtnTextEntity);
+        this.game.gameUtils.anchorEntity(this.settingsBtnTextEntity,this.settingsBtnEntity);
         /*
         const settingsBtnTextWidth = this.settingsBtnTextEntity.getComponent('width');
         const settingsBtnTextHeight = this.settingsBtnTextEntity.getComponent('height');
@@ -199,7 +199,7 @@ class SettingsUi{
     initSettingsPanel(){
         const bgColor = 'rgb(33, 76, 141)';
         const btnColor = 'rgb(27, 59, 106)';
-        this.settingsPanelEntity = this.game.spawnEntity({
+        this.settingsPanelEntity = this.game.gameUtils.spawnEntity({
             passedKey:'panel',
             componentsToModify:{
                 pos:this.game.screenCenterPos,
@@ -215,10 +215,10 @@ class SettingsUi{
                 orderingLayer:10
             }
         });
-        this.game.anchorEntity(this.settingsPanelEntity,this.game.sceneEntity);
+        this.game.gameUtils.anchorEntity(this.settingsPanelEntity,this.game.sceneEntity);
         //console.log("SETTINGS PANEL POS:",this.settingsPanelEntity);
 
-        this.pausedTextEntity = this.game.spawnEntity({
+        this.pausedTextEntity = this.game.gameUtils.spawnEntity({
             passedKey:"text",
             componentsToModify:{
                 fontSize:80,
@@ -229,9 +229,9 @@ class SettingsUi{
                 parent:this.settingsPanelEntity
             }
         });
-        this.game.anchorEntity(this.pausedTextEntity,this.settingsPanelEntity);
+        this.game.gameUtils.anchorEntity(this.pausedTextEntity,this.settingsPanelEntity);
         
-        this.mainMenuBtnEntity = this.game.spawnEntity({
+        this.mainMenuBtnEntity = this.game.gameUtils.spawnEntity({
             passedKey:'button',
             componentsToModify:{
                 width:200,
@@ -254,9 +254,9 @@ class SettingsUi{
                 parent:this.settingsPanelEntity
             }
         });
-        this.game.anchorEntity(this.mainMenuBtnEntity,this.settingsPanelEntity);
+        this.game.gameUtils.anchorEntity(this.mainMenuBtnEntity,this.settingsPanelEntity);
 
-        this.mainMenuTextEntity = this.game.spawnEntity({
+        this.mainMenuTextEntity = this.game.gameUtils.spawnEntity({
             passedKey:'text',
             componentsToModify:{
                 fontSize:30,
@@ -264,6 +264,6 @@ class SettingsUi{
                 parent:this.mainMenuBtnEntity
             }
         });
-        this.game.anchorEntity(this.mainMenuTextEntity,this.mainMenuBtnEntity);
+        this.game.gameUtils.anchorEntity(this.mainMenuTextEntity,this.mainMenuBtnEntity);
     };
 }

@@ -38,10 +38,10 @@ class CustomSystems {
         this.game = game;
     }
     addSceneRotation() {
-        this.game.filterEntitiesByComponents(
+        this.game.gameUtils.filterEntitiesByComponents(
             ['rotation', 'sceneOrientedRotation', 'baseRotation'],
             (e) => {
-                if (!this.game.isEntityActive(e)) return;
+                if (!this.game.gameUtils.isEntityActive(e)) return;
                 let baseRotation = e.getComponent('baseRotation');
                 let rotation = 0;
                 rotation = baseRotation + this.game.sceneRotation;
@@ -50,10 +50,10 @@ class CustomSystems {
         )
     }
     setBaseRotation() {
-        this.game.filterEntitiesByComponents(
+        this.game.gameUtils.filterEntitiesByComponents(
             ['rotation', 'sceneOrientedRotation', 'baseRotation'],
             (e) => {
-                if (!this.game.isEntityActive(e)) return;
+                if (!this.game.gameUtils.isEntityActive(e)) return;
                 const rotation = e.getComponent('rotation');
                 let baseRotation = 0;
                 baseRotation = rotation - this.game.sceneRotation;
@@ -65,10 +65,10 @@ class CustomSystems {
     debugMatterBodies() {
         if (!this.game.debugging.debugMatterBodies) return;
 
-        this.game.filterEntitiesByComponents(
+        this.game.gameUtils.filterEntitiesByComponents(
             ['pos', 'matterBody', 'matterBodyType', 'rotation'],
             (e) => {
-                if (!this.game.isEntityActive(e)) return;
+                if (!this.game.gameUtils.isEntityActive(e)) return;
                 //const pos = e.getComponent('pos');
                 const body = e.getComponent('matterBody');
                 const bodyType = e.getComponent('matterBodyType');
@@ -89,7 +89,7 @@ class CustomSystems {
                         ctx.save();
 
                         // --- Translate to center of the rectangle ---
-                        const rotatedOffset = this.game.rotateOffset(offset, rotation)
+                        const rotatedOffset = this.game.gameUtils.rotateOffset(offset, rotation)
                         ctx.translate(body.position.x + rotatedOffset.x, body.position.y + rotatedOffset.y);
 
                         // --- Rotate the context ---
@@ -143,7 +143,7 @@ class CustomSystems {
         }
 
         // call your helper
-        this.game.drawImage({
+        this.game.gameUtils.drawImage({
             img,
             pos,
             width,
@@ -156,10 +156,10 @@ class CustomSystems {
         if (!this.game.debugging.debugMatterBodies) return
         const ctx = this.game.ctx;
         const color = 'red';
-        this.game.filterEntitiesByComponents(
+        this.game.gameUtils.filterEntitiesByComponents(
             ['matterBody'],
             (e) => {
-                if (!this.game.isEntityActive(e)) return;
+                if (!this.game.gameUtils.isEntityActive(e)) return;
                 const matterBody = e.getComponent('matterBody');
 
                 ctx.strokeStyle = color;
@@ -172,10 +172,10 @@ class CustomSystems {
     };
     DebugShootingDirection() {
         if (!this.game.debugging.debugShootDirection) return;
-        this.game.filterEntitiesByComponents(
+        this.game.gameUtils.filterEntitiesByComponents(
             ['rotation', 'pos', 'spawnPos', 'shootBullet'],
             (e) => {
-                if (!this.game.isEntityActive(e)) return;
+                if (!this.game.gameUtils.isEntityActive(e)) return;
                 const rotation = e.getComponent('rotation');
                 //const pos = e.getComponent('pos');
                 const spawnPos = e.getComponent('spawnPos');
@@ -201,7 +201,7 @@ class CustomSystems {
         )
     }
     trackPlayerRotation() {
-        this.game.filterEntitiesByComponents(
+        this.game.gameUtils.filterEntitiesByComponents(
             ['player', 'rotation'],
             (e) => {
 
@@ -269,7 +269,7 @@ class CustomSystems {
             const prevValue = bar.flashEffect.prevValue;
             const targetValue = bar.flashEffect.targetValue;
             const step = bar.flashEffect.step;
-            const value = this.game.lerp(prevValue, targetValue, step);
+            const value = this.game.gameUtils.lerp(prevValue, targetValue, step);
             bar.flashEffect.value = value;
             bar.flashEffect.prevValue = value;
             const flashFillAmount = value / bar.maxValue * w;
@@ -363,11 +363,11 @@ class CustomSystems {
     debugBtnClickArea() {
         if (!this.game.debugging.debugUiClickBox) return;
         const ctx = this.game.ctx;
-        this.game.filterEntitiesByComponents(
+        this.game.gameUtils.filterEntitiesByComponents(
             ['pos', 'button'],
             (e) => {
                 //console.log("DEBUG BTN CLICK SYSTEM RUNNING!");
-                if (!this.game.isEntityActive(e)) return;
+                if (!this.game.gameUtils.isEntityActive(e)) return;
                 const pos = e.getComponent('pos');
                 const button = e.getComponent('button');
 
@@ -397,10 +397,10 @@ class CustomSystems {
     handleBtnTriggers() {
         //console.log("MOUSE PRESSED:",this.game.mouse.isPressed);
         //console.log("MOUSE RELEASED:",this.game.mouse.wasReleased);
-        this.game.filterEntitiesByComponents(
+        this.game.gameUtils.filterEntitiesByComponents(
             ['pos', 'button'],
             (e) => {
-                if (!this.game.isEntityActive(e)) return;
+                if (!this.game.gameUtils.isEntityActive(e)) return;
                 const pos = e.getComponent('pos');
                 const button = e.getComponent('button');
 
@@ -410,7 +410,7 @@ class CustomSystems {
                 const h = button.clickBoxHeight;
                 const mouse = this.game.mouse;
 
-                const isMouseOver = this.game.isMouseOver(x, y, w, h);
+                const isMouseOver = this.game.gameUtils.isMouseOver(x, y, w, h);
 
                 //onsole.log("MOUSE OVER:",isMouseOver);
 
@@ -454,8 +454,8 @@ class CustomSystems {
         const allEntities = [];
 
         // Gather all drawable entities
-        this.game.filterEntitiesByComponents(['drawType'], (e) => {
-            if (this.game.isEntityActive(e)) {
+        this.game.gameUtils.filterEntitiesByComponents(['drawType'], (e) => {
+            if (this.game.gameUtils.isEntityActive(e)) {
                 allEntities.push(e);
             }
         });
@@ -532,12 +532,12 @@ class CustomSystems {
         if(!this.game.debugging.debugLocalPos) return;
         //console.log("TRACE LOCAL POS RUNNING");
         const ctx = this.game.ctx;
-        this.game.filterEntitiesByComponents(
+        this.game.gameUtils.filterEntitiesByComponents(
             ['localPos','parent'],
             (e) => {
-                if(!this.game.isEntityActive(e)) return;
+                if(!this.game.gameUtils.isEntityActive(e)) return;
 
-                const globalPos = this.game.getGlobalFromLocalPos(e);
+                const globalPos = this.game.gameUtils.getGlobalFromLocalPos(e);
                 const center = this.game.screenCenterPos;
 
                 ctx.save();
@@ -570,7 +570,7 @@ class ECSSystems {
         engine.system('rotationMatterBodies', ['rotation', 'matterBody', 'matterBodyType'], (entity, {
             rotation, matterBody, matterBodyType
         }) => {
-            if (!this.game.isEntityActive(entity)) return;
+            if (!this.game.gameUtils.isEntityActive(entity)) return;
             const typesToRotate = ['rectangle'];
             if (!typesToRotate.includes(matterBodyType)) return;
             const rotationInRadians = rotation * (Math.PI / 180);
@@ -583,7 +583,7 @@ class ECSSystems {
         const engine = this.game.ecs.entityEngine;
         engine.system('movePlayer', ['player', 'speed', 'moveVector', 'pos', 'matterBody'],
             (entity, { player, speed, moveVector, pos, matterBody, }) => {
-                if (!this.game.isEntityActive(entity)) return;
+                if (!this.game.gameUtils.isEntityActive(entity)) return;
                 //console.log("Plaayer move system running");
                 const mouseX = this.game.mouse.pos.x;
                 const mouseY = this.game.mouse.pos.y;
@@ -622,7 +622,7 @@ class ECSSystems {
         const engine = this.game.ecs.entityEngine;
         engine.system('moveObjects', ['pos', 'rotation', 'matterBody', 'moveVector', 'speed', 'notPlayer'],
             (entity, { pos, rotation, matterBody, moveVector, speed, notPlayer }) => {
-                if (!this.game.isEntityActive(entity)) return;
+                if (!this.game.gameUtils.isEntityActive(entity)) return;
                 const rad = rotation * (Math.PI / 180)
                 //console.log(`${entity.name} + ${pos.x}`)
                 moveVector = {
@@ -653,12 +653,12 @@ class ECSSystems {
         const engine = this.game.ecs.entityEngine;
         engine.system('shootBullets', ['pos', 'shootBullet', 'rotation', 'spawnPos', 'shootTimes'],
             (entity, { pos, shootBullet, rotation, spawnPos, shootTimes, }) => {
-                if (!this.game.isEntityActive(entity)) return;
+                if (!this.game.gameUtils.isEntityActive(entity)) return;
                 //console.log("Rotation from shootBullets System:",rotation);
 
                 // ✅ Always update spawn positions
                 spawnPos.forEach((point) => {
-                    const rotated = this.game.rotateOffset(point.offset, rotation);
+                    const rotated = this.game.gameUtils.rotateOffset(point.offset, rotation);
                     point.pos.x = pos.x + rotated.x;
                     point.pos.y = pos.y + rotated.y;
                 });
@@ -707,7 +707,7 @@ class ECSSystems {
                 spawnPos.forEach((point) => {
                     if (remainingShots <= 0) return;
 
-                    const bullet = this.game.spawnEntity({
+                    const bullet = this.game.gameUtils.spawnEntity({
                         passedKey: shootBullet.spawnKey,
                         componentsToModify: {
                             pos: {
@@ -735,7 +735,7 @@ class ECSSystems {
 
         engine.system('manageShootEnergySystem', ['shootEnergy', 'shootBullet']
             , (entity, { shootEnergy, shootBullet, }) => {
-                if (!this.game.isEntityActive(entity)) return;
+                if (!this.game.gameUtils.isEntityActive(entity)) return;
                 const delta = this.game.deltaTime;
 
                 const fireActive = shootBullet.active;
@@ -814,7 +814,7 @@ class ECSSystems {
 
             entity.setComponent('localPos', localPos);
 
-            console.log("ENTITY NAME:", entity.name, "LOCAL POS:", localPos);
+            //console.log("ENTITY NAME:", entity.name, "LOCAL POS:", localPos);
         });
     };
 
