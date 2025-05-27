@@ -49,12 +49,13 @@ export class LoadAssets {
     loadAll(){
         const imagesPromise = this.loadImages();
         const entitiesPromise = this.fetchData('js/data/entitiesData.json');
-
-        Promise.all([imagesPromise,entitiesPromise])
-        .then(([imagesData,entitiesData])=>{
+        const settingsPromise = this.fetchData('js/data/settingsData.json');
+        Promise.all([imagesPromise,entitiesPromise,settingsPromise])
+        .then(([imagesData,entitiesData,settingsData])=>{
             const resources = {
                 imagesData: imagesData,
-                entitiesData:entitiesData
+                entitiesData:entitiesData,
+                settingsData:settingsData
             }
             this.callback(resources);
         })

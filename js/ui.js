@@ -12,6 +12,7 @@ export class Ui {
 class PlayerUi {
     constructor(game) {
         this.game = game;
+        this.gameUtils = game.gameUtils;
         this.ctx = game.ctx;
 
         this.healthBarEntity = null;
@@ -20,7 +21,7 @@ class PlayerUi {
         this.start();
     };
     start() {
-        this.game.gameUtils.addObj(this);
+        this.gameUtils.addObj(this);
 
         this.initHealthBar();
         this.initEnergyBar();
@@ -34,7 +35,7 @@ class PlayerUi {
     updateHealthBar() {
         const maxHealth = this.game.player.maxHealth;
         const currentHealth = this.game.player.playerEntity.getComponent('health');
-        this.game.gameUtils.setBarValue({
+        this.gameUtils.setBarValue({
             max: maxHealth,
             current: currentHealth,
             barEntity: this.healthBarEntity
@@ -47,7 +48,7 @@ class PlayerUi {
         const backGroundFillColor = 'rgb(3, 0, 14)';
         const healthFillColor = 'rgb(1, 213, 11)';
 
-        this.healthBarEntity = this.game.gameUtils.spawnEntity({
+        this.healthBarEntity = this.gameUtils.spawnEntity({
             passedKey: 'bar',
             componentsToModify: {
                 pos: { x: 0, y: 0 },
@@ -79,7 +80,7 @@ class PlayerUi {
         const outlineColor = 'rgb(32, 30, 39)';
         const backGroundFillColor = 'rgb(3, 0, 14)';
 
-        this.energyBarEntity = this.game.gameUtils.spawnEntity({
+        this.energyBarEntity = this.gameUtils.spawnEntity({
             passedKey: 'bar',
             componentsToModify: {
                 pos: { x: 0, y: 54 },
@@ -110,7 +111,7 @@ class PlayerUi {
         const shootEnergyComponent = this.game.player.playerEntity.getComponent('shootEnergy');
         const max = shootEnergyComponent.max;
         const current = shootEnergyComponent.current;
-        this.game.gameUtils.setBarValue({
+        this.gameUtils.setBarValue({
             max: max,
             current: current,
             barEntity: this.energyBarEntity
@@ -120,6 +121,7 @@ class PlayerUi {
 class SettingsUi {
     constructor(game) {
         this.game = game;
+        this.gameUtils = game.gameUtils;
         this.ctx = game.ctx;
 
         this.settingsBtnEntity = null;
@@ -129,11 +131,14 @@ class SettingsUi {
         this.mainMenuBtnEntity = null;
         this.mainMenuTextEntity = null;
         this.unpauseBtnEntity = null;
-
+        this.musicCheckboxEntity = null;
+        this.musicCheckboxTextEntity = null;
+        this.sfxCheckboxEntity = null;
+        this.sfxCheckboxTextEntity = null;
         this.start();
     };
     start() {
-        this.game.gameUtils.addObj(this);
+        this.gameUtils.addObj(this);
         this.initSettingsBtn();
         this.initSettingsPanel();
     };
@@ -143,7 +148,7 @@ class SettingsUi {
     initSettingsBtn() {
         const btnColor = 'rgb(27, 43, 68)';
 
-        this.settingsBtnEntity = this.game.gameUtils.spawnEntity({
+        this.settingsBtnEntity = this.gameUtils.spawnEntity({
             passedKey: 'button',
             componentsToModify: {
                 width: 200,
@@ -163,8 +168,8 @@ class SettingsUi {
                     clickBoxWidth: 200,
                     clickBoxHeight: 100,
                     onPress: () => {
-                        this.game.gameUtils.setIsActive(this.settingsPanelEntity, true);
-                        this.game.gameUtils.pauseGame();
+                        this.gameUtils.setIsActive(this.settingsPanelEntity, true);
+                        this.gameUtils.pauseGame();
                     },
                     onHover: () => {
                         const canvas = this.game.canvas;
@@ -174,14 +179,14 @@ class SettingsUi {
                 orderingLayer: 10
             }
         });
-        this.game.gameUtils.anchorEntity(this.settingsBtnEntity, this.game.sceneEntity);
+        this.gameUtils.anchorEntity(this.settingsBtnEntity, this.game.sceneEntity);
 
         this.initSettingsBtnText();
     };
     initSettingsBtnText() {
         const fontSize = 30;
 
-        this.settingsBtnTextEntity = this.game.gameUtils.spawnEntity({
+        this.settingsBtnTextEntity = this.gameUtils.spawnEntity({
             passedKey: 'text',
             componentsToModify: {
                 fontSize: fontSize,
@@ -189,13 +194,13 @@ class SettingsUi {
                 parent: this.settingsBtnEntity
             }
         });
-        this.game.gameUtils.calculateTextWidthAndHeight(this.settingsBtnTextEntity);
-        this.game.gameUtils.anchorEntity(this.settingsBtnTextEntity, this.settingsBtnEntity);
+        this.gameUtils.calculateTextWidthAndHeight(this.settingsBtnTextEntity);
+        this.gameUtils.anchorEntity(this.settingsBtnTextEntity, this.settingsBtnEntity);
     };
     initSettingsPanel() {
         const bgColor = 'rgb(33, 76, 141)';
 
-        this.settingsPanelEntity = this.game.gameUtils.spawnEntity({
+        this.settingsPanelEntity = this.gameUtils.spawnEntity({
             passedKey: 'panel',
             componentsToModify: {
                 pos: this.game.screenCenterPos,
@@ -211,15 +216,19 @@ class SettingsUi {
                 orderingLayer: 10
             }
         });
-        this.game.gameUtils.anchorEntity(this.settingsPanelEntity, this.game.sceneEntity);
+        this.gameUtils.anchorEntity(this.settingsPanelEntity, this.game.sceneEntity);
 
         this.initPausedText();
         this.initMainMenuBtn();
-        this.initMainBtnText();
+        this.initMainMenuBtnText();
         this.initUnpauseButton();
+        this.initMusicCheckbox();
+        this.initMusicCheckboxText();
+        this.initSfxCheckbox();
+        this.initSfxCheckboxText();
     };
     initPausedText() {
-        this.pausedTextEntity = this.game.gameUtils.spawnEntity({
+        this.pausedTextEntity = this.gameUtils.spawnEntity({
             passedKey: "text",
             componentsToModify: {
                 fontSize: 80,
@@ -230,11 +239,11 @@ class SettingsUi {
                 parent: this.settingsPanelEntity
             }
         });
-        this.game.gameUtils.anchorEntity(this.pausedTextEntity, this.settingsPanelEntity);
+        this.gameUtils.anchorEntity(this.pausedTextEntity, this.settingsPanelEntity);
     };
     initMainMenuBtn() {
         const btnColor = 'rgb(27, 59, 106)';
-        this.mainMenuBtnEntity = this.game.gameUtils.spawnEntity({
+        this.mainMenuBtnEntity = this.gameUtils.spawnEntity({
             passedKey: 'button',
             componentsToModify: {
                 width: 200,
@@ -257,10 +266,10 @@ class SettingsUi {
                 parent: this.settingsPanelEntity
             }
         });
-        this.game.gameUtils.anchorEntity(this.mainMenuBtnEntity, this.settingsPanelEntity);
+        this.gameUtils.anchorEntity(this.mainMenuBtnEntity, this.settingsPanelEntity);
     };
-    initMainBtnText() {
-        this.mainMenuTextEntity = this.game.gameUtils.spawnEntity({
+    initMainMenuBtnText() {
+        this.mainMenuTextEntity = this.gameUtils.spawnEntity({
             passedKey: 'text',
             componentsToModify: {
                 fontSize: 30,
@@ -268,27 +277,132 @@ class SettingsUi {
                 parent: this.mainMenuBtnEntity
             }
         });
-        this.game.gameUtils.anchorEntity(this.mainMenuTextEntity, this.mainMenuBtnEntity);
+        this.gameUtils.anchorEntity(this.mainMenuTextEntity, this.mainMenuBtnEntity);
     };
-    initUnpauseButton(){
-        this.unpauseBtnEntity = this.game.gameUtils.spawnEntity({
-            passedKey:'textureButton',
-            componentsToModify:{
-                anchoring:{
-                    anchorX:'right',
-                    anchorY:'top',
-                    offsetX:25,
-                    offsetY:-25
+    initUnpauseButton() {
+        this.unpauseBtnEntity = this.gameUtils.spawnEntity({
+            passedKey: 'textureButton',
+            componentsToModify: {
+                anchoring: {
+                    anchorX: 'right',
+                    anchorY: 'top',
+                    offsetX: 25,
+                    offsetY: -25
                 },
-                parent:this.settingsPanelEntity,
-                button:{
-                   onPress: () => {
-                    this.game.gameUtils.unPauseGame();
-                    this.game.gameUtils.setIsActive(this.settingsPanelEntity,false);
-                   }
+                parent: this.settingsPanelEntity,
+                button: {
+                    onPress: () => {
+                        this.gameUtils.unPauseGame();
+                        this.gameUtils.setIsActive(this.settingsPanelEntity, false);
+                    }
                 }
             }
         });
-        this.game.gameUtils.anchorEntity(this.unpauseBtnEntity,this.settingsPanelEntity);
+        this.gameUtils.anchorEntity(this.unpauseBtnEntity, this.settingsPanelEntity);
     };
+    initMusicCheckbox() {
+        const btnColor = 'rgb(27, 59, 106)';
+        this.musicCheckboxEntity = this.gameUtils.spawnEntity({
+            passedKey: 'checkboxButton',
+            componentsToModify: {
+                parent: this.settingsPanelEntity,
+                width: 200,
+                height: 100,
+                shapeColor: btnColor,
+                checkbox: {
+                    storageKey: 'music'
+                },
+                button: {
+                    clickBoxWidth: 200,
+                    onPress: () => {
+                        const newValue = this.gameUtils.toggleCheckbox(this.musicCheckboxEntity);
+                        const musicCheckBoxStorageKey = this.gameUtils.returnCheckboxStorageKey(this.musicCheckboxEntity);
+                        this.game.settingsStorageManager.setProperty(musicCheckBoxStorageKey, newValue);
+                        this.toggleMusicCheckboxText();
+                        console.log("MUSIC CHECKBOX STATE:", this.musicCheckboxEntity.getComponent('checkbox'));
+                    }
+                }
+
+            }
+        });
+        this.gameUtils.retrieveSavedCheckboxData(this.musicCheckboxEntity, this.game.settingsStorageManager);
+        this.gameUtils.anchorEntity(this.musicCheckboxEntity, this.settingsPanelEntity);
+
+        console.log("MUSIC CHECKBOX STATE:", this.musicCheckboxEntity.getComponent('checkbox'));
+    };
+    initMusicCheckboxText() {
+        this.musicCheckboxTextEntity = this.gameUtils.spawnEntity({
+            passedKey: 'text',
+            componentsToModify: {
+                fontContent: 'Music:ON',
+                parent: this.musicCheckboxEntity,
+                fontSize: 30
+            }
+        });
+        this.gameUtils.anchorEntity(this.musicCheckboxTextEntity, this.musicCheckboxEntity);
+        this.toggleMusicCheckboxText();
+    };
+    toggleMusicCheckboxText() {
+        this.gameUtils.toggleFontContentOnCheckbox(
+            this.musicCheckboxEntity,
+            this.musicCheckboxTextEntity,
+            'Music: On',
+            'Music: Of'
+        );
+    };
+    initSfxCheckbox() {
+        const btnColor = 'rgb(27, 59, 106)';
+        this.sfxCheckboxEntity = this.gameUtils.spawnEntity({
+            passedKey: 'checkboxButton',
+            componentsToModify: {
+                parent: this.settingsPanelEntity,
+                width: 200,
+                height: 100,
+                shapeColor: btnColor,
+                checkbox: {
+                    storageKey: 'sfx'
+                },
+                button: {
+                    clickBoxWidth: 200,
+                    onPress: () => {
+                        const newValue = this.gameUtils.toggleCheckbox(this.sfxCheckboxEntity);
+                        const sfxCheckBoxStorageKey = this.gameUtils.returnCheckboxStorageKey(this.sfxCheckboxEntity);
+                        this.game.settingsStorageManager.setProperty(sfxCheckBoxStorageKey, newValue);
+                        this.toggleSfxCheckboxText();
+                        console.log("SFX CHECKBOX STATE:", this.sfxCheckboxEntity.getComponent('checkbox'));
+                    }
+                },
+                anchoring:{
+                    offsetY:150
+                }
+            }
+        });
+
+        this.gameUtils.retrieveSavedCheckboxData(this.sfxCheckboxEntity, this.game.settingsStorageManager);
+        this.gameUtils.anchorEntity(this.sfxCheckboxEntity, this.settingsPanelEntity);
+
+        console.log("SFX CHECKBOX STATE:", this.sfxCheckboxEntity.getComponent('checkbox'));
+    };
+    initSfxCheckboxText() {
+        this.sfxCheckboxTextEntity = this.gameUtils.spawnEntity({
+            passedKey: 'text',
+            componentsToModify: {
+                fontContent: 'SFX: ON',
+                parent: this.sfxCheckboxEntity,
+                fontSize: 30
+            }
+        });
+
+        this.gameUtils.anchorEntity(this.sfxCheckboxTextEntity, this.sfxCheckboxEntity);
+        this.toggleSfxCheckboxText();
+    };
+    toggleSfxCheckboxText() {
+        this.gameUtils.toggleFontContentOnCheckbox(
+            this.sfxCheckboxEntity,
+            this.sfxCheckboxTextEntity,
+            'SFX: On',
+            'SFX: Off'
+        );
+    };
+
 }

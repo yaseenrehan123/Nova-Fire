@@ -908,13 +908,63 @@
         "onHover": "()=>{}",
         "clickBoxWidth": 100,
         "clickBoxHeight": 100,
-        "isPressed": false
+        "isPressed": false,
+        "pressedInside":false
       },
       "isActive": true,
       "drawType": "sprite",
       "orderingLayer": 0,
       "parent": null,
       "children": []
+    }
+  },
+  "checkboxButton":{
+    "components":{
+       "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "localPos": {
+        "x": 0,
+        "y": 0
+      },
+      "width": 100,
+      "height": 50,
+      "shapeType": "rectangle",
+      "rectangleShape": {
+        "rounded": {
+          "enabled": false,
+          "radius": 20
+        },
+        "outline": {
+          "enabled": false,
+          "width": 8,
+          "color": "grey"
+        }
+      },
+      "anchoring": {
+        "anchorX": "center",
+        "anchorY": "middle",
+        "offsetX": 0,
+        "offsetY": 0
+      },
+      "button": {
+        "onPress": "()=>{}",
+        "onRelease": "()=>{}",
+        "onHover": "()=>{}",
+        "clickBoxWidth": 100,
+        "clickBoxHeight": 100,
+        "isPressed": false
+      },
+      "isActive": true,
+      "drawType": "rectangle",
+      "orderingLayer": 0,
+      "parent": null,
+      "children": [],
+      "checkbox":{
+        "state":false,
+        "storageKey":""
+      }
     }
   }
 }

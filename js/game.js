@@ -4,6 +4,7 @@ import { Systems } from './systems.js';
 import { Physics } from './physics.js';
 import { GameUtils } from './gameUtils.js';
 import { CreateEntity } from "./createEntity.js";
+import { StorageManager } from './storageManager.js';
 //import { Builder, shapes } from "shape-builder";
 //const { Point, Rectangle } = shapes;
 
@@ -12,7 +13,10 @@ export class Game{
         this.resources = resources;
         this.images = resources.imagesData;
         this.entitiesData = resources.entitiesData;
-        
+        this.settingsData = resources.settingsData;
+
+
+
         this.canvas = document.querySelector('.game-container');
         this.ctx = this.canvas.getContext('2d');
         this.ctx.imageSmoothingEnabled = false;
@@ -58,11 +62,14 @@ export class Game{
         this.isPaused = false;
         this.sceneEntity = null;
         this.debugging = {
-            debugMatterBodies:true,
+            debugMatterBodies:false,
             debugShootDirection:true,
             debugUiClickBox:true,
-            debugLocalPos:true
+            debugLocalPos:false
         };
+
+        this.settingsStorageManager = new StorageManager('settingsStorageManager',this.settingsData);
+        
         this.mouse = null;
         this.physics = null;
         this.player = null;

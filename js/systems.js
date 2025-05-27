@@ -421,9 +421,9 @@ class CustomSystems {
                 };
 
                 // Press logic
-                if (isMouseOver && mouse.isPressed && !button.isPressed) {
+                if (mouse.isPressed && !button.isPressed) {
                     button.isPressed = true;
-                    if (button.onPress) {
+                    if (isMouseOver && button.onPress) {
                         const pressFunction = button.onPress;
                         if (typeof pressFunction === 'function') {
                             pressFunction();

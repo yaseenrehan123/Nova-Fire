@@ -375,5 +375,42 @@ export class GameUtils {
             };
         };
         return pos;
-    }
+    };
+    toggleCheckbox(entity){
+        const checkboxComponent = entity.getComponent('checkbox');
+        if(!checkboxComponent) return;
+
+        checkboxComponent.state = !checkboxComponent.state;
+        
+        entity.setComponent('checkbox',checkboxComponent);
+
+        return checkboxComponent.state;
+    };
+    retrieveSavedCheckboxData(entity,storageManager){
+        const checkboxComponent = entity.getComponent('checkbox');
+        const propertyKey = checkboxComponent.storageKey;
+        const savedProperty = storageManager.getProperty(propertyKey);
+
+        checkboxComponent.state = savedProperty;
+
+        entity.setComponent('checkbox',checkboxComponent);
+    };
+    returnCheckboxStorageKey(entity){
+        const checkboxComponent = entity.getComponent('checkbox');
+        return checkboxComponent.storageKey;
+    };
+    setFontContent(entity,newContent){
+        entity.setComponent('fontContent',newContent)
+    };
+    toggleFontContentOnCheckbox(checkboxEntity,textEntity,onToggledTrueText,onToggledFalseText){
+        const checkboxComponent = checkboxEntity.getComponent('checkbox');
+        const state = checkboxComponent.state;
+
+        if(state){
+            this.setFontContent(textEntity,onToggledTrueText);
+        }
+        else{
+            this.setFontContent(textEntity,onToggledFalseText);
+        }
+    };
 };
