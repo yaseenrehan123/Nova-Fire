@@ -187,10 +187,10 @@ export class GameUtils {
         this.game.matter.matterRunner.enabled = false;
         console.log("IS SIMULATION PAUSED?", this.game.ecs.entitySim.isPaused());
     };
-    unPauseGame(){
+    unPauseGame() {
         this.game.isPaused = false;
         this.game.ecs.entitySim.start();
-       this.game.matter.matterRunner.enabled = true;
+        this.game.matter.matterRunner.enabled = true;
         console.log("IS SIMULATION RUNNING?", this.game.ecs.entitySim.isRunning());
     }
     queryAllComponents(e, reqComponents, callback) {
@@ -305,7 +305,7 @@ export class GameUtils {
             anchoredEntity.setComponent('pos', anchoredPos);
         }
     };
-  
+
     calculateTextWidthAndHeight(textEntity) {
         const ctx = this.ctx;
 
@@ -376,41 +376,91 @@ export class GameUtils {
         };
         return pos;
     };
-    toggleCheckbox(entity){
+    toggleCheckbox(entity) {
         const checkboxComponent = entity.getComponent('checkbox');
-        if(!checkboxComponent) return;
+        if (!checkboxComponent) return;
 
         checkboxComponent.state = !checkboxComponent.state;
-        
-        entity.setComponent('checkbox',checkboxComponent);
+
+        entity.setComponent('checkbox', checkboxComponent);
 
         return checkboxComponent.state;
     };
-    retrieveSavedCheckboxData(entity,storageManager){
+    retrieveSavedCheckboxData(entity, storageManager) {
         const checkboxComponent = entity.getComponent('checkbox');
         const propertyKey = checkboxComponent.storageKey;
         const savedProperty = storageManager.getProperty(propertyKey);
 
         checkboxComponent.state = savedProperty;
 
-        entity.setComponent('checkbox',checkboxComponent);
+        entity.setComponent('checkbox', checkboxComponent);
     };
-    returnCheckboxStorageKey(entity){
+    returnCheckboxStorageKey(entity) {
         const checkboxComponent = entity.getComponent('checkbox');
         return checkboxComponent.storageKey;
     };
-    setFontContent(entity,newContent){
-        entity.setComponent('fontContent',newContent)
+    setFontContent(entity, newContent) {
+        entity.setComponent('fontContent', newContent)
     };
-    toggleFontContentOnCheckbox(checkboxEntity,textEntity,onToggledTrueText,onToggledFalseText){
+    toggleFontContentOnCheckbox(checkboxEntity, textEntity, onToggledTrueText, onToggledFalseText) {
         const checkboxComponent = checkboxEntity.getComponent('checkbox');
         const state = checkboxComponent.state;
 
-        if(state){
-            this.setFontContent(textEntity,onToggledTrueText);
+        if (state) {
+            this.setFontContent(textEntity, onToggledTrueText);
         }
-        else{
-            this.setFontContent(textEntity,onToggledFalseText);
+        else {
+            this.setFontContent(textEntity, onToggledFalseText);
         }
     };
+    playPlayerShootSound() {
+        const shootBulletComponent = this.game.player.playerEntity.getComponent('shootBullet');
+        const fireType = shootBulletComponent.spawnKey;
+        let soundKey = '';
+
+        switch (fireType) {
+            case 'greenBullet':
+                soundKey = 'greenBulletShoot';
+                break;
+
+            case 'blueBullet':
+                soundKey = 'blueBulletShoot';
+                break;
+
+            case 'purpleBullet':
+                soundKey = 'purpleBulletShoot';
+                break;
+
+            case 'yellowBullet':
+                soundKey = 'yellowBulletShoot';
+                break;
+
+            default:
+                soundKey = ''
+                break;
+
+        };
+        if (soundKey !== '')
+            this.playSfx(soundKey);
+    };
+    playSfx(key) {
+        console.log('SFX enabled?', this.game.settingsData.sfx);
+        if (!this.game.settingsStorageManager.getProperty('sfx')) return;
+        this.game.soundManager.play(key);
+    };
+    playLoopedMusic(key) {
+        if (!this.game.settingsStorageManager.getProperty('music')) return;
+        this.game.soundManager.loop(key);
+    };
+    playLoopedMusicOnInteraction(key) {
+        const playMusicOnInteraction = () => {
+           this.playLoopedMusic(key);
+
+            window.removeEventListener('click', playMusicOnInteraction);
+            window.removeEventListener('keydown', playMusicOnInteraction);
+        };
+
+        window.addEventListener('click', playMusicOnInteraction);
+        window.addEventListener('keydown', playMusicOnInteraction);
+    }
 };

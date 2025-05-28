@@ -223,6 +223,7 @@ class CustomSystems {
             newValue = 0;
             shootEnergy.isDepleted = true;
             shootBullet.active = false;
+            this.game.gameUtils.playSfx('energyFinished');
         };
 
         shootEnergy.current = newValue;// assign it back
@@ -689,6 +690,7 @@ class ECSSystems {
                             mask: this.game.collisionCategories.enemyCategory
                         }
                     };
+                    this.game.gameUtils.playPlayerShootSound();
                 }
                 else {
                     matterBodyOptions = {

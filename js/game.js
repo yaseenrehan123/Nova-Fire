@@ -5,6 +5,7 @@ import { Physics } from './physics.js';
 import { GameUtils } from './gameUtils.js';
 import { CreateEntity } from "./createEntity.js";
 import { StorageManager } from './storageManager.js';
+import { SoundManager } from './soundManager.js';
 //import { Builder, shapes } from "shape-builder";
 //const { Point, Rectangle } = shapes;
 
@@ -14,7 +15,7 @@ export class Game{
         this.images = resources.imagesData;
         this.entitiesData = resources.entitiesData;
         this.settingsData = resources.settingsData;
-
+        this.audioData = resources.audioData;
 
 
         this.canvas = document.querySelector('.game-container');
@@ -69,7 +70,8 @@ export class Game{
         };
 
         this.settingsStorageManager = new StorageManager('settingsStorageManager',this.settingsData);
-        
+        this.soundManager = new SoundManager(this.audioData);
+
         this.mouse = null;
         this.physics = null;
         this.player = null;
@@ -91,6 +93,8 @@ export class Game{
         this.onResize();
         
         this.systemsJECS();
+
+       this.gameUtils.playLoopedMusicOnInteraction('backgroundMusic');
     };
     update(timeStamp){
         const deltaTime = (timeStamp - this.lastTime)/1000;

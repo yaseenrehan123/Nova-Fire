@@ -170,6 +170,7 @@ class SettingsUi {
                     onPress: () => {
                         this.gameUtils.setIsActive(this.settingsPanelEntity, true);
                         this.gameUtils.pauseGame();
+                        this.gameUtils.playSfx('buttonClick');
                     },
                     onHover: () => {
                         const canvas = this.game.canvas;
@@ -294,6 +295,7 @@ class SettingsUi {
                     onPress: () => {
                         this.gameUtils.unPauseGame();
                         this.gameUtils.setIsActive(this.settingsPanelEntity, false);
+                        this.gameUtils.playSfx('buttonClick');
                     }
                 }
             }
@@ -319,6 +321,15 @@ class SettingsUi {
                         const musicCheckBoxStorageKey = this.gameUtils.returnCheckboxStorageKey(this.musicCheckboxEntity);
                         this.game.settingsStorageManager.setProperty(musicCheckBoxStorageKey, newValue);
                         this.toggleMusicCheckboxText();
+                        this.gameUtils.playSfx('buttonClick');
+                        if(newValue === true){
+                            this.gameUtils.playLoopedMusic('backgroundMusic');
+                        }
+                        else{
+                            this.game.soundManager.stopAllLoops();
+                        }
+                       
+                        console.log("SETTINGS PROPERTY STATE:",this.game.settingsStorageManager.getProperty('music'));
                         console.log("MUSIC CHECKBOX STATE:", this.musicCheckboxEntity.getComponent('checkbox'));
                     }
                 }
@@ -347,7 +358,7 @@ class SettingsUi {
             this.musicCheckboxEntity,
             this.musicCheckboxTextEntity,
             'Music: On',
-            'Music: Of'
+            'Music: Off'
         );
     };
     initSfxCheckbox() {
@@ -369,6 +380,8 @@ class SettingsUi {
                         const sfxCheckBoxStorageKey = this.gameUtils.returnCheckboxStorageKey(this.sfxCheckboxEntity);
                         this.game.settingsStorageManager.setProperty(sfxCheckBoxStorageKey, newValue);
                         this.toggleSfxCheckboxText();
+                        this.gameUtils.playSfx('buttonClick');
+                        console.log("SETTINGS PROPERTY STATE:",this.game.settingsStorageManager.getProperty('sfx'));
                         console.log("SFX CHECKBOX STATE:", this.sfxCheckboxEntity.getComponent('checkbox'));
                     }
                 },

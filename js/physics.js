@@ -63,6 +63,8 @@ export class Physics{
                     // destroy enemy
                     this.game.gameUtils.removeEntity(enemyEntity);
                     //console.log("Player collided with enemy");
+
+                    this.game.gameUtils.playSfx('playerShipExplosion');
                 }
                 else if(this.matchCollision(a,b,'player','item')){
                     const playerEntity = a === 'player' ? bodyA.gameObject : bodyB.gameObject;
@@ -95,6 +97,8 @@ export class Physics{
                     //console.log("Body B gameObject: ",itemEntity);
                     //console.log("Player collided with an item!");
                     this.game.gameUtils.removeEntity(itemEntity);
+
+                    this.game.gameUtils.playSfx('powerUpGrab');
                 }
             };
             
