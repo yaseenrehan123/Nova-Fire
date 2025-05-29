@@ -888,20 +888,26 @@
       "children": []
     }
   },
-  "textureButton":{
-    "components":{
-      "imgKey":"crossIcon",
-      "centerImage":false,
-      "pos":{"x":0,"y":0},
-      "localPos":{"x":0,"y":0},
-       "anchoring": {
+  "textureButton": {
+    "components": {
+      "imgKey": "crossIcon",
+      "centerImage": false,
+      "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "localPos": {
+        "x": 0,
+        "y": 0
+      },
+      "anchoring": {
         "anchorX": "center",
         "anchorY": "middle",
         "offsetX": 0,
         "offsetY": 0
       },
-      "width":100,
-      "height":100,
+      "width": 100,
+      "height": 100,
       "button": {
         "onPress": "()=>{}",
         "onRelease": "()=>{}",
@@ -909,7 +915,7 @@
         "clickBoxWidth": 100,
         "clickBoxHeight": 100,
         "isPressed": false,
-        "pressedInside":false
+        "pressedInside": false
       },
       "isActive": true,
       "drawType": "sprite",
@@ -918,9 +924,9 @@
       "children": []
     }
   },
-  "checkboxButton":{
-    "components":{
-       "pos": {
+  "checkboxButton": {
+    "components": {
+      "pos": {
         "x": 0,
         "y": 0
       },
@@ -961,9 +967,9 @@
       "orderingLayer": 0,
       "parent": null,
       "children": [],
-      "checkbox":{
-        "state":false,
-        "storageKey":""
+      "checkbox": {
+        "state": false,
+        "storageKey": ""
       }
     }
   }

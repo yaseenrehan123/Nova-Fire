@@ -12,5 +12,6 @@
     "purpleBullet":"images/bullets/purple_bullet.png",
     "yellowBullet":"images/bullets/yellow_bullet.png",
     "powerup":"images/powerups/powerup.png",
-    "crossIcon":"images/icons/cross_icon.png"
+    "crossIcon":"images/icons/cross_icon.png",
+    "background":"images/spaceshooterBG.png"
 }

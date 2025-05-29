@@ -455,6 +455,7 @@ class CustomSystems {
         // Gather all drawable entities
         this.game.gameUtils.filterEntitiesByComponents(['drawType'], (e) => {
             if (this.game.gameUtils.isEntityActive(e)) {
+                if(e.name === 'parallax') console.log("PARALLAX ENTITY IN DRAW ALL ENTITIES FILTER");
                 allEntities.push(e);
             }
         });
@@ -554,7 +555,7 @@ class CustomSystems {
             }
         );
     };
-
+ 
 }
 class ECSSystems {
     constructor(options) {
