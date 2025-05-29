@@ -22,6 +22,11 @@ export class Game {
         this.canvas = document.querySelector('.game-container');
         this.ctx = this.canvas.getContext('2d');
         this.ctx.imageSmoothingEnabled = false;
+
+        this.bgCanvas = document.querySelector('.background-container');
+        this.bgCtx = this.bgCanvas.getContext('2d');
+        this.bgCtx.imageSmoothingEnabled = false;
+
         this.lastTime = 0;
         this.deltaTime = null;
         this.registeredObj = [];
@@ -75,7 +80,7 @@ export class Game {
         this.settingsStorageManager = new StorageManager('settingsStorageManager', this.settingsData);
         this.soundManager = new SoundManager(this.audioData);
 
-        this.backgroundParallax = new Parallax(this.images['background'],1,'vertical');
+        this.backgroundParallax = new Parallax(this.images['background'], 1, 'vertical');
 
         this.mouse = null;
         this.physics = null;
@@ -95,7 +100,7 @@ export class Game {
 
         this.initSceneEntity();
 
-        this.onResize();
+        this.onBackgroundCanvasResize();
 
         this.systemsJECS();
 
@@ -107,8 +112,9 @@ export class Game {
         this.deltaTime = deltaTime;
 
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+        this.bgCtx.clearRect(0, 0, this.bgCanvas.width, this.bgCanvas.height);
 
-        this.backgroundParallax.run(this.ctx);
+        this.backgroundParallax.run(this.bgCtx);
         this.ecs.customSystems.drawAllEntities();
         this.ecs.customSystems.debugMatterBodies();
         this.ecs.customSystems.traceMatterBodies();
@@ -130,12 +136,21 @@ export class Game {
         this.ecs.entitySim.setFps(60);
         this.ecs.entitySim.start();
     };
-    onResize() {
-        this.canvas.addEventListener('resize', () => {
-            this.width = this.canvas.width;
-            this.height = this.canvas.height;
-            this.screenCenterPos = { x: this.width / 2, y: this.height / 2 };
+    onBackgroundCanvasResize() {
+        window.addEventListener('resize', () => {
+            this.resizeBackgroundCanvas();
         });
+        this.resizeBackgroundCanvas();
+    }
+    resizeBackgroundCanvas() {
+        const dpr = window.devicePixelRatio || 1;
+
+        const rect = this.bgCanvas.getBoundingClientRect();
+
+        this.bgCanvas.width = rect.width * dpr;
+        this.bgCanvas.height = rect.height * dpr;
+
+        this.bgCtx.scale(dpr, dpr);
     }
     systemsJECS() {
         const systems = this.ecs.ecsSystems;
@@ -161,5 +176,5 @@ export class Game {
         }).entity;
         console.log("SCENE ENTITY:", this.sceneEntity);
     };
-   
+
 }
