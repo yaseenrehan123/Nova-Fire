@@ -147,7 +147,14 @@
       "drawType": "sprite",
       "orderingLayer": 0,
       "parent": null,
-      "children": []
+      "children": [],
+      "invincibility":{
+        "active":false,
+        "blinkCounter":0,
+        "blinkDelay":0.04,
+        "invincibilityDuration":4,
+        "invincibilityCounter":0
+      }
     }
   },
   "blueBattery": {

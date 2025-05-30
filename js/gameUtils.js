@@ -16,13 +16,18 @@ export class GameUtils {
         height,
         centerImage = true,
         rotation = 0,
+        shouldBlink = false
     }) {
         const ctx = this.ctx;
         // local offsets
         const offsetX = centerImage ? -width / 2 : 0;
         const offsetY = centerImage ? -height / 2 : 0;
 
+       
         ctx.save();
+
+        ctx.globalAlpha = shouldBlink ? 0 : 1;
+
         // 1) move origin to sprite pos
         ctx.translate(pos.x, pos.y);
         // 2) rotate around that origin
@@ -134,6 +139,10 @@ export class GameUtils {
             damageComponent = null
         } = options;
 
+        const invincibilityComponent = entity.getComponent('invincibility');
+        if(invincibilityComponent && invincibilityComponent.active){
+            return;
+        }
         const healthComponent = entity.getComponent('health');
 
         let newHealth = healthComponent;
@@ -462,5 +471,15 @@ export class GameUtils {
 
         window.addEventListener('click', playMusicOnInteraction);
         window.addEventListener('keydown', playMusicOnInteraction);
+    };
+    activateInvincibility(entity){
+        const invincibilityComponent = entity.getComponent('invincibility');
+        invincibilityComponent.active = true;
+        invincibilityComponent.invincibilityCounter = invincibilityComponent.invincibilityDuration;
+        entity.setComponent("invincibility",invincibilityComponent);
+    };
+    isInvincibilityActive(entity){
+        const invincibilityComponent = entity.getComponent('invincibility');
+        return invincibilityComponent.active;
     }
 };

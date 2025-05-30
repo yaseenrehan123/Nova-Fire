@@ -52,11 +52,14 @@ export class Physics{
                     // subtract player hp and give invincibility frames
                     const playerEntity = a === 'player' ? bodyA.gameObject : bodyB.gameObject;
                     const enemyEntity = a === 'enemy' ? bodyA.gameObject : bodyB.gameObject;
+                    if(this.game.gameUtils.isInvincibilityActive(playerEntity)) return;/*no collision as long as 
+                    invincibility is active */
                     const damageComponent = enemyEntity.getComponent('damage');
                     this.game.gameUtils.damageEntity({
                         entity:playerEntity,
                         damageComponent:damageComponent
                     });
+                    this.game.gameUtils.activateInvincibility(playerEntity);
                     //set healthbar
                     this.game.ui.playerUi.updateHealthBar();
                     //console.log("Player health: " , playerEntity.getComponent('health'));

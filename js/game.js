@@ -161,6 +161,7 @@ export class Game {
         systems.manageShootEnergySystem();
         systems.playerEnergyBarColorSystem();
         systems.handleLocalPosSystem();
+        systems.handleInvincibilityCounterSystem();
     };
     initSceneEntity() {
         this.sceneEntity = new CreateEntity({

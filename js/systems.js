@@ -142,6 +142,9 @@ class CustomSystems {
             return;
         }
 
+        const shouldBlink = this.calculateShouldBlink(e);
+        console.log("SHOULD BLINK FROM DRAWSPRITE:",shouldBlink);
+
         // call your helper
         this.game.gameUtils.drawImage({
             img,
@@ -149,7 +152,8 @@ class CustomSystems {
             width,
             height,
             rotation,
-            centerImage
+            centerImage,
+            shouldBlink
         });
     }
     traceMatterBodies() {// draws a line from center of screen to all body positions
@@ -455,7 +459,7 @@ class CustomSystems {
         // Gather all drawable entities
         this.game.gameUtils.filterEntitiesByComponents(['drawType'], (e) => {
             if (this.game.gameUtils.isEntityActive(e)) {
-                if(e.name === 'parallax') console.log("PARALLAX ENTITY IN DRAW ALL ENTITIES FILTER");
+                if (e.name === 'parallax') console.log("PARALLAX ENTITY IN DRAW ALL ENTITIES FILTER");
                 allEntities.push(e);
             }
         });
@@ -555,7 +559,29 @@ class CustomSystems {
             }
         );
     };
- 
+    calculateShouldBlink(e) {
+        const invincibilityComponent = e.getComponent('invincibility');
+        if (invincibilityComponent && invincibilityComponent.active) {
+            const blinkDelay = invincibilityComponent.blinkDelay;
+            let blinkCounter = invincibilityComponent.blinkCounter || 0;
+            let shouldBlink = false;
+
+            if (blinkCounter > 0) {
+                blinkCounter -= this.game.deltaTime;
+            }
+            else {
+                blinkCounter = blinkDelay;
+                shouldBlink = true;
+            }
+            invincibilityComponent.blinkCounter = blinkCounter;
+            e.setComponent('invincibility', invincibilityComponent);
+            //console.log("BLINK COUNTER:", blinkCounter)
+            //console.log("BLINK COMPONENT DATA:", invincibilityComponent.blinkCounter, invincibilityComponent.blinkDelay);
+
+            return shouldBlink;
+        };
+    }
+
 }
 class ECSSystems {
     constructor(options) {
@@ -805,6 +831,7 @@ class ECSSystems {
         const engine = this.game.ecs.entityEngine;
 
         engine.system('handleLocalPosSystem', ['pos', 'localPos', 'parent'], (entity, { pos, localPos, parent }) => {
+            if (!this.game.gameUtils.isEntityActive(entity)) return;
             const parentPos = parent.getComponent('pos');
             const calculatedLocalPos = {  // subtract global pos from parent pos
                 x: pos.x - parentPos.x,
@@ -818,5 +845,23 @@ class ECSSystems {
             //console.log("ENTITY NAME:", entity.name, "LOCAL POS:", localPos);
         });
     };
+    handleInvincibilityCounterSystem(){
+        const engine =  this.game.ecs.entityEngine;
+
+        engine.system('handleInvincibilityCounterSystem',['invincibility'],(entity,{invincibility})=>{
+            if (!this.game.gameUtils.isEntityActive(entity)) return;
+            
+            if(!invincibility.active) return;
+
+            if(invincibility.invincibilityCounter > 0){
+                invincibility.invincibilityCounter -= this.game.deltaTime;
+            }
+            else{
+                invincibility.active = false;// the counter is resetted in activatedInvincibility()
+            };
+
+            entity.setComponent('invincibility',invincibility);
+        });
+    }
 
 }

@@ -1,6 +1,3 @@
-import { Bar } from "./classes/bar.js";
-import { Button } from "./classes/button.js";
-import { Panel } from "./classes/panel.js";
 export class Ui {
     constructor(game) {
         this.game = game;
