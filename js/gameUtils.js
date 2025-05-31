@@ -23,7 +23,7 @@ export class GameUtils {
         const offsetX = centerImage ? -width / 2 : 0;
         const offsetY = centerImage ? -height / 2 : 0;
 
-       
+
         ctx.save();
 
         ctx.globalAlpha = shouldBlink ? 0 : 1;
@@ -140,7 +140,7 @@ export class GameUtils {
         } = options;
 
         const invincibilityComponent = entity.getComponent('invincibility');
-        if(invincibilityComponent && invincibilityComponent.active){
+        if (invincibilityComponent && invincibilityComponent.active) {
             return;
         }
         const healthComponent = entity.getComponent('health');
@@ -463,7 +463,7 @@ export class GameUtils {
     };
     playLoopedMusicOnInteraction(key) {
         const playMusicOnInteraction = () => {
-           this.playLoopedMusic(key);
+            this.playLoopedMusic(key);
 
             window.removeEventListener('click', playMusicOnInteraction);
             window.removeEventListener('keydown', playMusicOnInteraction);
@@ -472,14 +472,43 @@ export class GameUtils {
         window.addEventListener('click', playMusicOnInteraction);
         window.addEventListener('keydown', playMusicOnInteraction);
     };
-    activateInvincibility(entity){
+    activateInvincibility(entity) {
         const invincibilityComponent = entity.getComponent('invincibility');
         invincibilityComponent.active = true;
         invincibilityComponent.invincibilityCounter = invincibilityComponent.invincibilityDuration;
-        entity.setComponent("invincibility",invincibilityComponent);
+        entity.setComponent("invincibility", invincibilityComponent);
     };
-    isInvincibilityActive(entity){
+    isInvincibilityActive(entity) {
         const invincibilityComponent = entity.getComponent('invincibility');
         return invincibilityComponent.active;
-    }
+    };
+    spawnSceneEntity(name,isActive){
+         const sceneEntity = new CreateEntity({
+            game: this.game,
+            name: name,
+            components: {
+                pos: { x: 0, y: 0 },
+                width: this.game.width,
+                height: this.game.height,
+                isActive: isActive,
+                children: []
+            }
+        }).entity;
+
+        this.game.scenes.push(sceneEntity);
+
+        return sceneEntity;
+    };
+    loadScene(sceneToSwitch){
+        const scenes = this.game.scenes;
+        scenes.forEach((sceneEntity)=>{
+            sceneEntity.setComponent('isActive',false);
+        });
+        sceneToSwitch.setComponent('isActive',true);
+        this.game.currentSceneEntity = sceneToSwitch;
+    };
+    reloadScene(){
+
+    };
+
 };

@@ -68,7 +68,10 @@ export class Game {
         this.totalSceneRotation = 0;
         this.isPaused = false;
 
+        this.scenes = [];
+        this.currentSceneEntity = null;
         this.sceneEntity = null;
+        this.mainMenuSceneEntity = null;
 
         this.debugging = {
             debugMatterBodies: false,
@@ -98,8 +101,9 @@ export class Game {
         this.mouse = new Mouse(this);
         this.physics = new Physics(this)
 
+        this.initMainMenuSceneEntity();
         this.initSceneEntity();
-
+    
         this.onBackgroundCanvasResize();
 
         this.systemsJECS();
@@ -164,18 +168,12 @@ export class Game {
         systems.handleInvincibilityCounterSystem();
     };
     initSceneEntity() {
-        this.sceneEntity = new CreateEntity({
-            game: this,
-            name: 'SceneEntity',
-            components: {
-                pos: { x: 0, y: 0 },
-                width: this.width,
-                height: this.height,
-                isActive: true,
-                children: []
-            }
-        }).entity;
+        this.sceneEntity = this.gameUtils.spawnSceneEntity('sceneEntity',true);
         console.log("SCENE ENTITY:", this.sceneEntity);
     };
+    initMainMenuSceneEntity(){
+        this.mainMenuSceneEntity = this.gameUtils.spawnSceneEntity('mainMenuSceneEntity',false);
+        console.log("MAINMENU SCENE ENTITY:", this.mainMenuSceneEntity);
+    }
 
 }

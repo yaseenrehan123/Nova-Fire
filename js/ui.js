@@ -1,9 +1,10 @@
 export class Ui {
     constructor(game) {
         this.game = game;
+
+        this.mainMenuUi = new MainMenuUi(game);
         this.playerUi = new PlayerUi(game);
         this.settingsUi = new SettingsUi(game);
-
     };
 };
 class PlayerUi {
@@ -259,7 +260,10 @@ class SettingsUi {
                 },
                 button: {
                     clickBoxWidth: 200,
-                    clickBoxHeight: 100
+                    clickBoxHeight: 100,
+                    onPress: () =>{
+                        this.gameUtils.loadScene(this.game.mainMenuSceneEntity);
+                    }
                 },
                 parent: this.settingsPanelEntity
             }
@@ -319,14 +323,14 @@ class SettingsUi {
                         this.game.settingsStorageManager.setProperty(musicCheckBoxStorageKey, newValue);
                         this.toggleMusicCheckboxText();
                         this.gameUtils.playSfx('buttonClick');
-                        if(newValue === true){
+                        if (newValue === true) {
                             this.gameUtils.playLoopedMusic('backgroundMusic');
                         }
-                        else{
+                        else {
                             this.game.soundManager.stopAllLoops();
                         }
-                       
-                        console.log("SETTINGS PROPERTY STATE:",this.game.settingsStorageManager.getProperty('music'));
+
+                        console.log("SETTINGS PROPERTY STATE:", this.game.settingsStorageManager.getProperty('music'));
                         console.log("MUSIC CHECKBOX STATE:", this.musicCheckboxEntity.getComponent('checkbox'));
                     }
                 }
@@ -378,12 +382,12 @@ class SettingsUi {
                         this.game.settingsStorageManager.setProperty(sfxCheckBoxStorageKey, newValue);
                         this.toggleSfxCheckboxText();
                         this.gameUtils.playSfx('buttonClick');
-                        console.log("SETTINGS PROPERTY STATE:",this.game.settingsStorageManager.getProperty('sfx'));
+                        console.log("SETTINGS PROPERTY STATE:", this.game.settingsStorageManager.getProperty('sfx'));
                         console.log("SFX CHECKBOX STATE:", this.sfxCheckboxEntity.getComponent('checkbox'));
                     }
                 },
-                anchoring:{
-                    offsetY:150
+                anchoring: {
+                    offsetY: 150
                 }
             }
         });
@@ -415,4 +419,120 @@ class SettingsUi {
         );
     };
 
+}
+class MainMenuUi {
+    constructor(game) {
+        this.game = game;
+        this.gameUtils = game.gameUtils;
+
+        this.titleTextEntity = null;
+        this.playBtnEntity = null;
+        this.playBtnTextEntity = null;
+        this.newGameBtnEntity = null;
+        this.newGameBtnTextEntity = null;
+
+        this.start();
+    };
+    start() {
+        this.initTitleTextEntity();
+        this.initPlayBtnEntity();
+        this.initPlayBtnTextEntity();
+        this.initNewGameBtnEntity();
+        this.initNewGameBtnTextEntity();
+    };
+    initTitleTextEntity() {
+        this.titleTextEntity = this.gameUtils.spawnEntity({
+            passedKey: 'text',
+            componentsToModify: {
+                fontSize: 120,
+                fontContent: 'NOVA FIRE',
+                parent: this.game.mainMenuSceneEntity,
+                anchoring: {
+                    anchorY: 'top',
+                    offsetY: 50
+                }
+            }
+        });
+        this.gameUtils.anchorEntity(this.titleTextEntity, this.game.mainMenuSceneEntity);
+    }
+    initPlayBtnEntity() {
+        const btnColor = 'rgb(27, 59, 106)';
+        this.playBtnEntity = this.gameUtils.spawnEntity({
+            passedKey: 'button',
+            componentsToModify: {
+                width: 200,
+                height: 100,
+                rectangleShape: {
+                    rounded: {
+                        enabled: true,
+                        radius: 10
+                    }
+                },
+                shapeColor: btnColor,
+                parent: this.game.mainMenuSceneEntity,
+                button: {
+                    clickBoxWidth: 200,
+                    onPress: () => {
+                        this.gameUtils.loadScene(this.game.sceneEntity);
+                    }
+                },
+                anchoring: {
+                    offsetY: -200
+                }
+
+            }
+        });
+        this.gameUtils.anchorEntity(this.playBtnEntity, this.game.mainMenuSceneEntity);
+    };
+    initPlayBtnTextEntity() {
+        this.playBtnTextEntity = this.gameUtils.spawnEntity({
+            passedKey: 'text',
+            componentsToModify: {
+                fontSize: 30,
+                fontContent: 'Play',
+                parent: this.playBtnEntity
+            }
+        });
+        this.gameUtils.anchorEntity(this.playBtnTextEntity, this.playBtnEntity);
+    };
+    initNewGameBtnEntity() {
+        const btnColor = 'rgb(27, 59, 106)';
+        this.newGameBtnEntity = this.gameUtils.spawnEntity({
+            passedKey: 'button',
+            componentsToModify: {
+                width: 200,
+                height: 100,
+                rectangleShape: {
+                    rounded: {
+                        enabled: true,
+                        radius: 10
+                    }
+                },
+                shapeColor: btnColor,
+                parent: this.game.mainMenuSceneEntity,
+                button: {
+                    clickBoxWidth: 200,
+                    onPress: () => {
+
+                    }
+                },
+                anchoring: {
+                    offsetY: 0
+                }
+
+            }
+        });
+        this.gameUtils.anchorEntity(this.newGameBtnEntity, this.game.mainMenuSceneEntity);
+    };
+    initNewGameBtnTextEntity() {
+        this.newGameBtnTextEntity = this.gameUtils.spawnEntity({
+            passedKey: 'text',
+            componentsToModify: {
+                fontSize: 30,
+                fontContent: 'NEW GAME',
+                parent: this.newGameBtnEntity
+            }
+        });
+        this.gameUtils.anchorEntity(this.newGameBtnTextEntity, this.newGameBtnEntity);
+    };
 }
