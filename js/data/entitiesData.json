@@ -855,9 +855,11 @@
         "onPress": "()=>{}",
         "onRelease": "()=>{}",
         "onHover": "()=>{}",
+        "onHoverReleased":"()=>{}",
         "clickBoxWidth": 100,
         "clickBoxHeight": 100,
-        "isPressed": false
+        "isPressed": false,
+        "isHovered":false
       },
       "isActive": true,
       "drawType": "rectangle",
@@ -919,10 +921,11 @@
         "onPress": "()=>{}",
         "onRelease": "()=>{}",
         "onHover": "()=>{}",
+        "onHoverReleased":"()=>{}",
         "clickBoxWidth": 100,
         "clickBoxHeight": 100,
         "isPressed": false,
-        "pressedInside": false
+        "isHovered":false
       },
       "isActive": true,
       "drawType": "sprite",
@@ -965,9 +968,11 @@
         "onPress": "()=>{}",
         "onRelease": "()=>{}",
         "onHover": "()=>{}",
+        "onHoverReleased":"()=>{}",
         "clickBoxWidth": 100,
         "clickBoxHeight": 100,
-        "isPressed": false
+        "isPressed": false,
+        "isHovered":false
       },
       "isActive": true,
       "drawType": "rectangle",

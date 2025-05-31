@@ -170,10 +170,6 @@ class SettingsUi {
                         this.gameUtils.pauseGame();
                         this.gameUtils.playSfx('buttonClick');
                     },
-                    onHover: () => {
-                        const canvas = this.game.canvas;
-                        canvas.style.cursor = 'pointer';
-                    }
                 },
                 orderingLayer: 10
             }

@@ -128,6 +128,7 @@ export class Game {
         this.ecs.customSystems.traceLocalPositions();
         //this.ecs.customSystems.trackPlayerRotation();
 
+        this.gameUtils.onHoveredEntityUnActive();
         this.registeredObj.forEach((obj) => {
             obj.update();
         });

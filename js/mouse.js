@@ -4,6 +4,7 @@ export class Mouse{
         this.canvas = game.canvas;
         this.isPressed = false;
         this.wasReleased = false;
+        this.hoveredEntity = null;
         this.listener();
     };
     listener() {

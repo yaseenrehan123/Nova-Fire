@@ -143,7 +143,7 @@ class CustomSystems {
         }
 
         const shouldBlink = this.calculateShouldBlink(e);
-        console.log("SHOULD BLINK FROM DRAWSPRITE:",shouldBlink);
+        //console.log("SHOULD BLINK FROM DRAWSPRITE:",shouldBlink);
 
         // call your helper
         this.game.gameUtils.drawImage({
@@ -417,13 +417,29 @@ class CustomSystems {
 
                 //onsole.log("MOUSE OVER:",isMouseOver);
 
+                //Hover logic
                 if (isMouseOver && button.onHover) {
+                    button.isHovered = true;
+                    this.game.canvas.style.cursor = 'pointer';
+                    this.game.gameUtils.setMouseHoveredEntity(e);
                     const hoverFunction = button.onHover;
                     if (typeof hoverFunction === 'function') {
                         hoverFunction();
                     }
                     //console.log("BUTTON HOVERED");
                 };
+
+                //Unhover
+                if(button.isHovered && !isMouseOver){
+                    button.isHovered = false;
+                    this.game.canvas.style.cursor = 'default';
+                    this.game.gameUtils.resetMouseHoveredEntity();
+                    const onHoverReleasedFunction = button.onHoverReleased;
+                    if(typeof onHoverReleasedFunction === 'function'){
+                        onHoverReleasedFunction();
+                    }
+                    console.log("Hover Ended!!");
+                }
 
                 // Press logic
                 if (mouse.isPressed && !button.isPressed) {

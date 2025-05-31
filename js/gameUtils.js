@@ -510,5 +510,20 @@ export class GameUtils {
     reloadScene(){
 
     };
-
+    setMouseHoveredEntity(newEntity){
+        if(this.isEntityActive(newEntity) && newEntity.hasComponent('button')){
+            this.game.mouse.hoveredEntity = newEntity;
+        }
+    };
+    resetMouseHoveredEntity(){
+        this.game.mouse.hoveredEntity = null;
+    }
+    onHoveredEntityUnActive(){// runs in update
+        const hoveredEntity = this.game.mouse.hoveredEntity;
+        if(hoveredEntity){
+            if(!this.isEntityActive(hoveredEntity)){
+                this.game.canvas.style.cursor = 'default';
+            }
+        }
+    }
 };
