@@ -1,46 +1,46 @@
-import {Engine as MatterEngine,Runner as MatterRunner,Events, Body} from 'matter-js'
-export class Physics{
-    constructor(game){
+import { Engine as MatterEngine, Runner as MatterRunner, Events, Body } from 'matter-js'
+export class Physics {
+    constructor(game) {
         this.game = game;
 
         this.initializeMatter();
     }
-    initializeMatter(){
+    initializeMatter() {
 
         const engine = MatterEngine.create();
         const runner = MatterRunner.create();
-    
-        
+
+
         engine.world.gravity.scale = 0;
-        
-        MatterRunner.run(runner,engine);
+
+        MatterRunner.run(runner, engine);
 
         this.game.matter.matterEngine = engine;
         this.game.matter.matterRunner = runner;
 
         this.collisionDetection();
-       
+
     }
-    collisionDetection(){
-       Events.on(this.game.matter.matterEngine,'collisionStart',(event)=>{
-        //console.log("COLLISION START", event.pairs.length);
-            for (let pair of event.pairs){
-                const {bodyA,bodyB} = pair;
+    collisionDetection() {
+        Events.on(this.game.matter.matterEngine, 'collisionStart', (event) => {
+            //console.log("COLLISION START", event.pairs.length);
+            for (let pair of event.pairs) {
+                const { bodyA, bodyB } = pair;
                 const a = bodyA.label;
                 const b = bodyB.label;
                 //console.log("a:",a);
                 //console.log("b:",b);
-                if(this.matchCollision(a,b,'playerBullet','enemy')){
+                if (this.matchCollision(a, b, 'playerBullet', 'enemy')) {
                     // subtract enemy hp
                     const bulletEntity = a === 'playerBullet' ? bodyA.gameObject : bodyB.gameObject;
                     const enemyEntity = a === 'enemy' ? bodyA.gameObject : bodyB.gameObject;
-                    
+
                     const damageComponent = bulletEntity.getComponent('damage');
 
-                    if(damageComponent){
+                    if (damageComponent) {
                         this.game.gameUtils.damageEntity({
-                            entity:enemyEntity,
-                            damageComponent:damageComponent
+                            entity: enemyEntity,
+                            damageComponent: damageComponent
                         });
                     };
 
@@ -48,28 +48,35 @@ export class Physics{
 
                     //console.log("PlayerBullet collided with enemy");
                 }
-                else if(this.matchCollision(a,b,'player','enemy')){
+                else if (this.matchCollision(a, b, 'player', 'enemy')) {
                     // subtract player hp and give invincibility frames
                     const playerEntity = a === 'player' ? bodyA.gameObject : bodyB.gameObject;
                     const enemyEntity = a === 'enemy' ? bodyA.gameObject : bodyB.gameObject;
-                    if(this.game.gameUtils.isInvincibilityActive(playerEntity)) return;/*no collision as long as 
+                    if (this.game.gameUtils.isInvincibilityActive(playerEntity)) return;/*no collision as long as 
                     invincibility is active */
                     const damageComponent = enemyEntity.getComponent('damage');
                     this.game.gameUtils.damageEntity({
-                        entity:playerEntity,
-                        damageComponent:damageComponent
+                        entity: playerEntity,
+                        damageComponent: damageComponent
                     });
                     this.game.gameUtils.activateInvincibility(playerEntity);
                     //set healthbar
                     this.game.ui.playerUi.updateHealthBar();
                     //console.log("Player health: " , playerEntity.getComponent('health'));
+                    const playerEntityPos = playerEntity.getComponent('pos');
+                    this.game.gameUtils.spawnParticles({
+                        pos: {
+                            x: playerEntityPos.x,
+                            y: playerEntityPos.y
+                        }
+                    })
                     // destroy enemy
                     this.game.gameUtils.removeEntity(enemyEntity);
                     //console.log("Player collided with enemy");
 
                     this.game.gameUtils.playSfx('playerShipExplosion');
                 }
-                else if(this.matchCollision(a,b,'player','item')){
+                else if (this.matchCollision(a, b, 'player', 'item')) {
                     const playerEntity = a === 'player' ? bodyA.gameObject : bodyB.gameObject;
                     const itemEntity = a === 'item' ? bodyA.gameObject : bodyB.gameObject;
                     //console.log("Player entity in matchCollision",playerEntity)
@@ -77,24 +84,24 @@ export class Physics{
                     const changeDelayComponent = itemEntity.getComponent('changeDelayComponent');
                     const changeShootTimesComponent = itemEntity.getComponent('changeShootTimes');
 
-                    if(changeSpawnKeyComponent){
+                    if (changeSpawnKeyComponent) {
                         this.game.gameUtils.changeShootBullet({
-                            entity:playerEntity,
-                            changeSpawnKeyComponent:changeSpawnKeyComponent
+                            entity: playerEntity,
+                            changeSpawnKeyComponent: changeSpawnKeyComponent
                         });
                     }
-                    
-                    if(changeDelayComponent){
+
+                    if (changeDelayComponent) {
                         this.game.gameUtils.changeShootDelay({
-                            entity:playerEntity,
-                            changeDelayComponent:changeDelayComponent
+                            entity: playerEntity,
+                            changeDelayComponent: changeDelayComponent
                         })
                     }
-                   
-                    if(changeShootTimesComponent){
+
+                    if (changeShootTimesComponent) {
                         this.game.gameUtils.changeShootTimes({
-                            entity:playerEntity,
-                            changeShootTimesComponent:changeShootTimesComponent
+                            entity: playerEntity,
+                            changeShootTimesComponent: changeShootTimesComponent
                         })
                     }
                     //console.log("Body B gameObject: ",itemEntity);
@@ -104,8 +111,8 @@ export class Physics{
                     this.game.gameUtils.playSfx('powerUpGrab');
                 }
             };
-            
-            
+
+
         });
     };
     matchCollision(a, b, label1, label2) {

@@ -534,5 +534,86 @@ export class GameUtils {
             pos.y + offset < 0 ||
             pos.y - offset > this.game.height
         );
+    };
+    spawnParticles(options) {
+        const {
+            maxNumber = 16,
+            pos = { x: 0, y: 0 },
+            color = 'orange',
+            lifeTime = 0.8,
+            alpha = 1,
+            widthMinRange = 20,
+            widthMaxRange = 30,
+            heightMinRange = 10,
+            heightMaxRange = 30,
+            speedMinRange = 1,
+            speedMaxRange = 40,
+            alphaReductionRate = 0.4
+        } = options;
+
+        for (let i = 0; i < maxNumber; i++) {
+            const width = 2 * this.generateRandomNum(widthMinRange, widthMaxRange);
+            const height = 3 * this.generateRandomNum(heightMinRange, heightMaxRange);
+            const angle = Math.random() * Math.PI * 2;
+            const speed = 20 * this.generateRandomNum(speedMinRange, speedMaxRange);
+            const vx = Math.cos(angle) * speed;
+            const vy = Math.sin(angle) * speed;
+
+            const particle = {
+                pos: {
+                    x: pos.x,
+                    y: pos.y
+                },
+                width,
+                height,
+                color,
+                vx,
+                vy,
+                lifeTime,
+                alpha,
+                alphaReductionRate
+            };
+
+            this.game.particleEffects.push(particle);
+        };
+    };
+    updateParticles() {
+        const particleEffects = this.game.particleEffects;
+        const deltaTime = this.game.deltaTime;
+
+        for (let i = 0; i < particleEffects.length; i++) {
+            const particle = particleEffects[i];
+
+            particle.pos.x += particle.vx * deltaTime;
+            particle.pos.y += particle.vy * deltaTime;
+            particle.lifeTime -= deltaTime;
+            particle.alpha = Math.max(particle.lifeTime / particle.alphaReductionRate, 0);
+            if (particle.lifeTime <= 0) {
+                particleEffects.splice(i, 1);
+                console.log("Particle Deleted!", particle, particleEffects);
+                console.log("GAME PARTICLE EFFECTS:", this.game.particleEffects);
+                continue;
+            }
+        }
+    };
+    drawParticles() {
+        const particleEffects = this.game.particleEffects;
+        const ctx = this.game.ctx;
+
+        for (let i = 0; i < particleEffects.length; i++) {
+            const particle = particleEffects[i];
+
+            ctx.save();
+
+            ctx.globalAlpha = particle.alpha;
+            ctx.fillStyle = particle.color;
+
+            ctx.fillRect(particle.pos.x, particle.pos.y, particle.width, particle.height);
+
+            ctx.restore();
+        }
     }
+    generateRandomNum(min, max) {
+        return Math.floor(Math.random() * (max - min)) + min
+    };
 };

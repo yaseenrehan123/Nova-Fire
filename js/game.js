@@ -80,11 +80,13 @@ export class Game {
             debugLocalPos: false
         };
 
+        this.particleEffects = [];
+
         this.settingsStorageManager = new StorageManager('settingsStorageManager', this.settingsData);
         this.soundManager = new SoundManager(this.audioData);
 
         this.backgroundParallax = new Parallax(this.images['background'], 1, 'vertical');
-
+        
         this.mouse = null;
         this.physics = null;
         this.player = null;
@@ -127,8 +129,11 @@ export class Game {
         this.ecs.customSystems.handleBtnTriggers();
         this.ecs.customSystems.traceLocalPositions();
         //this.ecs.customSystems.trackPlayerRotation();
-
+        
         this.gameUtils.onHoveredEntityUnActive();
+        this.gameUtils.updateParticles();
+        this.gameUtils.drawParticles();
+
         this.registeredObj.forEach((obj) => {
             obj.update();
         });
