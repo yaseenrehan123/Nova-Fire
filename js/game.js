@@ -72,6 +72,7 @@ export class Game {
         this.currentSceneEntity = null;
         this.sceneEntity = null;
         this.mainMenuSceneEntity = null;
+        this.settingsSceneEntity = null;
 
         this.debugging = {
             debugMatterBodies: false,
@@ -86,7 +87,7 @@ export class Game {
         this.soundManager = new SoundManager(this.audioData);
 
         this.backgroundParallax = new Parallax(this.images['background'], 1, 'vertical');
-        
+
         this.mouse = null;
         this.physics = null;
         this.player = null;
@@ -104,8 +105,9 @@ export class Game {
         this.physics = new Physics(this)
 
         this.initMainMenuSceneEntity();
+        this.initSettingsSceneEntity();
         this.initSceneEntity();
-    
+
         this.onBackgroundCanvasResize();
 
         this.systemsJECS();
@@ -129,7 +131,7 @@ export class Game {
         this.ecs.customSystems.handleBtnTriggers();
         this.ecs.customSystems.traceLocalPositions();
         //this.ecs.customSystems.trackPlayerRotation();
-        
+
         this.gameUtils.onHoveredEntityUnActive();
         this.gameUtils.updateParticles();
         this.gameUtils.drawParticles();
@@ -175,12 +177,16 @@ export class Game {
         systems.destroyOutOfBoundsEntitiesSystem();
     };
     initSceneEntity() {
-        this.sceneEntity = this.gameUtils.spawnSceneEntity('sceneEntity',true);
+        this.sceneEntity = this.gameUtils.spawnSceneEntity('sceneEntity', true);
         console.log("SCENE ENTITY:", this.sceneEntity);
     };
-    initMainMenuSceneEntity(){
-        this.mainMenuSceneEntity = this.gameUtils.spawnSceneEntity('mainMenuSceneEntity',false);
+    initMainMenuSceneEntity() {
+        this.mainMenuSceneEntity = this.gameUtils.spawnSceneEntity('mainMenuSceneEntity', false);
         console.log("MAINMENU SCENE ENTITY:", this.mainMenuSceneEntity);
+    };
+    initSettingsSceneEntity() {
+        this.settingsSceneEntity = this.gameUtils.spawnSceneEntity('sceneEntity', false);
+        console.log("SETTINGS SCENE ENTITY:", this.settingsSceneEntity);
     }
 
 }
