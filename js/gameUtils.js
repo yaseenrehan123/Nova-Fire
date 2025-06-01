@@ -482,8 +482,8 @@ export class GameUtils {
         const invincibilityComponent = entity.getComponent('invincibility');
         return invincibilityComponent.active;
     };
-    spawnSceneEntity(name,isActive){
-         const sceneEntity = new CreateEntity({
+    spawnSceneEntity(name, isActive) {
+        const sceneEntity = new CreateEntity({
             game: this.game,
             name: name,
             components: {
@@ -499,31 +499,40 @@ export class GameUtils {
 
         return sceneEntity;
     };
-    loadScene(sceneToSwitch){
+    loadScene(sceneToSwitch) {
         const scenes = this.game.scenes;
-        scenes.forEach((sceneEntity)=>{
-            sceneEntity.setComponent('isActive',false);
+        scenes.forEach((sceneEntity) => {
+            sceneEntity.setComponent('isActive', false);
         });
-        sceneToSwitch.setComponent('isActive',true);
+        sceneToSwitch.setComponent('isActive', true);
         this.game.currentSceneEntity = sceneToSwitch;
     };
-    reloadScene(){
+    reloadScene() {
 
     };
-    setMouseHoveredEntity(newEntity){
-        if(this.isEntityActive(newEntity) && newEntity.hasComponent('button')){
+    setMouseHoveredEntity(newEntity) {
+        if (this.isEntityActive(newEntity) && newEntity.hasComponent('button')) {
             this.game.mouse.hoveredEntity = newEntity;
         }
     };
-    resetMouseHoveredEntity(){
+    resetMouseHoveredEntity() {
         this.game.mouse.hoveredEntity = null;
-    }
-    onHoveredEntityUnActive(){// runs in update
+    };
+    onHoveredEntityUnActive() {// runs in update
         const hoveredEntity = this.game.mouse.hoveredEntity;
-        if(hoveredEntity){
-            if(!this.isEntityActive(hoveredEntity)){
+        if (hoveredEntity) {
+            if (!this.isEntityActive(hoveredEntity)) {
                 this.game.canvas.style.cursor = 'default';
             }
         }
+    };
+    isOutOfScreenBounds(entity, offset = 0) {
+        const pos = entity.getComponent('pos');
+        return (
+            pos.x + offset < 0 ||
+            pos.x - offset > this.game.width ||
+            pos.y + offset < 0 ||
+            pos.y - offset > this.game.height
+        );
     }
 };

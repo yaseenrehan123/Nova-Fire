@@ -878,6 +878,20 @@ class ECSSystems {
 
             entity.setComponent('invincibility',invincibility);
         });
+    };
+    destroyOutOfBoundsEntitiesSystem(){
+        const engine = this.game.ecs.entityEngine;
+
+        engine.system('destroyOutOfBoundsEntitiesSystem',['pos','destroyOutOfBounds'],(entity,{pos,destroyOutOfBounds})=>{
+            if (!this.game.gameUtils.isEntityActive(entity)) return;
+
+            const offset = 200;
+
+            if(this.game.gameUtils.isOutOfScreenBounds(entity,offset)){
+                this.game.gameUtils.removeEntity(entity);
+                console.log("Entity out of bounds!",entity);
+            }
+        });
     }
 
 }

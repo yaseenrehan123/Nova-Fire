@@ -203,7 +203,8 @@
       "drawType": "sprite",
       "orderingLayer": 0,
       "parent": null,
-      "children": []
+      "children": [],
+      "destroyOutOfBounds":true
     }
   },
   "purpleBattery": {
@@ -252,7 +253,8 @@
       "drawType": "sprite",
       "orderingLayer": 0,
       "parent": null,
-      "children": []
+      "children": [],
+      "destroyOutOfBounds":true
     }
   },
   "yellowBattery": {
@@ -301,7 +303,8 @@
       "drawType": "sprite",
       "orderingLayer": 0,
       "parent": null,
-      "children": []
+      "children": [],
+      "destroyOutOfBounds":true
     }
   },
   "greenBattery": {
@@ -350,7 +353,8 @@
       "drawType": "sprite",
       "orderingLayer": 0,
       "parent": null,
-      "children": []
+      "children": [],
+      "destroyOutOfBounds":true
     }
   },
   "enemy1": {
@@ -399,7 +403,8 @@
       "drawType": "sprite",
       "orderingLayer": 0,
       "parent": null,
-      "children": []
+      "children": [],
+      "destroyOutOfBounds":true
     }
   },
   "enemy2": {
@@ -448,7 +453,8 @@
       "drawType": "sprite",
       "orderingLayer": 0,
       "parent": null,
-      "children": []
+      "children": [],
+      "destroyOutOfBounds":true
     }
   },
   "enemy3": {
@@ -497,7 +503,8 @@
       "drawType": "sprite",
       "orderingLayer": 0,
       "parent": null,
-      "children": []
+      "children": [],
+      "destroyOutOfBounds":true
     }
   },
   "greenBullet": {
@@ -544,7 +551,8 @@
       "drawType": "sprite",
       "orderingLayer": 0,
       "parent": null,
-      "children": []
+      "children": [],
+      "destroyOutOfBounds":true
     }
   },
   "blueBullet": {
@@ -590,7 +598,8 @@
       "drawType": "sprite",
       "orderingLayer": 0,
       "parent": null,
-      "children": []
+      "children": [],
+      "destroyOutOfBounds":true
     }
   },
   "purpleBullet": {
@@ -637,7 +646,8 @@
       "drawType": "sprite",
       "orderingLayer": 0,
       "parent": null,
-      "children": []
+      "children": [],
+      "destroyOutOfBounds":true
     }
   },
   "yellowBullet": {
@@ -684,7 +694,8 @@
       "drawType": "sprite",
       "orderingLayer": 0,
       "parent": null,
-      "children": []
+      "children": [],
+      "destroyOutOfBounds":true
     }
   },
   "powerup": {
@@ -735,7 +746,8 @@
       "drawType": "sprite",
       "orderingLayer": 0,
       "parent": null,
-      "children": []
+      "children": [],
+      "destroyOutOfBounds":true
     }
   },
   "bar": {

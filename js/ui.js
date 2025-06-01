@@ -259,6 +259,7 @@ class SettingsUi {
                     clickBoxHeight: 100,
                     onPress: () =>{
                         this.gameUtils.loadScene(this.game.mainMenuSceneEntity);
+                        this.gameUtils.playSfx('buttonClick');
                     }
                 },
                 parent: this.settingsPanelEntity
@@ -470,6 +471,7 @@ class MainMenuUi {
                     clickBoxWidth: 200,
                     onPress: () => {
                         this.gameUtils.loadScene(this.game.sceneEntity);
+                        this.gameUtils.playSfx('buttonClick');
                     }
                 },
                 anchoring: {
@@ -509,7 +511,7 @@ class MainMenuUi {
                 button: {
                     clickBoxWidth: 200,
                     onPress: () => {
-
+                        this.gameUtils.playSfx('buttonClick');
                     }
                 },
                 anchoring: {

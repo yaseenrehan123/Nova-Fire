@@ -167,6 +167,7 @@ export class Game {
         systems.playerEnergyBarColorSystem();
         systems.handleLocalPosSystem();
         systems.handleInvincibilityCounterSystem();
+        systems.destroyOutOfBoundsEntitiesSystem();
     };
     initSceneEntity() {
         this.sceneEntity = this.gameUtils.spawnSceneEntity('sceneEntity',true);
