@@ -33,13 +33,25 @@ export class Parallax {
     }
 
     _resetPosition(axis, size) {
-        const [first, second] = this.positions;
+    const [first, second] = this.positions;
 
+    if (this.scrollSpeed > 0) {
+        // Scrolling forward (down or right)
         if (first[axis] <= -size) {
-            first[axis] = second[axis] + size - this.scrollSpeed;
+            first[axis] = second[axis] + size;
         }
         if (second[axis] <= -size) {
-            second[axis] = first[axis] + size - this.scrollSpeed;
+            second[axis] = first[axis] + size;
+        }
+    } else {
+        // Scrolling backward (up or left)
+        if (first[axis] >= size) {
+            first[axis] = second[axis] - size;
+        }
+        if (second[axis] >= size) {
+            second[axis] = first[axis] - size;
         }
     }
+}
+
 }

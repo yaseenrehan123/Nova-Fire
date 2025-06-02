@@ -87,7 +87,7 @@ export class Game {
         this.settingsStorageManager = new StorageManager('settingsStorageManager', this.settingsData);
         this.soundManager = new SoundManager(this.audioData);
 
-        this.backgroundParallax = new Parallax(this.images['background'], 1, 'vertical');
+        this.backgroundParallax = new Parallax(this.images['background'], -0.75, 'vertical');
 
         this.mouse = null;
         this.physics = null;
@@ -110,7 +110,7 @@ export class Game {
         this.initSceneEntity();
         this.initControlsSceneEntity();
         this.initCurrentSceneEntity();
-        
+
         this.onBackgroundCanvasResize();
 
         this.systemsJECS();
