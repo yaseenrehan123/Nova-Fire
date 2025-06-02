@@ -616,4 +616,22 @@ export class GameUtils {
     generateRandomNum(min, max) {
         return Math.floor(Math.random() * (max - min)) + min
     };
+    togglePauseForPc() {
+        window.addEventListener('keydown', (e) => {
+            console.log(this.game.currentSceneEntity,this.game.sceneEntity)
+            if(this.game.currentSceneEntity !== this.game.sceneEntity) return;//only pause on game scene
+            if (e.code === 'Space') {
+                const isPaused = this.returnIsPaused(); // or track it with a flag
+                if (isPaused) {
+                    this.setIsActive(this.game.ui.pauseUi.pausePanelEntity, false);
+                    this.unPauseGame();
+                } else {
+                    this.setIsActive(this.game.ui.pauseUi.pausePanelEntity, true);
+                    this.pauseGame();
+                }
+                this.playSfx('buttonClick');
+            }
+        });
+
+    }
 };

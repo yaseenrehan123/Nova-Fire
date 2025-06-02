@@ -109,12 +109,15 @@ export class Game {
         this.initSettingsSceneEntity();
         this.initSceneEntity();
         this.initControlsSceneEntity();
+        this.initCurrentSceneEntity();
         
         this.onBackgroundCanvasResize();
 
         this.systemsJECS();
 
         this.gameUtils.playLoopedMusicOnInteraction('backgroundMusic');
+
+        this.gameUtils.togglePauseForPc();
     };
     update(timeStamp) {
         const deltaTime = (timeStamp - this.lastTime) / 1000;
@@ -187,12 +190,21 @@ export class Game {
         console.log("MAINMENU SCENE ENTITY:", this.mainMenuSceneEntity);
     };
     initSettingsSceneEntity() {
-        this.settingsSceneEntity = this.gameUtils.spawnSceneEntity('sceneEntity', false);
+        this.settingsSceneEntity = this.gameUtils.spawnSceneEntity('settingsSceneEntity', false);
         console.log("SETTINGS SCENE ENTITY:", this.settingsSceneEntity);
     }
     initControlsSceneEntity() {
-        this.controlsSceneEntity = this.gameUtils.spawnSceneEntity('sceneEntity', false);
+        this.controlsSceneEntity = this.gameUtils.spawnSceneEntity('controlsSceneEntity', false);
         console.log("CONTROLS SCENE ENTITY:", this.controlsSceneEntity);
+    };
+    initCurrentSceneEntity() {
+        for (const scene of this.scenes) {
+            const isActiveComponent = scene.getComponent('isActive');
+            if (isActiveComponent) {
+                this.currentSceneEntity = scene;
+                break;
+            }
+        }
     }
 
 }

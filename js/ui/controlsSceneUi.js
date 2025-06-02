@@ -117,7 +117,7 @@ export class ControlsSceneUi {
             passedKey: 'text',
             componentsToModify: {
                 fontSize: 30,
-                fontContent: 'PAUSE: SPACEBAR',
+                fontContent: 'PAUSE: SPACEBAR (PC ONLY)',
                 fontStyle: '',
                 parent: this.pauseTextPanelEntity
             }
