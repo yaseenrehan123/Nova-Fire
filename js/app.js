@@ -2,7 +2,7 @@ import { LoadAssets } from "./loadAssets.js";
 import { Game } from "./game.js";
 import { ChangeView } from "./changeview.js";
 import { Player } from "./player.js";
-import { Ui } from "./ui.js";
+import { Ui } from "./ui/ui.js";
 const loader = new LoadAssets(start);
 
 function start(resources) {

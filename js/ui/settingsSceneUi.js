@@ -9,6 +9,8 @@ export class SettingsSceneUi {
         this.sfxCheckboxTextEntity = null;
         this.backBtnEntity = null;
         this.backBtnTextEntity = null;
+        this.controlsBtnEntity = null;
+        this.controlsTextEntity = null;
 
         this.start();
     };
@@ -19,6 +21,8 @@ export class SettingsSceneUi {
         this.initSfxCheckboxText();
         this.initBackBtnEntity();
         this.initBackBtnTextEntity();
+        this.initControlsBtnEntity();
+        this.initControlsTextEntity();
 
     };
     initMusicCheckbox() {
@@ -183,5 +187,38 @@ export class SettingsSceneUi {
         });
         this.gameUtils.anchorEntity(this.backBtnTextEntity, this.backBtnEntity);
     };
-
+    initControlsBtnEntity() {
+        const btnColor = 'rgb(27, 59, 106)';
+        this.controlsBtnEntity = this.gameUtils.spawnEntity({
+            passedKey: 'button',
+            componentsToModify: {
+                anchoring: {
+                   offsetY:-150
+                },
+                parent: this.game.settingsSceneEntity,
+                shapeColor: btnColor,
+                width: 200,
+                height: 100,
+                button: {
+                    clickBoxWidth: 200,
+                    onPress: () => {
+                        this.gameUtils.loadScene(this.game.controlsSceneEntity);
+                        this.gameUtils.playSfx('buttonClick');
+                    }
+                }
+            }
+        });
+        this.gameUtils.anchorEntity(this.controlsBtnEntity, this.game.settingsSceneEntity);
+    };
+    initControlsTextEntity() {
+         this.controlsTextEntity = this.gameUtils.spawnEntity({
+            passedKey: 'text',
+            componentsToModify: {
+                fontSize: 30,
+                fontContent: 'CONTROLS',
+                parent: this.controlsBtnEntity
+            }
+        });
+        this.gameUtils.anchorEntity(this.controlsTextEntity, this.controlsBtnEntity);
+    };
 }

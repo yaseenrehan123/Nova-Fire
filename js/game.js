@@ -73,6 +73,7 @@ export class Game {
         this.sceneEntity = null;
         this.mainMenuSceneEntity = null;
         this.settingsSceneEntity = null;
+        this.controlsSceneEntity = null;
 
         this.debugging = {
             debugMatterBodies: false,
@@ -107,7 +108,8 @@ export class Game {
         this.initMainMenuSceneEntity();
         this.initSettingsSceneEntity();
         this.initSceneEntity();
-
+        this.initControlsSceneEntity();
+        
         this.onBackgroundCanvasResize();
 
         this.systemsJECS();
@@ -187,6 +189,10 @@ export class Game {
     initSettingsSceneEntity() {
         this.settingsSceneEntity = this.gameUtils.spawnSceneEntity('sceneEntity', false);
         console.log("SETTINGS SCENE ENTITY:", this.settingsSceneEntity);
+    }
+    initControlsSceneEntity() {
+        this.controlsSceneEntity = this.gameUtils.spawnSceneEntity('sceneEntity', false);
+        console.log("CONTROLS SCENE ENTITY:", this.controlsSceneEntity);
     }
 
 }
