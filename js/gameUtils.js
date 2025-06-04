@@ -151,11 +151,11 @@ export class GameUtils {
 
         entity.setComponent('health', newHealth);
 
-        this.onHealthEmpty({
+        const isEntityDead = this.onHealthEmpty({
             entity: entity,
             health: newHealth
         })
-
+        return isEntityDead;
         //console.log('healthComponent new health:',newHealth);
     }
     onHealthEmpty(options) {
@@ -166,7 +166,9 @@ export class GameUtils {
 
         if (health <= 0) {
             this.removeEntity(entity)
+            return true;
         }
+        return false;
     }
     removeEntity(entity) {
         const matterBody = entity.getComponent('matterBody');
@@ -633,9 +635,18 @@ export class GameUtils {
             }
         });
 
-    }
+    };
     entityExists(entity) {
         return this.game.ecs.entityEngine.entities.hasOwnProperty(entity.name);
+    };
+    gameover(){
+        this.setIsActive(this.game.ui.gameoverUi.gameoverPanelEntity,true);
+        this.game.ui.gameoverUi.setWaveReachedText();
+        this.pauseGame();
+    };
+    gamewon(){
+        this.setIsActive(this.game.ui.gamewinUi.gamewinPanelEntity,true);
+        this.pauseGame();
     }
-
+    
 };

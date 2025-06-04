@@ -3,6 +3,8 @@ import { PlayerUi } from "./playerUi.js";
 import { PauseUi } from "./pauseUi.js";
 import { SettingsSceneUi } from "./settingsSceneUi.js";
 import { ControlsSceneUi } from "./controlsSceneUi.js";
+import { GameoverUi } from "./gameoverUi.js";
+import { GamewinUi } from "./gamewinUi.js";
 export class Ui {
     constructor(game) {
         this.game = game;
@@ -12,6 +14,8 @@ export class Ui {
         this.controlsSceneUi = new ControlsSceneUi(game);
         this.playerUi = new PlayerUi(game);
         this.pauseUi = new PauseUi(game);
+        this.gameoverUi = new GameoverUi(game);
+        this.gamewinUi = new GamewinUi(game);
     };
 };
 

@@ -5,7 +5,7 @@ export class ChangeView {
         this.targetRotation = this.startRotation + newRotation;
         this.rotation = this.startRotation;
         this.changeRate = 50; // degrees per second
-        this.delay = 2000;
+        this.delay = 0;
         this.rotating = false;
         this.start();
     }

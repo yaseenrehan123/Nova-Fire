@@ -62,6 +62,7 @@ export class WaveSpawner {
         }
 
         this.isSpawning = false;
+        this.gameUtils.gamewon();
         console.log("All waves finished.");
     }
 

@@ -152,7 +152,7 @@
         "active":false,
         "blinkCounter":0,
         "blinkDelay":0.04,
-        "invincibilityDuration":4,
+        "invincibilityDuration":3,
         "invincibilityCounter":0
       }
     }

@@ -55,10 +55,15 @@ export class Physics {
                     if (this.game.gameUtils.isInvincibilityActive(playerEntity)) return;/*no collision as long as 
                     invincibility is active */
                     const damageComponent = enemyEntity.getComponent('damage');
-                    this.game.gameUtils.damageEntity({
+                    const isPlayerDead = this.game.gameUtils.damageEntity({
                         entity: playerEntity,
                         damageComponent: damageComponent
                     });
+                    if(isPlayerDead){
+                        console.log("PLAYER DEAD!");
+                        this.game.gameUtils.gameover();
+                        return;
+                    }
                     this.game.gameUtils.activateInvincibility(playerEntity);
                     //set healthbar
                     this.game.ui.playerUi.updateHealthBar();
