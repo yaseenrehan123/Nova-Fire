@@ -88,7 +88,9 @@ export class Game {
         this.settingsStorageManager = new StorageManager('settingsStorageManager', this.settingsData);
         this.soundManager = new SoundManager(this.audioData);
 
-        this.backgroundParallax = new Parallax(this.images['background'], -0.75, 'vertical');
+        this.defParallaxSpeed = -0.75;
+        this.parallaxSpeed = this.defParallaxSpeed;
+        this.backgroundParallax = new Parallax(this.images['background'], this.parallaxSpeed, 'vertical');
 
         this.mouse = null;
         this.physics = null;
@@ -122,6 +124,8 @@ export class Game {
         this.gameUtils.playLoopedMusicOnInteraction('backgroundMusic');
 
         this.gameUtils.togglePauseForPc();
+
+        this.gameUtils.pauseGame();
     };
     update(timeStamp) {
         const deltaTime = (timeStamp - this.lastTime) / 1000;
@@ -187,11 +191,11 @@ export class Game {
         systems.destroyOutOfBoundsEntitiesSystem();
     };
     initSceneEntity() {
-        this.sceneEntity = this.gameUtils.spawnSceneEntity('sceneEntity', true);
+        this.sceneEntity = this.gameUtils.spawnSceneEntity('sceneEntity', false);
         //console.log("SCENE ENTITY:", this.sceneEntity);
     };
     initMainMenuSceneEntity() {
-        this.mainMenuSceneEntity = this.gameUtils.spawnSceneEntity('mainMenuSceneEntity', false);
+        this.mainMenuSceneEntity = this.gameUtils.spawnSceneEntity('mainMenuSceneEntity', true);
         //console.log("MAINMENU SCENE ENTITY:", this.mainMenuSceneEntity);
     };
     initSettingsSceneEntity() {

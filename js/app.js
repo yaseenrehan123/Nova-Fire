@@ -12,6 +12,7 @@ function start(resources) {
     game.player = new Player(game)
     game.ui = new Ui(game);
 
+    /*
     const yellowBattery = game.gameUtils.spawnEntity({
         passedKey: 'yellowBattery',
         componentsToModify: {
@@ -164,7 +165,7 @@ function start(resources) {
     });
 
     //game.assignParent(enemy3, game.sceneEntity);
-
+    */
     /*
     new ChangeView({
         newRotation: 180,

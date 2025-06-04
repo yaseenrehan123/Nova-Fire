@@ -196,12 +196,16 @@ export class GameUtils {
         this.game.isPaused = true;
         this.game.ecs.entitySim.pause();
         this.game.matter.matterRunner.enabled = false;
+        this.game.parallaxSpeed = 0;
+        this.game.backgroundParallax.setScrollSpeed(this.game.parallaxSpeed);
         console.log("IS SIMULATION PAUSED?", this.game.ecs.entitySim.isPaused());
     };
     unPauseGame() {
         this.game.isPaused = false;
         this.game.ecs.entitySim.start();
         this.game.matter.matterRunner.enabled = true;
+        this.game.parallaxSpeed = this.game.defParallaxSpeed;
+        this.game.backgroundParallax.setScrollSpeed(this.game.parallaxSpeed);
         console.log("IS SIMULATION RUNNING?", this.game.ecs.entitySim.isRunning());
     }
     queryAllComponents(e, reqComponents, callback) {

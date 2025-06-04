@@ -57,6 +57,7 @@ export class MainMenuUi {
                     onPress: () => {
                         this.gameUtils.loadScene(this.game.sceneEntity);
                         this.game.ui.pauseUi.refreshCheckboxStates();
+                        this.gameUtils.unPauseGame();
                         this.gameUtils.playSfx('buttonClick');
                     }
                 },
