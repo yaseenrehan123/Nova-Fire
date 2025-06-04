@@ -19,6 +19,7 @@ export class Game {
         this.settingsData = resources.settingsData;
         this.audioData = resources.audioData;
         this.enemyWaveData = resources.enemyWaveData;
+        this.progressData = resources.progressData;
 
         this.canvas = document.querySelector('.game-container');
         this.ctx = this.canvas.getContext('2d');
@@ -27,6 +28,15 @@ export class Game {
         this.bgCanvas = document.querySelector('.background-container');
         this.bgCtx = this.bgCanvas.getContext('2d');
         this.bgCtx.imageSmoothingEnabled = false;
+
+        this.settingsStorageManager = new StorageManager('settingsStorageManager', this.settingsData);
+        this.progressStorageManager =  new StorageManager('progressStorageManager',this.progressData);
+
+        this.soundManager = new SoundManager(this.audioData);
+
+        this.defParallaxSpeed = -0.75;
+        this.parallaxSpeed = this.defParallaxSpeed;
+        this.backgroundParallax = new Parallax(this.images['background'], this.parallaxSpeed, 'vertical');
 
         this.lastTime = 0;
         this.deltaTime = null;
@@ -64,9 +74,9 @@ export class Game {
         this.width = this.canvas.width;
         this.height = this.canvas.height;
         this.screenCenterPos = { x: this.width / 2, y: this.height / 2 };
-        this.sceneRotation = 0;
+        this.sceneRotation = this.progressStorageManager.getProperty("sceneRotation") || 0;
         this.nextSceneRotation = 0;
-        this.totalSceneRotation = 0;
+        this.totalSceneRotation = this.progressStorageManager.getProperty("totalSceneRotation") || 0;
         this.isPaused = false;
 
         this.scenes = [];
@@ -79,18 +89,13 @@ export class Game {
         this.debugging = {
             debugMatterBodies: false,
             debugShootDirection: true,
-            debugUiClickBox: true,
+            debugUiClickBox: false,
             debugLocalPos: false
         };
 
         this.particleEffects = [];
 
-        this.settingsStorageManager = new StorageManager('settingsStorageManager', this.settingsData);
-        this.soundManager = new SoundManager(this.audioData);
-
-        this.defParallaxSpeed = -0.75;
-        this.parallaxSpeed = this.defParallaxSpeed;
-        this.backgroundParallax = new Parallax(this.images['background'], this.parallaxSpeed, 'vertical');
+        
 
         this.mouse = null;
         this.physics = null;
@@ -109,7 +114,6 @@ export class Game {
         this.mouse = new Mouse(this);
         this.physics = new Physics(this)
         this.enemyWaveSpawner = new WaveSpawner(this);
-        this.enemyWaveSpawner.startWaves();
 
         this.initMainMenuSceneEntity();
         this.initSettingsSceneEntity();
@@ -126,6 +130,7 @@ export class Game {
         this.gameUtils.togglePauseForPc();
 
         this.gameUtils.pauseGame();
+
     };
     update(timeStamp) {
         const deltaTime = (timeStamp - this.lastTime) / 1000;

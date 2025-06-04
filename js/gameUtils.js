@@ -646,10 +646,12 @@ export class GameUtils {
     gameover(){
         this.setIsActive(this.game.ui.gameoverUi.gameoverPanelEntity,true);
         this.game.ui.gameoverUi.setWaveReachedText();
+        game.progressStorageManager.deleteData();
         this.pauseGame();
     };
     gamewon(){
         this.setIsActive(this.game.ui.gamewinUi.gamewinPanelEntity,true);
+        game.progressStorageManager.deleteData();
         this.pauseGame();
     }
     

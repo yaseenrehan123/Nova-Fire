@@ -85,15 +85,16 @@ export class LoadAssets {
         const entitiesPromise = this.fetchData('js/data/entitiesData.json');
         const settingsPromise = this.fetchData('js/data/settingsData.json');
         const enemyWavePromise = this.fetchData('js/data/enemyWaveData.json');
-
-        Promise.all([imagesPromise, entitiesPromise, settingsPromise,audioPromise,enemyWavePromise])
-            .then(([imagesData, entitiesData, settingsData,audioData,enemyWaveData]) => {
+        const progressPromise = this.fetchData('js/data/progressData.json');
+        Promise.all([imagesPromise, entitiesPromise, settingsPromise,audioPromise,enemyWavePromise,progressPromise])
+            .then(([imagesData, entitiesData, settingsData,audioData,enemyWaveData,progressData]) => {
                 const resources = {
                     imagesData: imagesData,
                     entitiesData: entitiesData,
                     settingsData: settingsData,
                     audioData: audioData,
-                    enemyWaveData: enemyWaveData
+                    enemyWaveData: enemyWaveData,
+                    progressData: progressData
                 }
                 this.callback(resources);
             })

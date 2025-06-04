@@ -7,7 +7,7 @@ export class WaveSpawner {
         console.log("GameUtils:", this.gameUtils)
         this.isSpawning = false;
         this.waveJustBegan = false;
-        this.currentWaveIndex = 0;
+        this.currentWaveIndex = game.progressStorageManager.getProperty("waveIndex") || 0;
         this.delayBetweenWaves = 2;//seconds
         this.spawnedEnemies = [];
 
@@ -26,12 +26,14 @@ export class WaveSpawner {
     async startWaves() {
         this.isSpawning = true;
 
+        if(!this.isSpawning) return;
+
         while (this.currentWaveIndex < this.data.length) {
             const wave = this.data[this.currentWaveIndex];
             this.spawnedEnemies = [];
             this.waveJustBegan = true;
 
-            console.log(`Spawning wave ${this.currentWaveIndex + 1}`);
+            console.log(`Spawning wave ${this.currentWaveIndex}`);
 
             for (const step of wave) {
                 while (this.game.isPaused) {
@@ -47,6 +49,7 @@ export class WaveSpawner {
                 if (step.type === "rotation") {
                     if (step.newRotation !== undefined) {
                         new ChangeView({ game: this.game, newRotation: step.newRotation });
+                        console.log("ROTATION CHANGE ENCOUNTERED:",step.newRotation,this.game.sceneRotation,this.game.totalSceneRotation);
                     }
                 }
 
@@ -59,6 +62,9 @@ export class WaveSpawner {
             }
 
             this.currentWaveIndex++;
+            this.game.progressStorageManager.setProperty("waveIndex",this.currentWaveIndex);
+            this.game.progressStorageManager.setProperty("sceneRotation",this.game.sceneRotation);
+            this.game.progressStorageManager.setProperty("totalSceneRotation",this.game.totalSceneRotation);
         }
 
         this.isSpawning = false;
@@ -70,7 +76,7 @@ export class WaveSpawner {
     spawnEnemy(enemyKey) {
         const rotation = this.game.totalSceneRotation;
         const spawnPos = this.getSpawnPosition(rotation);
-        console.log("ENEMY SPAWN POS:", spawnPos);
+        //console.log("ENEMY SPAWN POS:", spawnPos);
         const enemy = this.gameUtils.spawnEntity({
             passedKey: enemyKey,
             componentsToModify: {
