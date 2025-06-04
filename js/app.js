@@ -165,10 +165,12 @@ function start(resources) {
 
     //game.assignParent(enemy3, game.sceneEntity);
 
+    /*
     new ChangeView({
-        newRotation: 0,
+        newRotation: 180,
         game: game
     });
-
+    */
     console.log('start called');
+    console.log("PLAYER EXISTS?",game.gameUtils.entityExists(game.player.playerEntity));
 };

@@ -6,6 +6,7 @@ export class PlayerUi {
 
         this.healthBarEntity = null;
         this.energyBarEntity = null;
+        this.waveCounterTextEntity = null;
 
         this.start();
     };
@@ -14,12 +15,11 @@ export class PlayerUi {
 
         this.initHealthBar();
         this.initEnergyBar();
-
+        this.initWaveCounterTextEntity();
     };
     update() {
-
         this.game.ui.playerUi.updateEnergyBar();
-
+        this.updateWaveCounterText();
     };
     updateHealthBar() {
         const maxHealth = this.game.player.maxHealth;
@@ -105,5 +105,30 @@ export class PlayerUi {
             current: current,
             barEntity: this.energyBarEntity
         });
+    };
+    initWaveCounterTextEntity() {
+        this.waveCounterTextEntity = this.gameUtils.spawnEntity({
+            passedKey: 'text',
+            componentsToModify: {
+                parent: this.game.sceneEntity,
+                fontSize: 80,
+                fontContent: `Wave: ${this.game.enemyWaveSpawner.currentWaveIndex}`,
+                isActive: false
+            }
+        });
+        this.gameUtils.anchorEntity(this.waveCounterTextEntity, this.game.sceneEntity);
+    };
+    updateWaveCounterText() {
+        if (this.game.enemyWaveSpawner.waveJustBegan) {
+            this.waveCounterTextEntity.setComponent('isActive', true);
+            this.waveCounterTextEntity.setComponent('fontContent', `Wave: ${this.game.enemyWaveSpawner.currentWaveIndex}`);
+            this.disableWaveCounterTextAfterDelay();
+        }
+    };
+    disableWaveCounterTextAfterDelay() {
+        const delay = 2000;
+        setTimeout(() => {
+            this.waveCounterTextEntity.setComponent('isActive', false);
+        }, delay);
     };
 };

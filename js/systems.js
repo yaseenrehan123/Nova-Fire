@@ -236,8 +236,8 @@ class CustomSystems {
         //if(isPlayer){
 
         //}
-        console.log("ShootEnergyNewValue", newValue);
-        console.log("ShootEnergyComponent", shootEnergy);
+        //console.log("ShootEnergyNewValue", newValue);
+        //console.log("ShootEnergyComponent", shootEnergy);
 
         e.setComponent('shootEnergy', shootEnergy);
         e.setComponent('shootBullet', shootBullet);
@@ -889,7 +889,7 @@ class ECSSystems {
 
             if(this.game.gameUtils.isOutOfScreenBounds(entity,offset)){
                 this.game.gameUtils.removeEntity(entity);
-                console.log("Entity out of bounds!",entity);
+                //console.log("Entity out of bounds!",entity);
             }
         });
     }

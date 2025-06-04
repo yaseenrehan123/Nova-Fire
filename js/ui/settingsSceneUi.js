@@ -52,8 +52,8 @@ export class SettingsSceneUi {
                             this.game.soundManager.stopAllLoops();
                         }
 
-                        console.log("SETTINGS PROPERTY STATE:", this.game.settingsStorageManager.getProperty('music'));
-                        console.log("MUSIC CHECKBOX STATE:", this.musicCheckboxEntity.getComponent('checkbox'));
+                        //console.log("SETTINGS PROPERTY STATE:", this.game.settingsStorageManager.getProperty('music'));
+                        //console.log("MUSIC CHECKBOX STATE:", this.musicCheckboxEntity.getComponent('checkbox'));
                     }
                 },
                 anchoring: {
@@ -66,7 +66,7 @@ export class SettingsSceneUi {
         this.gameUtils.retrieveSavedCheckboxData(this.musicCheckboxEntity, this.game.settingsStorageManager);
         this.gameUtils.anchorEntity(this.musicCheckboxEntity, this.game.settingsSceneEntity);
 
-        console.log("MUSIC CHECKBOX STATE:", this.musicCheckboxEntity.getComponent('checkbox'));
+        //console.log("MUSIC CHECKBOX STATE:", this.musicCheckboxEntity.getComponent('checkbox'));
     };
     initMusicCheckboxText() {
         this.musicCheckboxTextEntity = this.gameUtils.spawnEntity({
@@ -108,8 +108,8 @@ export class SettingsSceneUi {
                         this.game.settingsStorageManager.setProperty(sfxCheckBoxStorageKey, newValue);
                         this.toggleSfxCheckboxText();
                         this.gameUtils.playSfx('buttonClick');
-                        console.log("SETTINGS PROPERTY STATE:", this.game.settingsStorageManager.getProperty('sfx'));
-                        console.log("SFX CHECKBOX STATE:", this.sfxCheckboxEntity.getComponent('checkbox'));
+                        //console.log("SETTINGS PROPERTY STATE:", this.game.settingsStorageManager.getProperty('sfx'));
+                        //console.log("SFX CHECKBOX STATE:", this.sfxCheckboxEntity.getComponent('checkbox'));
                     }
                 },
                 anchoring: {
@@ -122,7 +122,7 @@ export class SettingsSceneUi {
         this.gameUtils.retrieveSavedCheckboxData(this.sfxCheckboxEntity, this.game.settingsStorageManager);
         this.gameUtils.anchorEntity(this.sfxCheckboxEntity, this.game.settingsSceneEntity);
 
-        console.log("SFX CHECKBOX STATE:", this.sfxCheckboxEntity.getComponent('checkbox'));
+        //console.log("SFX CHECKBOX STATE:", this.sfxCheckboxEntity.getComponent('checkbox'));
     };
     initSfxCheckboxText() {
         this.sfxCheckboxTextEntity = this.gameUtils.spawnEntity({

@@ -453,7 +453,7 @@ export class GameUtils {
             this.playSfx(soundKey);
     };
     playSfx(key) {
-        console.log('SFX enabled?', this.game.settingsData.sfx);
+        //console.log('SFX enabled?', this.game.settingsData.sfx);
         if (!this.game.settingsStorageManager.getProperty('sfx')) return;
         this.game.soundManager.play(key);
     };
@@ -618,8 +618,8 @@ export class GameUtils {
     };
     togglePauseForPc() {
         window.addEventListener('keydown', (e) => {
-            console.log(this.game.currentSceneEntity,this.game.sceneEntity)
-            if(this.game.currentSceneEntity !== this.game.sceneEntity) return;//only pause on game scene
+            console.log(this.game.currentSceneEntity, this.game.sceneEntity)
+            if (this.game.currentSceneEntity !== this.game.sceneEntity) return;//only pause on game scene
             if (e.code === 'Space') {
                 const isPaused = this.returnIsPaused(); // or track it with a flag
                 if (isPaused) {
@@ -634,4 +634,8 @@ export class GameUtils {
         });
 
     }
+    entityExists(entity) {
+        return this.game.ecs.entityEngine.entities.hasOwnProperty(entity.name);
+    }
+
 };

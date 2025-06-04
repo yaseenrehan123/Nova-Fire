@@ -1,43 +1,40 @@
-export class ChangeView{ // changes player and enemy directions for different view combat
-    constructor(options){
-        const{
-            newRotation=0,
-            game=null
-        } = options
-        this.targetRotation  = newRotation;
-        this.rotation = 0;
-        this.changeRate = 50; // 20 deg per sec
-        this.delay = 2000 // 2s
+export class ChangeView {
+    constructor({ newRotation = 0, game = null }) {
         this.gameSettings = game;
+        this.startRotation = game.sceneRotation;
+        this.targetRotation = this.startRotation + newRotation;
+        this.rotation = this.startRotation;
+        this.changeRate = 50; // degrees per second
+        this.delay = 2000;
         this.rotating = false;
         this.start();
-    };
-    start(){
+    }
+
+    start() {
         this.gameSettings.gameUtils.addObj(this);
-        // Start after delay
         setTimeout(() => {
             this.rotating = true;
-            this.gameSettings.nextSceneRotation = this.targetRotation;
-            this.gameSettings.totalSceneRotation = this.gameSettings.sceneRotation + this.gameSettings.nextSceneRotation;
+            this.gameSettings.nextSceneRotation = this.targetRotation - this.startRotation;
+            this.gameSettings.totalSceneRotation = this.targetRotation;
         }, this.delay);
-    };
-    update(){//called by gameSettings
+    }
+
+    update() {
         if (!this.rotating) return;
 
-        const direction = this.targetRotation > this.rotation ? 1 : -1;
+        const diff = this.targetRotation - this.rotation;
+        const direction = Math.sign(diff);
         const rotationStep = this.changeRate * this.gameSettings.deltaTime * direction;
 
-        const remaining = Math.abs(this.targetRotation - this.rotation);
-
-        if (remaining <= Math.abs(rotationStep)) {
+        if (Math.abs(diff) <= Math.abs(rotationStep)) {
             this.rotation = this.targetRotation;
-            this.rotating = false; // Done rotating
+            this.rotating = false;
             this.gameSettings.ecs.customSystems.setBaseRotation();
         } else {
             this.rotation += rotationStep;
         }
-        this.gameSettings.sceneRotation = this.rotation;
 
+        this.gameSettings.sceneRotation = this.rotation;
         this.gameSettings.ecs.customSystems.addSceneRotation();
-    };
-};
+    }
+}

@@ -7,6 +7,7 @@ import { CreateEntity } from "./createEntity.js";
 import { StorageManager } from './storageManager.js';
 import { SoundManager } from './soundManager.js';
 import { Parallax } from './parallax.js';
+import { WaveSpawner } from './waveSpawner.js';
 //import { Builder, shapes } from "shape-builder";
 //const { Point, Rectangle } = shapes;
 
@@ -17,7 +18,7 @@ export class Game {
         this.entitiesData = resources.entitiesData;
         this.settingsData = resources.settingsData;
         this.audioData = resources.audioData;
-
+        this.enemyWaveData = resources.enemyWaveData;
 
         this.canvas = document.querySelector('.game-container');
         this.ctx = this.canvas.getContext('2d');
@@ -94,6 +95,7 @@ export class Game {
         this.player = null;
         this.ui = null;
         this.gameUtils = null;
+        this.enemyWaveSpawner = null;
 
         this.start();
         this.update();
@@ -104,6 +106,8 @@ export class Game {
         this.gameUtils = new GameUtils(this);
         this.mouse = new Mouse(this);
         this.physics = new Physics(this)
+        this.enemyWaveSpawner = new WaveSpawner(this);
+        this.enemyWaveSpawner.startWaves();
 
         this.initMainMenuSceneEntity();
         this.initSettingsSceneEntity();
@@ -144,6 +148,7 @@ export class Game {
         this.registeredObj.forEach((obj) => {
             obj.update();
         });
+
         //console.log(`Scene Rotation: ${this.sceneRotation}`);
         requestAnimationFrame(this.update.bind(this));
     };
@@ -183,19 +188,19 @@ export class Game {
     };
     initSceneEntity() {
         this.sceneEntity = this.gameUtils.spawnSceneEntity('sceneEntity', true);
-        console.log("SCENE ENTITY:", this.sceneEntity);
+        //console.log("SCENE ENTITY:", this.sceneEntity);
     };
     initMainMenuSceneEntity() {
         this.mainMenuSceneEntity = this.gameUtils.spawnSceneEntity('mainMenuSceneEntity', false);
-        console.log("MAINMENU SCENE ENTITY:", this.mainMenuSceneEntity);
+        //console.log("MAINMENU SCENE ENTITY:", this.mainMenuSceneEntity);
     };
     initSettingsSceneEntity() {
         this.settingsSceneEntity = this.gameUtils.spawnSceneEntity('settingsSceneEntity', false);
-        console.log("SETTINGS SCENE ENTITY:", this.settingsSceneEntity);
+        //console.log("SETTINGS SCENE ENTITY:", this.settingsSceneEntity);
     }
     initControlsSceneEntity() {
         this.controlsSceneEntity = this.gameUtils.spawnSceneEntity('controlsSceneEntity', false);
-        console.log("CONTROLS SCENE ENTITY:", this.controlsSceneEntity);
+        //console.log("CONTROLS SCENE ENTITY:", this.controlsSceneEntity);
     };
     initCurrentSceneEntity() {
         for (const scene of this.scenes) {

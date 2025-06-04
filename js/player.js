@@ -27,7 +27,7 @@ export class Player{
                 }
             }
         });
-
+        console.log("PLAYER EXISTS?",this.game.gameUtils.entityExists(this.playerEntity));
         //this.game.assignParent(this.playerEntity,this.game.sceneEntity);
 
         this.maxHealth = this.playerEntity.getComponent('health');// set maxhealth

@@ -1,0 +1,163 @@
+[
+    [
+        { "type": "enemy", "key": "enemy1", "delay": 0 },
+        { "type": "enemy", "key": "enemy1", "delay": 2.5 },
+        { "type": "enemy", "key": "enemy1", "delay": 2.5 },
+        { "type": "enemy", "key": "enemy1", "delay": 0 },
+        { "type": "enemy", "key": "enemy1", "delay": 3 },
+        { "type": "enemy", "key": "enemy1", "delay": 3 },
+        { "type": "enemy", "key": "enemy1", "delay": 3 },
+        { "type": "enemy", "key": "enemy1", "delay": 3 },
+        { "type": "enemy", "key": "enemy1", "delay": 3 },
+        { "type": "enemy", "key": "enemy1", "delay": 3 }
+    ],
+
+    [
+        { "type":"rotation", "newRotation":90, "delay":2},
+        { "type": "enemy", "key": "enemy1", "delay": 0 },
+        { "type": "enemy", "key": "enemy1", "delay": 2.5 },
+        { "type": "enemy", "key": "enemy1", "delay": 2.5 },
+        { "type": "enemy", "key": "enemy1", "delay": 2.5 },
+        { "type": "enemy", "key": "enemy1", "delay": 2.5 },
+        { "type": "enemy", "key": "enemy1", "delay": 2.5 },
+        { "type": "enemy", "key": "enemy1", "delay": 2.5 }
+    ],
+
+    [
+        { "type":"rotation", "newRotation":90, "delay":2},
+        { "type": "enemy", "key": "enemy1", "delay": 0 },
+        { "type": "enemy", "key": "enemy1", "delay": 2.5 },
+        { "type": "enemy", "key": "enemy1", "delay": 2.5 },
+        { "type": "enemy", "key": "enemy1", "delay": 2.5 },
+        { "type": "enemy", "key": "enemy1", "delay": 2.5 },
+        { "type": "enemy", "key": "enemy1", "delay": 2.5 },
+        { "type": "enemy", "key": "enemy1", "delay": 2.5 }
+    ],
+
+    [
+        { "type":"rotation", "newRotation":90, "delay":2},
+        { "type": "enemy", "key": "enemy1", "delay": 0 },
+        { "type": "enemy", "key": "enemy1", "delay": 2.5 },
+        { "type": "enemy", "key": "enemy1", "delay": 2.5 },
+        { "type": "enemy", "key": "enemy1", "delay": 2.5 },
+        { "type": "enemy", "key": "enemy1", "delay": 2.5 },
+        { "type": "enemy", "key": "enemy1", "delay": 2.5 },
+        { "type": "enemy", "key": "enemy1", "delay": 2.5 }
+    ],
+
+    [
+        { "type":"rotation", "newRotation":90, "delay":2},
+        { "type": "enemy", "key": "enemy1", "delay": 0 },
+        { "type": "enemy", "key": "enemy1", "delay": 2.5 },
+        { "type": "enemy", "key": "enemy1", "delay": 2.5 },
+        { "type": "enemy", "key": "enemy1", "delay": 2.5 },
+        { "type": "enemy", "key": "enemy1", "delay": 2.5 },
+        { "type": "enemy", "key": "enemy1", "delay": 2.5 },
+        { "type": "enemy", "key": "enemy1", "delay": 2.5 }
+    ],
+
+    [
+        { "type":"rotation", "newRotation":15, "delay":2},
+        { "type": "enemy", "key": "enemy1", "delay": 0 },
+        { "type": "enemy", "key": "enemy1", "delay": 2.5 },
+        { "type": "enemy", "key": "enemy1", "delay": 2.5 },
+        { "type": "enemy", "key": "enemy1", "delay": 0 },
+        { "type": "enemy", "key": "enemy1", "delay": 2.5 },
+        { "type": "enemy", "key": "enemy1", "delay": 2.5 },
+        { "type":"rotation", "newRotation":75, "delay":2},
+        { "type": "enemy", "key": "enemy1", "delay": 0 },
+        { "type": "enemy", "key": "enemy1", "delay": 2.5 },
+        { "type": "enemy", "key": "enemy1", "delay": 2.5 },
+        { "type":"rotation", "newRotation":15, "delay":2},
+        { "type": "enemy", "key": "enemy1", "delay": 0 },
+        { "type": "enemy", "key": "enemy1", "delay": 2.5 },
+        { "type": "enemy", "key": "enemy1", "delay": 2.5 }
+    ],
+
+    [
+        { "type":"rotation", "newRotation":75, "delay":2},
+        { "type": "enemy", "key": "enemy1", "delay": 1 },
+        { "type": "enemy", "key": "enemy1", "delay": 1 },
+        { "type": "enemy", "key": "enemy1", "delay": 1 },
+        { "type": "enemy", "key": "enemy1", "delay": 1 },
+        { "type": "enemy", "key": "enemy1", "delay": 1 },
+        { "type": "enemy", "key": "enemy1", "delay": 1 },
+        { "type": "enemy", "key": "enemy1", "delay": 1 },
+        { "type": "enemy", "key": "enemy1", "delay": 1 },
+        { "type": "enemy", "key": "enemy1", "delay": 1 },
+        { "type": "enemy", "key": "enemy1", "delay": 1 },
+        { "type": "enemy", "key": "enemy1", "delay": 1 },
+        { "type": "enemy", "key": "enemy1", "delay": 1 }
+        
+    ],
+
+    [
+        { "type":"rotation", "newRotation":15, "delay":2},
+        { "type": "enemy", "key": "enemy1", "delay": 0.8 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.8 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.8 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.8 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.8 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.8 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.8 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.8 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.8 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.8 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.8 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.8 }
+    ],
+
+    [
+        { "type":"rotation", "newRotation":75, "delay":3},
+        { "type": "enemy", "key": "enemy1", "delay": 0.6 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.6 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.6 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.6 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.6 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.6 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.6 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.6 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.6 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.6 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.6 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.6 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.6 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.6 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.6 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.6 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.6 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.6 }
+    ],
+
+    [
+        { "type":"rotation", "newRotation":15, "delay":1},
+        { "type": "enemy", "key": "enemy1", "delay": 0.2 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.2 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.2 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.2 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.2 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.2 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.2 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.2 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.2 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.2 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.2 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.2 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.2 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.2 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.2 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.2 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.2 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.2 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.2 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.2 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.2 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.2 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.2 },
+        { "type": "enemy", "key": "enemy1", "delay": 0.2 }
+    ],
+
+    [
+        { "type":"rotation", "newRotation":75, "delay":4}
+    ]
+]
