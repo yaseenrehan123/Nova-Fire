@@ -65,6 +65,11 @@ export class WaveSpawner {
             this.game.progressStorageManager.setProperty("waveIndex",this.currentWaveIndex);
             this.game.progressStorageManager.setProperty("sceneRotation",this.game.sceneRotation);
             this.game.progressStorageManager.setProperty("totalSceneRotation",this.game.totalSceneRotation);
+            const playerEntity = this.game.player.playerEntity;
+            this.game.progressStorageManager.setProperty
+            ("playerBulletType",playerEntity.getComponent("shootBullet").spawnKey)
+            this.game.progressStorageManager.setProperty("playerBulletPower",playerEntity.getComponent("shootTimes"));
+            this.game.progressStorageManager.setProperty("playerHealth",playerEntity.getComponent("health"));
         }
 
         this.isSpawning = false;

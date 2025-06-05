@@ -3,5 +3,6 @@
     "sceneRotation":0,
     "totalSceneRotation":0,
     "playerBulletType":"greenBullet",
-    "playerBulletPower":1
+    "playerBulletPower":1,
+    "playerHealth":50
 }

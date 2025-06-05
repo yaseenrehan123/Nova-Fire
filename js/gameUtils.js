@@ -523,7 +523,7 @@ export class GameUtils {
         this.game.currentSceneEntity = sceneToSwitch;
     };
     reloadScene() {
-
+        throw new Error("Not Implemented");
     };
     setMouseHoveredEntity(newEntity) {
         if (this.isEntityActive(newEntity) && newEntity.hasComponent('button')) {
@@ -687,7 +687,35 @@ export class GameUtils {
             }
         }
         return false;
+    };
+    dropLoot(pos) {
+        const dropChance = 0.1; // 10% chance
+
+        // Only drop if random roll passes
+        if (Math.random() > dropChance) return null;
+
+        const lootKeys = ['yellowBattery', 'purpleBattery', 'greenBattery', 'blueBattery', 'powerup'];
+        const randomKey = lootKeys[Math.floor(Math.random() * lootKeys.length)];
+
+        const loot = this.spawnEntity({
+            passedKey: randomKey,
+            componentsToModify: {
+                pos: { x: pos.x, y: pos.y },
+                rotation: 180 + this.game.totalSceneRotation,
+                baseRotation: 180,
+                matterBodyOptions: {
+                    label: "item",
+                    collisionFilter: {
+                        category: this.game.collisionCategories.itemCategory,
+                        mask: this.game.collisionCategories.playerCategory
+                    }
+                }
+            }
+        });
+
+        return loot;
     }
+
 
 
 };

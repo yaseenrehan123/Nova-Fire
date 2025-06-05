@@ -69,6 +69,7 @@ export class MainMenuUi {
                     onPress: () => {
                         this.gameUtils.loadScene(this.game.sceneEntity);
                         this.game.ui.pauseUi.refreshCheckboxStates();
+                        this.gameUtils.setIsActive(this.game.ui.pauseUi.pausePanelEntity,false);
                         this.gameUtils.unPauseGame();
                         this.game.ecs.customSystems.addSceneRotation();
                         this.game.enemyWaveSpawner.startWaves();

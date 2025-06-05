@@ -38,10 +38,14 @@ export class Physics {
                     const damageComponent = bulletEntity.getComponent('damage');
 
                     if (damageComponent) {
-                        this.game.gameUtils.damageEntity({
+                        const enemyPos = enemyEntity.getComponent('pos');
+                        const isEnemyDead = this.game.gameUtils.damageEntity({
                             entity: enemyEntity,
                             damageComponent: damageComponent
                         });
+                        if(isEnemyDead){
+                            this.game.gameUtils.dropLoot(enemyPos);
+                        }
                     };
 
                     this.game.gameUtils.removeEntity(bulletEntity);
