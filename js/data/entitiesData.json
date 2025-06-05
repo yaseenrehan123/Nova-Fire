@@ -830,7 +830,8 @@
       "drawType": "rectangle",
       "orderingLayer": 0,
       "parent": null,
-      "children": []
+      "children": [],
+      "blocksInput":true
     }
   },
   "button": {

@@ -404,8 +404,16 @@ class CustomSystems {
             ['pos', 'button'],
             (e) => {
                 if (!this.game.gameUtils.isEntityActive(e)) return;
+
                 const pos = e.getComponent('pos');
                 const button = e.getComponent('button');
+
+                const buttonLayer = e.getComponent('orderingLayer') || 0;
+
+                // Skip this button if something higher blocks the click
+                if (this.game.gameUtils.isEntityBlockingMouseInput(pos.x, pos.y, buttonLayer)) {
+                    return;
+                }
 
                 const x = pos.x;
                 const y = pos.y;
@@ -430,12 +438,12 @@ class CustomSystems {
                 };
 
                 //Unhover
-                if(button.isHovered && !isMouseOver){
+                if (button.isHovered && !isMouseOver) {
                     button.isHovered = false;
                     this.game.canvas.style.cursor = 'default';
                     this.game.gameUtils.resetMouseHoveredEntity();
                     const onHoverReleasedFunction = button.onHoverReleased;
-                    if(typeof onHoverReleasedFunction === 'function'){
+                    if (typeof onHoverReleasedFunction === 'function') {
                         onHoverReleasedFunction();
                     }
                     console.log("Hover Ended!!");
@@ -861,33 +869,33 @@ class ECSSystems {
             //console.log("ENTITY NAME:", entity.name, "LOCAL POS:", localPos);
         });
     };
-    handleInvincibilityCounterSystem(){
-        const engine =  this.game.ecs.entityEngine;
+    handleInvincibilityCounterSystem() {
+        const engine = this.game.ecs.entityEngine;
 
-        engine.system('handleInvincibilityCounterSystem',['invincibility'],(entity,{invincibility})=>{
+        engine.system('handleInvincibilityCounterSystem', ['invincibility'], (entity, { invincibility }) => {
             if (!this.game.gameUtils.isEntityActive(entity)) return;
-            
-            if(!invincibility.active) return;
 
-            if(invincibility.invincibilityCounter > 0){
+            if (!invincibility.active) return;
+
+            if (invincibility.invincibilityCounter > 0) {
                 invincibility.invincibilityCounter -= this.game.deltaTime;
             }
-            else{
+            else {
                 invincibility.active = false;// the counter is resetted in activatedInvincibility()
             };
 
-            entity.setComponent('invincibility',invincibility);
+            entity.setComponent('invincibility', invincibility);
         });
     };
-    destroyOutOfBoundsEntitiesSystem(){
+    destroyOutOfBoundsEntitiesSystem() {
         const engine = this.game.ecs.entityEngine;
 
-        engine.system('destroyOutOfBoundsEntitiesSystem',['pos','destroyOutOfBounds'],(entity,{pos,destroyOutOfBounds})=>{
+        engine.system('destroyOutOfBoundsEntitiesSystem', ['pos', 'destroyOutOfBounds'], (entity, { pos, destroyOutOfBounds }) => {
             if (!this.game.gameUtils.isEntityActive(entity)) return;
 
             const offset = 200;
 
-            if(this.game.gameUtils.isOutOfScreenBounds(entity,offset)){
+            if (this.game.gameUtils.isOutOfScreenBounds(entity, offset)) {
                 this.game.gameUtils.removeEntity(entity);
                 //console.log("Entity out of bounds!",entity);
             }

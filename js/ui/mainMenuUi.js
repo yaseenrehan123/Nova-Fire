@@ -284,7 +284,8 @@ export class MainMenuUi {
                     anchorY: 'bottom',
                     offsetX: 25,
                     offsetY: -25
-                }
+                },
+                orderingLayer:20
             }
         });
         this.gameUtils.anchorEntity(this.cancelNewGameBtnEntity, this.confirmNewGamePanelEntity);

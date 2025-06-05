@@ -79,6 +79,15 @@ export class GameUtils {
             }
         }
 
+        if (id.hasComponent('parent') && !modifiedComponents.orderingLayer) {
+            const parentEntity = id.getComponent('parent');
+            if (parentEntity && parentEntity.getComponent('orderingLayer') !== undefined) {
+                const parentLayer = parentEntity.getComponent('orderingLayer');
+                id.setComponent('orderingLayer', parentLayer + 1); // auto-increase
+            }
+        }
+
+
         return id;
 
     };
@@ -643,16 +652,42 @@ export class GameUtils {
     entityExists(entity) {
         return this.game.ecs.entityEngine.entities.hasOwnProperty(entity.name);
     };
-    gameover(){
-        this.setIsActive(this.game.ui.gameoverUi.gameoverPanelEntity,true);
+    gameover() {
+        this.setIsActive(this.game.ui.gameoverUi.gameoverPanelEntity, true);
         this.game.ui.gameoverUi.setWaveReachedText();
-        game.progressStorageManager.deleteData();
+        this.game.progressStorageManager.deleteData();
         this.pauseGame();
     };
-    gamewon(){
-        this.setIsActive(this.game.ui.gamewinUi.gamewinPanelEntity,true);
-        game.progressStorageManager.deleteData();
+    gamewon() {
+        this.setIsActive(this.game.ui.gamewinUi.gamewinPanelEntity, true);
+        this.game.progressStorageManager.deleteData();
         this.pauseGame();
+    };
+    isEntityBlockingMouseInput(x, y, buttonLayer) {
+        const allEntities = [];
+        this.game.gameUtils.filterEntitiesByComponents(['drawType', 'pos'], (e) => {
+            if (this.game.gameUtils.isEntityActive(e)) {
+                allEntities.push(e);
+            }
+        });
+
+        for (const entity of allEntities) {
+            if (!entity.getComponent('blocksInput')) continue;
+
+            const pos = entity.getComponent('pos');
+            const w = entity.getComponent('clickBoxWidth') || entity.getComponent('width') || 0;
+            const h = entity.getComponent('clickBoxHeight') || entity.getComponent('height') || 0;
+
+            const entityLayer = entity.getComponent('orderingLayer') || 0;
+
+            const isMouseOver = this.game.gameUtils.isMouseOver(pos.x, pos.y, w, h);
+
+            if (isMouseOver && entityLayer > buttonLayer) {
+                return true;
+            }
+        }
+        return false;
     }
-    
+
+
 };
