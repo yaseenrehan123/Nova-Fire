@@ -180,6 +180,7 @@ class CustomSystems {
             ['rotation', 'pos', 'spawnPos', 'shootBullet'],
             (e) => {
                 if (!this.game.gameUtils.isEntityActive(e)) return;
+                //console.log(e);
                 const rotation = e.getComponent('rotation');
                 //const pos = e.getComponent('pos');
                 const spawnPos = e.getComponent('spawnPos');
@@ -668,37 +669,119 @@ class ECSSystems {
             }
         );
     }
-    moveEntitiesSystem() {//used to move all entities 
+    moveEntitiesSystem() {
         const engine = this.game.ecs.entityEngine;
-        engine.system('moveObjects', ['pos', 'rotation', 'matterBody', 'moveVector', 'speed', 'notPlayer'],
-            (entity, { pos, rotation, matterBody, moveVector, speed, notPlayer }) => {
+
+        engine.system('moveObjects', ['pos', 'rotation', 'matterBody', 'speed', 'movementType', 'notPlayer'],
+            (entity, { pos, rotation, matterBody, speed, movementType }) => {
                 if (!this.game.gameUtils.isEntityActive(entity)) return;
-                const rad = rotation * (Math.PI / 180)
-                //console.log(`${entity.name} + ${pos.x}`)
-                moveVector = {
-                    x: Math.sin(rad),
-                    y: -Math.cos(rad)
-                };
+
+                const movementState = entity.getComponent('movementState') || {};
+                let moveVector = { x: 0, y: 0 };
+
+                switch (movementType) {
+                    case 'straight': {
+                        const rad = rotation * (Math.PI / 180);
+                        moveVector = {
+                            x: Math.sin(rad),
+                            y: -Math.cos(rad)
+                        };
+                        break;
+                    }
+
+                    case 'wander': {
+                        if (!movementState.target || this.reachedTarget(pos, movementState.target)) {
+                            movementState.target = this.getRandomScreenPos();
+                        }
+                        moveVector = this.getDirectionTo(pos, movementState.target);
+                        break;
+                    }
+
+                    case 'patrol': {
+                        moveVector = this.getPatrolVector(pos, movementState);
+                        break;
+                    }
+
+                    case 'diagonalEdge': {
+                        moveVector = this.getEdgeDiagonalVector(this.game.totalSceneRotation);
+                        break;
+                    }
+
+                    default:
+                        return;
+                }
+
+                // Normalize + Apply EPSILON cutoff
+                const len = Math.hypot(moveVector.x, moveVector.y) || 1;
+                moveVector.x /= len;
+                moveVector.y /= len;
 
                 const EPSILON = 0.0001;
                 if (Math.abs(moveVector.x) < EPSILON) moveVector.x = 0;
                 if (Math.abs(moveVector.y) < EPSILON) moveVector.y = 0;
 
-                //console.log(moveVector);
-
+                // Apply physics velocity
                 Body.setVelocity(matterBody, {
                     x: moveVector.x * speed,
                     y: moveVector.y * speed
                 });
 
+                // Update pos + components
                 pos.x = matterBody.position.x;
                 pos.y = matterBody.position.y;
-
-                entity.setComponent('moveVector', moveVector);
                 entity.setComponent('pos', pos);
+                entity.setComponent('moveVector', moveVector);
+                entity.setComponent('movementState', movementState);
             }
-        )
-    };
+        );
+    }
+    getDirectionTo(from, to) {
+        const dx = to.x - from.x;
+        const dy = to.y - from.y;
+        const len = Math.hypot(dx, dy) || 1;
+        return { x: dx / len, y: dy / len };
+    }
+
+    reachedTarget(pos, target, threshold = 10) {
+        return Math.hypot(pos.x - target.x, pos.y - target.y) < threshold;
+    }
+
+    getRandomScreenPos() {
+        return {
+            x: Math.random() * this.game.canvasWidth,
+            y: Math.random() * this.game.canvasHeight
+        };
+    }
+
+    getPatrolVector(pos, state) {
+        // Example: back and forth horizontally on top edge
+        const patrolRange = { min: 100, max: this.game.width - 100 };
+        if (!state.direction) state.direction = 1;
+
+        if ((pos.x < patrolRange.min && state.direction < 0) ||
+            (pos.x > patrolRange.max && state.direction > 0)) {
+            state.direction *= -1;
+        }
+
+        return { x: state.direction, y: 0 };
+    }
+
+    getEdgeDiagonalVector(sceneRotation) {
+        switch (sceneRotation) {
+            case 0: return { x: 1, y: -1 };
+            case 90: return { x: -1, y: -1 };
+            case 180: return { x: -1, y: 1 };
+            case 270: return { x: 1, y: 1 };
+            default: {
+                const rad = sceneRotation * (Math.PI / 180);
+                return {
+                    x: Math.cos(rad),
+                    y: Math.sin(rad)
+                };
+            }
+        }
+    }
+
     shootBulletsSystem() {
         const engine = this.game.ecs.entityEngine;
         engine.system('shootBullets', ['pos', 'shootBullet', 'rotation', 'spawnPos', 'shootTimes'],

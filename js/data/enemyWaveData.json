@@ -158,6 +158,7 @@
     ],
 
     [
-        { "type":"rotation", "newRotation":75, "delay":4}
+        { "type":"rotation", "newRotation":75, "delay":2},
+        { "type": "enemy", "key": "boss1", "delay": 2, "pos": { "x": 1600, "y": 150 }}
     ]
 ]

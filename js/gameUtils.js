@@ -689,7 +689,7 @@ export class GameUtils {
         return false;
     };
     dropLoot(pos) {
-        const dropChance = 0.1; // 10% chance
+        const dropChance = 0.05; // 5% chance
 
         // Only drop if random roll passes
         if (Math.random() > dropChance) return null;

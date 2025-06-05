@@ -88,7 +88,7 @@ export class Game {
 
         this.debugging = {
             debugMatterBodies: false,
-            debugShootDirection: true,
+            debugShootDirection: false,
             debugUiClickBox: false,
             debugLocalPos: false
         };

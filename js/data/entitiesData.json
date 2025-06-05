@@ -148,12 +148,12 @@
       "orderingLayer": 0,
       "parent": null,
       "children": [],
-      "invincibility":{
-        "active":false,
-        "blinkCounter":0,
-        "blinkDelay":0.04,
-        "invincibilityDuration":3,
-        "invincibilityCounter":0
+      "invincibility": {
+        "active": false,
+        "blinkCounter": 0,
+        "blinkDelay": 0.04,
+        "invincibilityDuration": 3,
+        "invincibilityCounter": 0
       }
     }
   },
@@ -204,7 +204,8 @@
       "orderingLayer": 0,
       "parent": null,
       "children": [],
-      "destroyOutOfBounds":true
+      "destroyOutOfBounds": true,
+      "movementType": "straight"
     }
   },
   "purpleBattery": {
@@ -254,7 +255,8 @@
       "orderingLayer": 0,
       "parent": null,
       "children": [],
-      "destroyOutOfBounds":true
+      "destroyOutOfBounds": true,
+      "movementType": "straight"
     }
   },
   "yellowBattery": {
@@ -304,7 +306,8 @@
       "orderingLayer": 0,
       "parent": null,
       "children": [],
-      "destroyOutOfBounds":true
+      "destroyOutOfBounds": true,
+      "movementType": "straight"
     }
   },
   "greenBattery": {
@@ -354,7 +357,8 @@
       "orderingLayer": 0,
       "parent": null,
       "children": [],
-      "destroyOutOfBounds":true
+      "destroyOutOfBounds": true,
+      "movementType": "straight"
     }
   },
   "enemy1": {
@@ -404,7 +408,8 @@
       "orderingLayer": 0,
       "parent": null,
       "children": [],
-      "destroyOutOfBounds":true
+      "destroyOutOfBounds": true,
+      "movementType": "straight"
     }
   },
   "enemy2": {
@@ -454,7 +459,8 @@
       "orderingLayer": 0,
       "parent": null,
       "children": [],
-      "destroyOutOfBounds":true
+      "destroyOutOfBounds": true,
+      "movementType": "straight"
     }
   },
   "enemy3": {
@@ -504,7 +510,79 @@
       "orderingLayer": 0,
       "parent": null,
       "children": [],
-      "destroyOutOfBounds":true
+      "destroyOutOfBounds": true,
+      "movementType": "straight"
+    }
+  },
+  "boss1": {
+    "components": {
+      "imgKey": "boss1",
+      "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "localPos": {
+        "x": 0,
+        "y": 0
+      },
+      "width": 300,
+      "height": 300,
+      "rotation": 180,
+      "baseRotation": 180,
+      "centerImage": true,
+      "matterBody": null,
+      "matterBodyType": "rectangle",
+      "matterBodyOffset": {
+        "x": 0,
+        "y": 0
+      },
+      "matterBodyWidth": 300,
+      "matterBodyHeight": 300,
+      "matterBodyOptions": {
+        "label": "enemy",
+        "isSensor": true,
+        "collisionFilter": {
+          "group": 0,
+          "category": "{{enemyCategory}}",
+          "mask": "{{playerCategory}}"
+        }
+      },
+      "speed": 5,
+      "moveVector": {
+        "x": 0,
+        "y": 0
+      },
+      "notPlayer": true,
+      "sceneOrientedRotation": true,
+      "health": 300,
+      "damage": 10,
+      "isActive": true,
+      "drawType": "sprite",
+      "orderingLayer": 0,
+      "parent": null,
+      "children": [],
+      "destroyOutOfBounds": true,
+      "shootBullet": {
+        "active": true,
+        "delayInSeconds": 1,
+        "counter": 0,
+        "spawnKey": "enemyBullet"
+      },
+      "spawnPos": [
+        {
+          "pos": {
+            "x": 0,
+            "y": 0
+          },
+          "offset": {
+            "x": 0,
+            "y": -100
+          }
+        }
+      ],
+      "shootTimes": 1,
+      "movementType": "patrol",
+      "boss": true
     }
   },
   "greenBullet": {
@@ -552,7 +630,8 @@
       "orderingLayer": 0,
       "parent": null,
       "children": [],
-      "destroyOutOfBounds":true
+      "destroyOutOfBounds": true,
+      "movementType": "straight"
     }
   },
   "blueBullet": {
@@ -599,7 +678,8 @@
       "orderingLayer": 0,
       "parent": null,
       "children": [],
-      "destroyOutOfBounds":true
+      "destroyOutOfBounds": true,
+      "movementType": "straight"
     }
   },
   "purpleBullet": {
@@ -647,7 +727,8 @@
       "orderingLayer": 0,
       "parent": null,
       "children": [],
-      "destroyOutOfBounds":true
+      "destroyOutOfBounds": true,
+      "movementType": "straight"
     }
   },
   "yellowBullet": {
@@ -695,7 +776,8 @@
       "orderingLayer": 0,
       "parent": null,
       "children": [],
-      "destroyOutOfBounds":true
+      "destroyOutOfBounds": true,
+      "movementType": "straight"
     }
   },
   "powerup": {
@@ -747,7 +829,56 @@
       "orderingLayer": 0,
       "parent": null,
       "children": [],
-      "destroyOutOfBounds":true
+      "destroyOutOfBounds": true,
+      "movementType": "straight"
+    }
+  },
+  "enemyBullet": {
+    "components": {
+      "imgKey": "enemyBullet",
+      "pos": {
+        "x": 0,
+        "y": 0
+      },
+      "localPos": {
+        "x": 0,
+        "y": 0
+      },
+      "width": 100,
+      "height": 100,
+      "rotation": 0,
+      "baseRotation": 0,
+      "centerImage": true,
+      "matterBody": null,
+      "matterBodyType": "circle",
+      "matterBodyOffset": {
+        "x": 0,
+        "y": 0
+      },
+      "matterBodyRadius": 60,
+      "matterBodyOptions": {
+        "label": "playerBullet",
+        "isSensor": true,
+        "collisionFilter": {
+          "group": 0,
+          "category": "playerBulletCategory",
+          "mask": "this.collisionCategories.enemyCategory"
+        }
+      },
+      "speed": 5,
+      "moveVector": {
+        "x": 0,
+        "y": 0
+      },
+      "notPlayer": true,
+      "damage": 5,
+      "isActive": true,
+      "drawType": "sprite",
+      "orderingLayer": 0,
+      "parent": null,
+      "children": [],
+      "destroyOutOfBounds": true,
+      "movementType": "straight"
     }
   },
   "bar": {
@@ -831,7 +962,7 @@
       "orderingLayer": 0,
       "parent": null,
       "children": [],
-      "blocksInput":true
+      "blocksInput": true
     }
   },
   "button": {
@@ -868,11 +999,11 @@
         "onPress": "()=>{}",
         "onRelease": "()=>{}",
         "onHover": "()=>{}",
-        "onHoverReleased":"()=>{}",
+        "onHoverReleased": "()=>{}",
         "clickBoxWidth": 100,
         "clickBoxHeight": 100,
         "isPressed": false,
-        "isHovered":false
+        "isHovered": false
       },
       "isActive": true,
       "drawType": "rectangle",
@@ -934,11 +1065,11 @@
         "onPress": "()=>{}",
         "onRelease": "()=>{}",
         "onHover": "()=>{}",
-        "onHoverReleased":"()=>{}",
+        "onHoverReleased": "()=>{}",
         "clickBoxWidth": 100,
         "clickBoxHeight": 100,
         "isPressed": false,
-        "isHovered":false
+        "isHovered": false
       },
       "isActive": true,
       "drawType": "sprite",
@@ -981,11 +1112,11 @@
         "onPress": "()=>{}",
         "onRelease": "()=>{}",
         "onHover": "()=>{}",
-        "onHoverReleased":"()=>{}",
+        "onHoverReleased": "()=>{}",
         "clickBoxWidth": 100,
         "clickBoxHeight": 100,
         "isPressed": false,
-        "isHovered":false
+        "isHovered": false
       },
       "isActive": true,
       "drawType": "rectangle",

@@ -43,7 +43,7 @@ export class Physics {
                             entity: enemyEntity,
                             damageComponent: damageComponent
                         });
-                        if(isEnemyDead){
+                        if (isEnemyDead) {
                             this.game.gameUtils.dropLoot(enemyPos);
                         }
                     };
@@ -63,7 +63,7 @@ export class Physics {
                         entity: playerEntity,
                         damageComponent: damageComponent
                     });
-                    if(isPlayerDead){
+                    if (isPlayerDead) {
                         console.log("PLAYER DEAD!");
                         this.game.gameUtils.gameover();
                         return;
@@ -80,7 +80,10 @@ export class Physics {
                         }
                     })
                     // destroy enemy
-                    this.game.gameUtils.removeEntity(enemyEntity);
+                    if (!enemyEntity.hasComponent('boss')) {
+                        this.game.gameUtils.removeEntity(enemyEntity);
+                    }
+
                     //console.log("Player collided with enemy");
 
                     this.game.gameUtils.playSfx('playerShipExplosion');
@@ -118,6 +121,44 @@ export class Physics {
                     this.game.gameUtils.removeEntity(itemEntity);
 
                     this.game.gameUtils.playSfx('powerUpGrab');
+                }
+                else if (this.matchCollision(a, b, 'player', 'enemyBullet')) {
+                    const playerEntity = a === 'player' ? bodyA.gameObject : bodyB.gameObject;
+                    const enemyBulletEntity = a === 'item' ? bodyA.gameObject : bodyB.gameObject;
+
+                    console.log("player collided with enemy bullet!");
+
+                    if (this.game.gameUtils.isInvincibilityActive(playerEntity)) return;/*no collision as long as 
+                    invincibility is active */
+                    const damageComponent = enemyBulletEntity.getComponent('damage');
+                    const isPlayerDead = this.game.gameUtils.damageEntity({
+                        entity: playerEntity,
+                        damageComponent: damageComponent
+                    });
+                    if (isPlayerDead) {
+                        console.log("PLAYER DEAD!");
+                        this.game.gameUtils.gameover();
+                        return;
+                    }
+                    this.game.gameUtils.activateInvincibility(playerEntity);
+                    //set healthbar
+                    this.game.ui.playerUi.updateHealthBar();
+                    //console.log("Player health: " , playerEntity.getComponent('health'));
+                    const playerEntityPos = playerEntity.getComponent('pos');
+                    this.game.gameUtils.spawnParticles({
+                        pos: {
+                            x: playerEntityPos.x,
+                            y: playerEntityPos.y
+                        }
+                    })
+                    // destroy bullet
+                   
+                    this.game.gameUtils.removeEntity(enemyBulletEntity);
+                    
+
+                    //console.log("Player collided with enemy");
+
+                    this.game.gameUtils.playSfx('playerShipExplosion');
                 }
             };
 

@@ -26,7 +26,7 @@ export class WaveSpawner {
     async startWaves() {
         this.isSpawning = true;
 
-        if(!this.isSpawning) return;
+        if (!this.isSpawning) return;
 
         while (this.currentWaveIndex < this.data.length) {
             const wave = this.data[this.currentWaveIndex];
@@ -43,13 +43,13 @@ export class WaveSpawner {
                 await this._delay(step.delay || 0);
 
                 if (step.type === "enemy") {
-                    this.spawnEnemy(step.key);
+                    this.spawnEnemy(step.key,step.pos || null);
                 }
 
                 if (step.type === "rotation") {
                     if (step.newRotation !== undefined) {
                         new ChangeView({ game: this.game, newRotation: step.newRotation });
-                        console.log("ROTATION CHANGE ENCOUNTERED:",step.newRotation,this.game.sceneRotation,this.game.totalSceneRotation);
+                        console.log("ROTATION CHANGE ENCOUNTERED:", step.newRotation, this.game.sceneRotation, this.game.totalSceneRotation);
                     }
                 }
 
@@ -62,14 +62,14 @@ export class WaveSpawner {
             }
 
             this.currentWaveIndex++;
-            this.game.progressStorageManager.setProperty("waveIndex",this.currentWaveIndex);
-            this.game.progressStorageManager.setProperty("sceneRotation",this.game.sceneRotation);
-            this.game.progressStorageManager.setProperty("totalSceneRotation",this.game.totalSceneRotation);
+            this.game.progressStorageManager.setProperty("waveIndex", this.currentWaveIndex);
+            this.game.progressStorageManager.setProperty("sceneRotation", this.game.sceneRotation);
+            this.game.progressStorageManager.setProperty("totalSceneRotation", this.game.totalSceneRotation);
             const playerEntity = this.game.player.playerEntity;
             this.game.progressStorageManager.setProperty
-            ("playerBulletType",playerEntity.getComponent("shootBullet").spawnKey)
-            this.game.progressStorageManager.setProperty("playerBulletPower",playerEntity.getComponent("shootTimes"));
-            this.game.progressStorageManager.setProperty("playerHealth",playerEntity.getComponent("health"));
+                ("playerBulletType", playerEntity.getComponent("shootBullet").spawnKey)
+            this.game.progressStorageManager.setProperty("playerBulletPower", playerEntity.getComponent("shootTimes"));
+            this.game.progressStorageManager.setProperty("playerHealth", playerEntity.getComponent("health"));
         }
 
         this.isSpawning = false;
@@ -78,10 +78,10 @@ export class WaveSpawner {
     }
 
 
-    spawnEnemy(enemyKey) {
+    spawnEnemy(enemyKey, customPos = null) {
         const rotation = this.game.totalSceneRotation;
-        const spawnPos = this.getSpawnPosition(rotation);
-        //console.log("ENEMY SPAWN POS:", spawnPos);
+        const spawnPos = customPos || this.getSpawnPosition(rotation);
+
         const enemy = this.gameUtils.spawnEntity({
             passedKey: enemyKey,
             componentsToModify: {
@@ -99,9 +99,8 @@ export class WaveSpawner {
             }
         });
         this.spawnedEnemies.push(enemy);
-        // Optional: parent to scene
-        // this.game.assignParent(enemy, this.game.sceneEntity);
     }
+
 
     getSpawnPosition(rotationDegrees) {
         const angle = (rotationDegrees - 90) * (Math.PI / 180);
