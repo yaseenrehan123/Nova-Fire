@@ -9,5 +9,8 @@ export default defineConfig({
   define: {
     'process.env': {}, // avoids other Node.js env errors
   },
-  base: '/Nova-Fire'
+  base: '/Nova-Fire/',
+  optimizeDeps: {
+    include: ['jecs'],
+  },
 });
