@@ -8,6 +8,8 @@ import { StorageManager } from './storageManager.js';
 import { SoundManager } from './soundManager.js';
 import { Parallax } from './parallax.js';
 import { WaveSpawner } from './waveSpawner.js';
+import { Player } from './player.js';
+import { Ui } from './ui/ui.js';
 //import { Builder, shapes } from "shape-builder";
 //const { Point, Rectangle } = shapes;
 
@@ -112,7 +114,7 @@ export class Game {
 
         this.gameUtils = new GameUtils(this);
         this.mouse = new Mouse(this);
-        this.physics = new Physics(this)
+        this.physics = new Physics(this);
         this.enemyWaveSpawner = new WaveSpawner(this);
 
         this.initMainMenuSceneEntity();
@@ -120,6 +122,10 @@ export class Game {
         this.initSceneEntity();
         this.initControlsSceneEntity();
         this.initCurrentSceneEntity();
+
+        this.player = new Player(this);
+        this.ui = new Ui(this);
+        console.log("UI:",this.ui);
 
         this.onBackgroundCanvasResize();
 

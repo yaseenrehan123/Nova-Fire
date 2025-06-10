@@ -16,7 +16,7 @@ export class LoadAssets {
     }
     loadImages() {
         return new Promise((resolve, reject) => {
-            this.fetchData('/data/imagesData.json')
+            this.fetchData('data/imagesData.json')
                 .then((data) => {
                     const keys = Object.keys(data);
                     const length = keys.length;
@@ -48,7 +48,7 @@ export class LoadAssets {
     };
     loadAudio() {
         return new Promise((resolve, reject) => {
-            this.fetchData('/data/audioData.json')
+            this.fetchData('data/audioData.json')
                 .then((data) => {
                     const keys = Object.keys(data);
                     const length = keys.length;
@@ -82,10 +82,10 @@ export class LoadAssets {
     loadAll() {
         const imagesPromise = this.loadImages();
         const audioPromise = this.loadAudio();
-        const entitiesPromise = this.fetchData('/data/entitiesData.json');
-        const settingsPromise = this.fetchData('/data/settingsData.json');
-        const enemyWavePromise = this.fetchData('/data/enemyWaveData.json');
-        const progressPromise = this.fetchData('/data/progressData.json');
+        const entitiesPromise = this.fetchData('data/entitiesData.json');
+        const settingsPromise = this.fetchData('data/settingsData.json');
+        const enemyWavePromise = this.fetchData('data/enemyWaveData.json');
+        const progressPromise = this.fetchData('data/progressData.json');
         Promise.all([imagesPromise, entitiesPromise, settingsPromise,audioPromise,enemyWavePromise,progressPromise])
             .then(([imagesData, entitiesData, settingsData,audioData,enemyWaveData,progressData]) => {
                 const resources = {

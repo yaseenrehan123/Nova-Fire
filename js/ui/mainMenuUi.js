@@ -154,6 +154,7 @@ export class MainMenuUi {
                 button: {
                     clickBoxWidth: 200,
                     onPress: () => {
+                        console.log("settingsSceneUi?", this.game.ui.settingsSceneUi);
                         this.gameUtils.loadScene(this.game.settingsSceneEntity);
                         this.game.ui.settingsSceneUi.refreshCheckboxStates();
                         this.gameUtils.playSfx('buttonClick');
