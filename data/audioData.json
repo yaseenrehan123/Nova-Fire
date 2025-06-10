@@ -1,0 +1,11 @@
+{
+    "backgroundMusic":"audio/background-music.ogg",
+    "buttonClick":"audio/button-click.mp3",
+    "yellowBulletShoot":"audio/yellow-bullet-shoot.mp3",
+    "blueBulletShoot":"audio/blue-bullet-shoot.wav",
+    "greenBulletShoot":"audio/green-bullet-shoot2.mp3",
+    "purpleBulletShoot":"audio/purple-bullet-shoot.mp3",
+    "energyFinished":"audio/energy-finished.wav",
+    "playerShipExplosion":"audio/player-ship-explosion.wav",
+    "powerUpGrab":"audio/power-up-grab.mp3"
+}
