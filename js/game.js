@@ -1,17 +1,14 @@
 import { Mouse } from './mouse.js';
-import { Engine as EntityEngine, Simulator as EntitySimulator } from 'jecs';
+import { Engine as EntityEngine, Simulator as EntitySimulator } from 'jecs.js';
 import { Systems } from './systems.js';
 import { Physics } from './physics.js';
 import { GameUtils } from './gameUtils.js';
-import { CreateEntity } from "./createEntity.js";
 import { StorageManager } from './storageManager.js';
 import { SoundManager } from './soundManager.js';
 import { Parallax } from './parallax.js';
 import { WaveSpawner } from './waveSpawner.js';
 import { Player } from './player.js';
 import { Ui } from './ui/ui.js';
-//import { Builder, shapes } from "shape-builder";
-//const { Point, Rectangle } = shapes;
 
 export class Game {
     constructor(resources) {
