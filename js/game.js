@@ -1,5 +1,5 @@
 import { Mouse } from './mouse.js';
-import { Engine as EntityEngine, Simulator as EntitySimulator } from 'jecs.js';
+import { Engine as EntityEngine, Simulator as EntitySimulator } from 'jecs';
 import { Systems } from './systems.js';
 import { Physics } from './physics.js';
 import { GameUtils } from './gameUtils.js';
