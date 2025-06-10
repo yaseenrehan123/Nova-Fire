@@ -1,16 +1,24 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
+  base: '/Nova-Fire/',
   resolve: {
     alias: {
-      events: 'events', // use npm events polyfill
-    }
+      events: 'events',
+    },
   },
   define: {
-    'process.env': {}, // avoids other Node.js env errors
+    'process.env': {},
   },
-  base: '/Nova-Fire/',
   optimizeDeps: {
     include: ['jecs'],
+  },
+  build: {
+    rollupOptions: {
+      external: [], // make sure jecs isn't accidentally marked external
+    },
+    commonjsOptions: {
+      include: [/node_modules/],
+    },
   },
 });
